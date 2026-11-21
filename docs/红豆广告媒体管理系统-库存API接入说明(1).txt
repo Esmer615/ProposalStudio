@@ -1,0 +1,14 @@
+公交车媒体库存（GET）
+https://flairmedia.com.cn:881/admin-api/orders/media-inventory/bus/page?pageNo=1&pageSize=20&startDate=2026-11-21&endDate=2026-11-21&lineName=100
+lineName：线路名称，例如 100。
+
+地铁出入口库存（GET）
+https://flairmedia.com.cn:881/admin-api/orders/media-inventory/metro/page?pageNo=1&pageSize=20&startDate=2026-11-21&endDate=2026-11-21
+keyword：站名或出入口名称，例如 keyword=上海南站。
+
+两个接口共用请求头
+tenant-id: 1
+Authorization: Bearer <accessToken>
+
+日期按需替换，accessToken 使用自己账号登录后取得的令牌。
+

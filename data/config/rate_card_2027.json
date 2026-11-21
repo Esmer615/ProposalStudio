@@ -1,0 +1,39 @@
+{
+  "version": "2027",
+  "currency": "CNY",
+  "unit": "wan",
+  "unit_note": "所有金额单位为万元（万）；制作费地铁为万元/口，公交为万元/辆",
+  "source": "docs/03-合同三份-脱敏版等9个文件/07-媒体刊例价.xlsx",
+  "source_note": "刊例价为区间化脱敏口径，本表取区间中点作为单点值",
+  "assumption": "区间中点取值为规划假设，非精确成交价；赛事允许的脱敏口径",
+  "bus": {
+    "unit_per_month_wan": { "S": 6, "A++": 5, "A+": 4 },
+    "production_wan_per_vehicle": 0.75,
+    "level_range_source": { "S": [5, 7], "A++": [4, 6], "A+": [3, 5] },
+    "production_range_source": [0.5, 1.0],
+    "period_unit": "1月"
+  },
+  "metro": {
+    "unit_per_month_wan": { "A++": 30, "A+": 20 },
+    "production_wan_per_gate": 0.03,
+    "level_range_source": { "A++": [25, 35], "A+": [15, 25] },
+    "production_source_note": "制作费源表为100元/㎡（以实际点位面积计算），0.03万/口为平均口径假设",
+    "period_unit": "1月"
+  },
+  "discount_tiers": [
+    { "tier": 1, "threshold_wan": 0, "discount": 0.88, "note": "全单刊例总额落档，全单统一折扣" },
+    { "tier": 2, "threshold_wan": 100, "discount": 0.83, "note": "阈值起始为规划假设" },
+    { "tier": 3, "threshold_wan": 200, "discount": 0.78, "note": "阈值起始为规划假设" },
+    { "tier": 4, "threshold_wan": 300, "discount": 0.73, "note": "阈值起始为规划假设" },
+    { "tier": 5, "threshold_wan": 400, "discount": 0.68, "note": "阈值起始为规划假设" }
+  ],
+  "discount_note": "折扣阈值金额为区间化假设（源表未给精确分层），折扣率88/83/78/73/68%为赛前培训口径",
+  "bonus_gift": {
+    "rate": 0.05,
+    "note": "满额赠送：折后5%等值点位（赠媒）"
+  },
+  "agency_fee": {
+    "rate": 0.15,
+    "note": "4A代理服务费15%（直客不适用）"
+  }
+}

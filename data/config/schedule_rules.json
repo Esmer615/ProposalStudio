@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "source": "docs/03-合同三份-脱敏版等9个文件/02-上下刊流程卡点.docx + 赛题口径",
+  "night_window": { "start": "23:00", "end": "05:00", "note": "公交/地铁口/户外大牌均需夜间窗口期施工" },
+  "production_capacity": {
+    "bus_per_night": 20,
+    "metro_per_night": 10,
+    "note": "单晚施工作业上限（公交20辆/晚、地铁10口/晚），为规划假设"
+  },
+  "rain_buffer": {
+    "nights": 2,
+    "note": "雨天无法施工，预留缓冲2个夜间窗口"
+  },
+  "workflow": ["设计", "定稿", "内容审批", "制作", "夜间安装"],
+  "sla": {
+    "brief_to_response_working_days": 2,
+    "up_photo_delivery": { "note": "上刊照片当天或次日交付", "max_days": 1 },
+    "up_monitoring_working_days": 5,
+    "down_monitoring_working_days": 5,
+    "monthly_report": { "note": "月度监测报告" }
+  },
+  "mis_one_compensate_two": {
+    "rule": "误一补二",
+    "note": "上刊/投放错误按\"误一次补两次\"补偿，为合同条款口径"
+  },
+  "content_approval": {
+    "required": true,
+    "note": "最终定稿需内容审批通过后方可制作"
+  },
+  "buffers": {
+    "design_review_buffer_days": 2,
+    "monitoring_photo_lead_days": 1,
+    "note": "监拍由外包执行，完工后隔天才能提供监测照片；需预留缓冲"
+  },
+  "assumption": "公交/地铁单晚作业上限与雨备夜数为规划假设（源文档未给精确数值）；SLA口径来自流程卡点与赛题说明"
+}

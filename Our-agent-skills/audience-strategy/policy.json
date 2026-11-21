@@ -1,0 +1,54 @@
+{
+  "version": "2.0.0",
+  "engine_note": "当前引擎只有一个确定性优化器；precision/balanced/reach/corridor 不是引擎参数，禁止在输出中声称可切换。",
+  "objective_labels": {
+    "balanced": "均衡",
+    "reach": "覆盖/曝光",
+    "precision": "精准触达",
+    "efficiency": "预算效率",
+    "brand": "品牌认知"
+  },
+  "budget_floor_wan": 100,
+  "budget_ceiling_wan": 500,
+  "budget_step_wan": 100,
+  "media_alternative_default": "bus",
+  "labels": {
+    "base": "基准方案",
+    "budget_down": "预算下探",
+    "budget_up": "预算上探",
+    "knee": "弹性拐点",
+    "media_bus": "公交-only 参考",
+    "media_metro": "地铁-only 参考",
+    "media_both": "公交+地铁 参考"
+  },
+  "scenario_rules": {
+    "max_scenarios": 4,
+    "quick_mode": "仅 base + 弹性",
+    "budget_step_wan": 100,
+    "always_include": ["base"],
+    "media_early_for": ["precision", "brand"],
+    "dedupe_by": ["venue", "budget_wan", "media", "start_date", "weeks", "customer_type", "locks"],
+    "objective_order": {
+      "efficiency": ["budget_down", "knee", "budget_up"],
+      "reach": ["budget_up", "knee", "budget_down"],
+      "brand": ["budget_up", "knee", "budget_down"],
+      "precision": ["budget_down", "budget_up", "knee"],
+      "balanced": ["budget_down", "budget_up", "knee"]
+    }
+  },
+  "audience_rules": {
+    "available_age_band": "<20",
+    "target_population_source": "场馆档案策划假设（venue profile），非实测去重人群",
+    "lego_core": "3–12 岁孩子 + 陪同家长；亲子商场/科技馆/少年宫/儿童医院权重高于大学城",
+    "venue_transport": {
+      "lego_shanghai": {"metro_direct": false, "self_drive_share": 0.68, "rail_share": 0.14},
+      "disney_shanghai": {"metro_direct": true, "self_drive_share": 0.35, "rail_share": 0.45},
+      "haichang_shanghai": {"metro_direct": true, "self_drive_share": 0.45, "rail_share": 0.40}
+    }
+  },
+  "compliance": {
+    "school_phrasing": "学校周边 300–500 米",
+    "forbidden": ["投在校园内", "校内投放", "校园内做推广", "和学校合作投放"],
+    "replacement": "覆盖学校周边通学动线上的地铁/公交点位"
+  }
+}

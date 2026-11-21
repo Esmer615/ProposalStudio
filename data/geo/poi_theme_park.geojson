@@ -1,0 +1,2168 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "id": "poi_000",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.536733,
+     31.220602
+    ]
+   },
+   "properties": {
+    "id": "poi_000",
+    "name": "上海科技馆",
+    "type": "science_museum_planetarium",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_001",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.4577,
+     31.236866
+    ]
+   },
+   "properties": {
+    "id": "poi_001",
+    "name": "上海自然博物馆",
+    "type": "science_museum_planetarium",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_002",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.922585,
+     30.91513
+    ]
+   },
+   "properties": {
+    "id": "poi_002",
+    "name": "上海天文馆",
+    "type": "science_museum_planetarium",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_003",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.408483,
+     31.195953
+    ]
+   },
+   "properties": {
+    "id": "poi_003",
+    "name": "上海儿童博物馆",
+    "type": "science_museum_planetarium",
+    "district": "长宁区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_004",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.47179,
+     31.251986
+    ]
+   },
+   "properties": {
+    "id": "poi_004",
+    "name": "上海铁路博物馆",
+    "type": "science_museum_planetarium",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_005",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_005",
+    "name": "上海航运博物馆",
+    "type": "science_museum_planetarium",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_006",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_006",
+    "name": "上海昆虫博物馆",
+    "type": "science_museum_planetarium",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_007",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_007",
+    "name": "上海消防博物馆",
+    "type": "science_museum_planetarium",
+    "district": "长宁区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_008",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.471,
+     31.230158
+    ]
+   },
+   "properties": {
+    "id": "poi_008",
+    "name": "上海博物馆",
+    "type": "museum",
+    "district": "黄浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_009",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.466055,
+     31.233185
+    ]
+   },
+   "properties": {
+    "id": "poi_009",
+    "name": "上海历史博物馆",
+    "type": "museum",
+    "district": "黄浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_010",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.470882,
+     31.233371
+    ]
+   },
+   "properties": {
+    "id": "poi_010",
+    "name": "上海城市规划展示馆",
+    "type": "museum",
+    "district": "黄浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_011",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_011",
+    "name": "上海汽车博物馆",
+    "type": "museum",
+    "district": "嘉定区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_012",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.433655,
+     31.188091
+    ]
+   },
+   "properties": {
+    "id": "poi_012",
+    "name": "上海电影博物馆",
+    "type": "museum",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_013",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.489926,
+     31.186484
+    ]
+   },
+   "properties": {
+    "id": "poi_013",
+    "name": "中华艺术宫",
+    "type": "museum",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_014",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.493897,
+     31.203059
+    ]
+   },
+   "properties": {
+    "id": "poi_014",
+    "name": "上海当代艺术博物馆",
+    "type": "museum",
+    "district": "黄浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_015",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_015",
+    "name": "上海松江博物馆",
+    "type": "museum",
+    "district": "松江区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_016",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_016",
+    "name": "上海青浦博物馆",
+    "type": "museum",
+    "district": "青浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_017",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.467324,
+     31.345676
+    ]
+   },
+   "properties": {
+    "id": "poi_017",
+    "name": "上海玻璃博物馆",
+    "type": "museum",
+    "district": "宝山区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_018",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.441527,
+     31.248646
+    ]
+   },
+   "properties": {
+    "id": "poi_018",
+    "name": "上海纺织博物馆",
+    "type": "museum",
+    "district": "普陀区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_019",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.594987,
+     31.194989
+    ]
+   },
+   "properties": {
+    "id": "poi_019",
+    "name": "上海中医药博物馆",
+    "type": "museum",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_020",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.480755,
+     31.246407
+    ]
+   },
+   "properties": {
+    "id": "poi_020",
+    "name": "上海邮政博物馆",
+    "type": "museum",
+    "district": "虹口区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_021",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.50482,
+     31.256147
+    ]
+   },
+   "properties": {
+    "id": "poi_021",
+    "name": "上海犹太难民纪念馆",
+    "type": "museum",
+    "district": "虹口区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_022",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.165775,
+     31.280532
+    ]
+   },
+   "properties": {
+    "id": "poi_022",
+    "name": "上海动漫博物馆",
+    "type": "museum",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_023",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     119.976649,
+     31.843313
+    ]
+   },
+   "properties": {
+    "id": "poi_023",
+    "name": "环球港",
+    "type": "parent_child_mall",
+    "district": "普陀区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_024",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.467506,
+     31.245987
+    ]
+   },
+   "properties": {
+    "id": "poi_024",
+    "name": "大悦城",
+    "type": "parent_child_mall",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_025",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.31102,
+     31.19464
+    ]
+   },
+   "properties": {
+    "id": "poi_025",
+    "name": "虹桥天地",
+    "type": "parent_child_mall",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_026",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.494738,
+     31.23865
+    ]
+   },
+   "properties": {
+    "id": "poi_026",
+    "name": "正大广场",
+    "type": "parent_child_mall",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_027",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     104.061455,
+     30.552739
+    ]
+   },
+   "properties": {
+    "id": "poi_027",
+    "name": "环球金融中心商场",
+    "type": "parent_child_mall",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_028",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.382272,
+     31.108977
+    ]
+   },
+   "properties": {
+    "id": "poi_028",
+    "name": "仲盛世界商城",
+    "type": "parent_child_mall",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_029",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.551154,
+     31.244418
+    ]
+   },
+   "properties": {
+    "id": "poi_029",
+    "name": "LCM置地旭辉广场",
+    "type": "parent_child_mall",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_030",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.345931,
+     31.156482
+    ]
+   },
+   "properties": {
+    "id": "poi_030",
+    "name": "七宝万科广场",
+    "type": "parent_child_mall",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_031",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.301443,
+     31.306853
+    ]
+   },
+   "properties": {
+    "id": "poi_031",
+    "name": "南翔印象城",
+    "type": "parent_child_mall",
+    "district": "嘉定区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_032",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.442532,
+     31.325738
+    ]
+   },
+   "properties": {
+    "id": "poi_032",
+    "name": "宝山万达广场",
+    "type": "parent_child_mall",
+    "district": "宝山区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_033",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.203624,
+     31.017364
+    ]
+   },
+   "properties": {
+    "id": "poi_033",
+    "name": "松江万达广场",
+    "type": "parent_child_mall",
+    "district": "松江区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_034",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.567706,
+     31.245944
+    ]
+   },
+   "properties": {
+    "id": "poi_034",
+    "name": "周浦万达广场",
+    "type": "parent_child_mall",
+    "district": "浦东新区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 1.0,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_035",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.522493,
+     31.229797
+    ]
+   },
+   "properties": {
+    "id": "poi_035",
+    "name": "世纪汇广场",
+    "type": "parent_child_mall",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_036",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.511266,
+     31.301964
+    ]
+   },
+   "properties": {
+    "id": "poi_036",
+    "name": "五角场万达广场",
+    "type": "parent_child_mall",
+    "district": "杨浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_037",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.473341,
+     31.272848
+    ]
+   },
+   "properties": {
+    "id": "poi_037",
+    "name": "虹口龙之梦",
+    "type": "parent_child_mall",
+    "district": "虹口区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_038",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.4222,
+     31.218123
+    ]
+   },
+   "properties": {
+    "id": "poi_038",
+    "name": "中山公园龙之梦",
+    "type": "parent_child_mall",
+    "district": "长宁区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 1.0,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_039",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.43752,
+     31.179973
+    ]
+   },
+   "properties": {
+    "id": "poi_039",
+    "name": "徐家汇恒隆广场",
+    "type": "parent_child_mall",
+    "district": "徐汇区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 1.0,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_040",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.422794,
+     31.281401
+    ]
+   },
+   "properties": {
+    "id": "poi_040",
+    "name": "静安大悦城",
+    "type": "parent_child_mall",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_041",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.567706,
+     31.245944
+    ]
+   },
+   "properties": {
+    "id": "poi_041",
+    "name": "世纪公园商业区",
+    "type": "parent_child_mall",
+    "district": "浦东新区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 1.0,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_042",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.314311,
+     31.195958
+    ]
+   },
+   "properties": {
+    "id": "poi_042",
+    "name": "虹桥火车站",
+    "type": "transport_hub",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_043",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.322858,
+     31.195435
+    ]
+   },
+   "properties": {
+    "id": "poi_043",
+    "name": "虹桥机场T2",
+    "type": "transport_hub",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_044",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.425986,
+     31.154963
+    ]
+   },
+   "properties": {
+    "id": "poi_044",
+    "name": "上海南站",
+    "type": "transport_hub",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_045",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.451162,
+     31.248984
+    ]
+   },
+   "properties": {
+    "id": "poi_045",
+    "name": "上海火车站",
+    "type": "transport_hub",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_046",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     118.313989,
+     33.956854
+    ]
+   },
+   "properties": {
+    "id": "poi_046",
+    "name": "浦东国际机场",
+    "type": "transport_hub",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_047",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.555508,
+     31.20542
+    ]
+   },
+   "properties": {
+    "id": "poi_047",
+    "name": "龙阳路交通枢纽",
+    "type": "transport_hub",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_048",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.522934,
+     31.23078
+    ]
+   },
+   "properties": {
+    "id": "poi_048",
+    "name": "世纪大道站",
+    "type": "transport_hub",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_049",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.606692,
+     38.910587
+    ]
+   },
+   "properties": {
+    "id": "poi_049",
+    "name": "人民广场站",
+    "type": "transport_hub",
+    "district": "黄浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_050",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.434382,
+     31.19554
+    ]
+   },
+   "properties": {
+    "id": "poi_050",
+    "name": "徐家汇站",
+    "type": "transport_hub",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_051",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.440792,
+     31.225215
+    ]
+   },
+   "properties": {
+    "id": "poi_051",
+    "name": "静安寺站",
+    "type": "transport_hub",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_052",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.510069,
+     31.29974
+    ]
+   },
+   "properties": {
+    "id": "poi_052",
+    "name": "五角场站",
+    "type": "transport_hub",
+    "district": "杨浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_053",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.380462,
+     31.111438
+    ]
+   },
+   "properties": {
+    "id": "poi_053",
+    "name": "莘庄站",
+    "type": "transport_hub",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_054",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.423102,
+     31.187134
+    ]
+   },
+   "properties": {
+    "id": "poi_054",
+    "name": "宜山路站",
+    "type": "transport_hub",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_055",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.474882,
+     31.15445
+    ]
+   },
+   "properties": {
+    "id": "poi_055",
+    "name": "东方体育中心站",
+    "type": "transport_hub",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.9,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_056",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.443656,
+     31.231631
+    ]
+   },
+   "properties": {
+    "id": "poi_056",
+    "name": "上海市儿童医院",
+    "type": "children_hospital_maternity",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_057",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.390096,
+     31.141637
+    ]
+   },
+   "properties": {
+    "id": "poi_057",
+    "name": "复旦大学附属儿科医院",
+    "type": "children_hospital_maternity",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_058",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.518351,
+     31.207755
+    ]
+   },
+   "properties": {
+    "id": "poi_058",
+    "name": "上海儿童医学中心",
+    "type": "children_hospital_maternity",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_059",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.545754,
+     31.19155
+    ]
+   },
+   "properties": {
+    "id": "poi_059",
+    "name": "上海市第一妇婴保健院",
+    "type": "children_hospital_maternity",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_060",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.513889,
+     31.274996
+    ]
+   },
+   "properties": {
+    "id": "poi_060",
+    "name": "新华医院",
+    "type": "children_hospital_maternity",
+    "district": "杨浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_061",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.433967,
+     31.198095
+    ]
+   },
+   "properties": {
+    "id": "poi_061",
+    "name": "国际和平妇幼保健院",
+    "type": "children_hospital_maternity",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_062",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.522797,
+     31.270755
+    ]
+   },
+   "properties": {
+    "id": "poi_062",
+    "name": "红房子妇产科医院",
+    "type": "children_hospital_maternity",
+    "district": "杨浦区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 0.7,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_063",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.417882,
+     31.1804
+    ]
+   },
+   "properties": {
+    "id": "poi_063",
+    "name": "上海市第六人民医院",
+    "type": "children_hospital_maternity",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_064",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.529531,
+     31.26123
+    ]
+   },
+   "properties": {
+    "id": "poi_064",
+    "name": "复旦大学附属妇产科医院",
+    "type": "children_hospital_maternity",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.7,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_065",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.392499,
+     31.241701
+    ]
+   },
+   "properties": {
+    "id": "poi_065",
+    "name": "上海市儿童医院普陀新院",
+    "type": "children_hospital_maternity",
+    "district": "普陀区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 0.7,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_066",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.852262,
+     30.035346
+    ]
+   },
+   "properties": {
+    "id": "poi_066",
+    "name": "上海市少年宫",
+    "type": "youth_palace",
+    "district": "静安区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_067",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.448224,
+     31.229003
+    ]
+   },
+   "properties": {
+    "id": "poi_067",
+    "name": "上海市青少年活动中心",
+    "type": "youth_palace",
+    "district": "静安区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 0.8,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_068",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.438894,
+     31.223049
+    ]
+   },
+   "properties": {
+    "id": "poi_068",
+    "name": "中国福利会少年宫",
+    "type": "youth_palace",
+    "district": "长宁区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_069",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.578613,
+     31.250202
+    ]
+   },
+   "properties": {
+    "id": "poi_069",
+    "name": "浦东新区少年宫",
+    "type": "youth_palace",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_070",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.429578,
+     31.177054
+    ]
+   },
+   "properties": {
+    "id": "poi_070",
+    "name": "徐汇区青少年活动中心",
+    "type": "youth_palace",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_071",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.375972,
+     31.111658
+    ]
+   },
+   "properties": {
+    "id": "poi_071",
+    "name": "闵行区青少年活动中心",
+    "type": "youth_palace",
+    "district": "闵行区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 0.8,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_072",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     113.876856,
+     22.549329
+    ]
+   },
+   "properties": {
+    "id": "poi_072",
+    "name": "宝山区少年宫",
+    "type": "youth_palace",
+    "district": "宝山区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_073",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.538056,
+     31.282419
+    ]
+   },
+   "properties": {
+    "id": "poi_073",
+    "name": "杨浦区少年宫",
+    "type": "youth_palace",
+    "district": "杨浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_074",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.489124,
+     31.294401
+    ]
+   },
+   "properties": {
+    "id": "poi_074",
+    "name": "虹口区青少年活动中心",
+    "type": "youth_palace",
+    "district": "虹口区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_075",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.402803,
+     31.249906
+    ]
+   },
+   "properties": {
+    "id": "poi_075",
+    "name": "普陀区少年宫",
+    "type": "youth_palace",
+    "district": "普陀区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.8,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_076",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.497282,
+     31.242646
+    ]
+   },
+   "properties": {
+    "id": "poi_076",
+    "name": "上海海洋水族馆",
+    "type": "aquarium_indoor_play",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_077",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.392407,
+     31.226657
+    ]
+   },
+   "properties": {
+    "id": "poi_077",
+    "name": "长风海洋世界",
+    "type": "aquarium_indoor_play",
+    "district": "普陀区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_078",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.900466,
+     30.915778
+    ]
+   },
+   "properties": {
+    "id": "poi_078",
+    "name": "上海海昌海洋公园",
+    "type": "aquarium_indoor_play",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_079",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     114.338723,
+     30.557586
+    ]
+   },
+   "properties": {
+    "id": "poi_079",
+    "name": "杜莎夫人蜡像馆",
+    "type": "aquarium_indoor_play",
+    "district": "黄浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_080",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.392499,
+     31.241701
+    ]
+   },
+   "properties": {
+    "id": "poi_080",
+    "name": "上海乐高探索中心",
+    "type": "aquarium_indoor_play",
+    "district": "普陀区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 1.0,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_081",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.393913,
+     36.296816
+    ]
+   },
+   "properties": {
+    "id": "poi_081",
+    "name": "宝燕乐园",
+    "type": "aquarium_indoor_play",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_082",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.209879,
+     31.098536
+    ]
+   },
+   "properties": {
+    "id": "poi_082",
+    "name": "上海欢乐谷",
+    "type": "aquarium_indoor_play",
+    "district": "松江区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_083",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.409515,
+     31.144069
+    ]
+   },
+   "properties": {
+    "id": "poi_083",
+    "name": "锦江乐园",
+    "type": "aquarium_indoor_play",
+    "district": "徐汇区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_084",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.567706,
+     31.245944
+    ]
+   },
+   "properties": {
+    "id": "poi_084",
+    "name": "上海水族馆",
+    "type": "aquarium_indoor_play",
+    "district": "浦东新区",
+    "source": "district centroid fallback",
+    "confidence": "low",
+    "weight": 1.0,
+    "notes": "区县质心兜底，精确度低"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_085",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.65711,
+     31.142327
+    ]
+   },
+   "properties": {
+    "id": "poi_085",
+    "name": "迪士尼小镇",
+    "type": "aquarium_indoor_play",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_086",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.014895,
+     31.100504
+    ]
+   },
+   "properties": {
+    "id": "poi_086",
+    "name": "东方绿舟",
+    "type": "aquarium_indoor_play",
+    "district": "青浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 1.0,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_087",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     117.362332,
+     34.873715
+    ]
+   },
+   "properties": {
+    "id": "poi_087",
+    "name": "联洋社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_088",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     114.26818,
+     30.680385
+    ]
+   },
+   "properties": {
+    "id": "poi_088",
+    "name": "碧云国际社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_089",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     118.32366,
+     28.758584
+    ]
+   },
+   "properties": {
+    "id": "poi_089",
+    "name": "古北社区",
+    "type": "large_residential",
+    "district": "长宁区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_090",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     112.435235,
+     34.81683
+    ]
+   },
+   "properties": {
+    "id": "poi_090",
+    "name": "大华社区",
+    "type": "large_residential",
+    "district": "宝山区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_091",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.369673,
+     31.129987
+    ]
+   },
+   "properties": {
+    "id": "poi_091",
+    "name": "莘庄社区",
+    "type": "large_residential",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_092",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.368529,
+     31.346229
+    ]
+   },
+   "properties": {
+    "id": "poi_092",
+    "name": "顾村公园区域",
+    "type": "large_residential",
+    "district": "宝山区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_093",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     106.540299,
+     31.247653
+    ]
+   },
+   "properties": {
+    "id": "poi_093",
+    "name": "三林社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_094",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     106.556181,
+     29.658959
+    ]
+   },
+   "properties": {
+    "id": "poi_094",
+    "name": "金桥社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_095",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     119.569997,
+     33.007094
+    ]
+   },
+   "properties": {
+    "id": "poi_095",
+    "name": "周浦社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_096",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.242843,
+     31.918714
+    ]
+   },
+   "properties": {
+    "id": "poi_096",
+    "name": "临港新城社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_097",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     114.560488,
+     39.842067
+    ]
+   },
+   "properties": {
+    "id": "poi_097",
+    "name": "七宝社区",
+    "type": "large_residential",
+    "district": "闵行区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_098",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     115.221503,
+     40.374781
+    ]
+   },
+   "properties": {
+    "id": "poi_098",
+    "name": "南翔社区",
+    "type": "large_residential",
+    "district": "嘉定区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_099",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.067534,
+     31.93037
+    ]
+   },
+   "properties": {
+    "id": "poi_099",
+    "name": "川沙社区",
+    "type": "large_residential",
+    "district": "浦东新区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_100",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.226259,
+     31.032211
+    ]
+   },
+   "properties": {
+    "id": "poi_100",
+    "name": "松江新城",
+    "type": "large_residential",
+    "district": "松江区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_101",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.249823,
+     31.332081
+    ]
+   },
+   "properties": {
+    "id": "poi_101",
+    "name": "嘉定新城",
+    "type": "large_residential",
+    "district": "嘉定区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "poi_102",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.1211,
+     31.160784
+    ]
+   },
+   "properties": {
+    "id": "poi_102",
+    "name": "青浦新城",
+    "type": "large_residential",
+    "district": "青浦区",
+    "source": "OSM Photon geocode (approx)",
+    "confidence": "approx",
+    "weight": 0.6,
+    "notes": "公共信息近似坐标，非精确点位"
+   }
+  }
+ ]
+}

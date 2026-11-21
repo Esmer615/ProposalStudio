@@ -1,0 +1,209 @@
+﻿id,name,type,lng,lat,district,weight,source,confidence
+poi:0001,上海科技馆,science_museum_planetarium,121.544,31.221,浦东新区,1.0,公开信息近似坐标,approx
+poi:0002,上海自然博物馆,science_museum_planetarium,121.461,31.236,静安区,1.0,公开信息近似坐标,approx
+poi:0003,上海天文馆,science_museum_planetarium,121.929,30.912,浦东新区,1.0,公开信息近似坐标,approx
+poi:0004,上海博物馆,museum,121.476,31.228,黄浦区,0.9,公开信息近似坐标,approx
+poi:0005,上海海洋水族馆,aquarium_indoor_play,121.509,31.24,浦东新区,1.0,公开信息近似坐标,approx
+poi:0006,上海野生动物园,attraction,121.834,31.056,浦东新区,1.0,公开信息近似坐标,approx
+poi:0007,上海迪士尼度假区,destination,121.657,31.144,浦东新区,1.0,公开信息近似坐标,approx
+poi:0008,上海乐高乐园度假区,destination,121.104,30.88,金山区,1.0,公开信息近似坐标,approx
+poi:0009,上海海昌海洋公园,destination,121.903,30.894,浦东新区,1.0,公开信息近似坐标,approx
+poi:0010,上海欢乐谷,attraction,121.216,31.097,松江区,1.0,公开信息近似坐标,approx
+poi:0011,东方明珠,attraction,121.499,31.239,浦东新区,1.0,公开信息近似坐标,approx
+poi:0012,上海中心,attraction,121.505,31.233,浦东新区,1.0,公开信息近似坐标,approx
+poi:0013,金茂大厦,attraction,121.505,31.235,浦东新区,1.0,公开信息近似坐标,approx
+poi:0014,环球金融中心,attraction,121.506,31.234,浦东新区,1.0,公开信息近似坐标,approx
+poi:0015,正大广场,parent_child_mall,121.501,31.238,浦东新区,1.0,公开信息近似坐标,approx
+poi:0016,国金中心,parent_child_mall,121.505,31.238,浦东新区,1.0,公开信息近似坐标,approx
+poi:0017,港汇恒隆广场,parent_child_mall,121.437,31.195,徐汇区,1.0,公开信息近似坐标,approx
+poi:0018,美罗城,parent_child_mall,121.437,31.194,徐汇区,1.0,公开信息近似坐标,approx
+poi:0019,静安嘉里中心,parent_child_mall,121.445,31.224,静安区,1.0,公开信息近似坐标,approx
+poi:0020,久光百货,parent_child_mall,121.445,31.223,静安区,1.0,公开信息近似坐标,approx
+poi:0021,环球港,parent_child_mall,121.412,31.236,普陀区,1.0,公开信息近似坐标,approx
+poi:0022,中山公园龙之梦,parent_child_mall,121.419,31.22,长宁区,1.0,公开信息近似坐标,approx
+poi:0023,五角场万达,parent_child_mall,121.514,31.303,杨浦区,1.0,公开信息近似坐标,approx
+poi:0024,合生汇,parent_child_mall,121.515,31.306,杨浦区,1.0,公开信息近似坐标,approx
+poi:0025,大宁国际,parent_child_mall,121.455,31.276,静安区,1.0,公开信息近似坐标,approx
+poi:0026,虹桥天地,parent_child_mall,121.318,31.197,闵行区,1.0,公开信息近似坐标,approx
+poi:0027,前滩太古里,parent_child_mall,121.48,31.15,浦东新区,1.0,公开信息近似坐标,approx
+poi:0028,上海南站,transport_hub,121.429,31.154,徐汇区,0.9,公开信息近似坐标,approx
+poi:0029,虹桥火车站,transport_hub,121.327,31.2,闵行区,0.9,公开信息近似坐标,approx
+poi:0030,人民广场,transport_hub,121.475,31.232,黄浦区,0.9,公开信息近似坐标,approx
+poi:0031,陆家嘴,transport_hub,121.506,31.239,浦东新区,0.9,公开信息近似坐标,approx
+poi:0032,徐家汇,transport_hub,121.437,31.195,徐汇区,0.9,公开信息近似坐标,approx
+poi:0033,静安寺,transport_hub,121.445,31.223,静安区,0.9,公开信息近似坐标,approx
+poi:0034,上海动物园,attraction,121.364,31.195,长宁区,1.0,公开信息近似坐标,approx
+poi:0035,上海植物园,attraction,121.45,31.15,徐汇区,1.0,公开信息近似坐标,approx
+poi:0036,共青森林公园,attraction,121.55,31.32,杨浦区,1.0,公开信息近似坐标,approx
+poi:0037,世纪公园,attraction,121.55,31.22,浦东新区,1.0,公开信息近似坐标,approx
+poi:0038,顾村公园,attraction,121.39,31.34,宝山区,1.0,公开信息近似坐标,approx
+poi:0039,召稼楼古镇,attraction,121.55,31.05,闵行区,1.0,公开信息近似坐标,approx
+poi:0040,新场古镇,attraction,121.65,31.03,浦东新区,1.0,公开信息近似坐标,approx
+poi:0041,七宝老街,attraction,121.35,31.15,闵行区,1.0,公开信息近似坐标,approx
+poi:0042,南翔古镇,attraction,121.31,31.3,嘉定区,1.0,公开信息近似坐标,approx
+poi:0043,朱家角古镇,attraction,121.05,31.1,青浦区,1.0,公开信息近似坐标,approx
+poi:0044,上海影视乐园,attraction,121.29,31.0,松江区,1.0,公开信息近似坐标,approx
+poi:0045,辰山植物园,attraction,121.18,31.08,松江区,1.0,公开信息近似坐标,approx
+poi:0046,广富林文化遗址,museum,121.2,31.05,松江区,0.9,公开信息近似坐标,approx
+poi:0047,上海玻璃博物馆,museum,121.49,31.33,宝山区,0.9,公开信息近似坐标,approx
+poi:0048,上海汽车博物馆,museum,121.17,31.32,嘉定区,0.9,公开信息近似坐标,approx
+poi:0049,上海儿童博物馆,museum,121.42,31.2,长宁区,0.9,公开信息近似坐标,approx
+poi:0050,上海马戏城,attraction,121.46,31.28,静安区,1.0,公开信息近似坐标,approx
+poi:0051,梅赛德斯奔驰文化中心,attraction,121.49,31.19,浦东新区,1.0,公开信息近似坐标,approx
+poi:0052,东方体育中心,attraction,121.48,31.16,浦东新区,1.0,公开信息近似坐标,approx
+poi:0053,复旦大学附属儿科医院,children_hospital_maternity,121.399,31.162,闵行区,0.7,公开信息近似坐标,approx
+poi:0054,上海儿童医学中心,children_hospital_maternity,121.527,31.207,浦东新区,0.7,公开信息近似坐标,approx
+poi:0055,上海市儿童医院,children_hospital_maternity,121.443,31.23,静安区,0.7,公开信息近似坐标,approx
+poi:0056,国际和平妇幼保健院,children_hospital_maternity,121.443,31.19,徐汇区,0.7,公开信息近似坐标,approx
+poi:0057,中福会少年宫,youth_palace,121.455,31.23,静安区,0.8,公开信息近似坐标,approx
+poi:0058,上海市青少年活动中心,youth_palace,121.455,31.24,静安区,0.8,公开信息近似坐标,approx
+poi:0059,七宝万科广场,parent_child_mall,121.349294,31.155161,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0060,中房金谊广场,parent_child_mall,121.511664,31.143151,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0061,三林公园,parent_child_mall,121.523036,31.14642,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0062,益田假日广场,parent_child_mall,121.508349,31.313225,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0063,大三林家具城,parent_child_mall,121.506256,31.149033,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0064,上大商业中心,parent_child_mall,121.408667,31.314934,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0065,上海体育场,parent_child_mall,121.443514,31.18557,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0066,上海体育馆,parent_child_mall,121.43742,31.182853,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0067,上海儿童医学中心、交通大学附属医学院(仁济),large_residential,121.523466,31.203228,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0068,上海南站,transport_hub,121.431047,31.153256,徐汇区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0069,上海大学,large_residential,121.388926,31.320507,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0070,上海体育场,parent_child_mall,121.441368,31.179177,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0071,世纪公园,large_residential,121.550899,31.209426,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0072,复旦大学附属肿瘤医院、上海中医大学附属龙华医院,large_residential,121.45493,31.190857,徐汇区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0073,上海海事大学(东明),parent_child_mall,121.510934,31.172609,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0074,陆行中学北校、东沟中学,large_residential,121.579084,31.282532,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0075,市北中学,parent_child_mall,121.469113,31.252948,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0076,世博商圈、世博源、上海世博展览馆、梅赛德斯奔驰文化中心,museum,121.493489,31.185051,浦东新区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0077,同济大学,parent_child_mall,121.459211,31.258784,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0078,万科·七宝国际,large_residential,121.337749,31.149395,闵行区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0079,瑞虹生活广场,parent_child_mall,121.500677,31.260913,虹口区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0080,育辛高级中学,large_residential,121.516728,31.193243,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0081,上海海昌海洋公园,parent_child_mall,121.910905,30.923397,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0082,九亭生活中心,parent_child_mall,121.319467,31.137091,松江区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0083,上海市社会保险事业管理中心,large_residential,121.50042,31.182192,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0084,金桥购物中心、百安居(金桥),parent_child_mall,121.572732,31.250384,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0085,龙耀商业中心,parent_child_mall,121.458492,31.166435,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0086,交通大学,large_residential,121.435274,31.202195,徐汇区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0087,新虹桥商圈、上海国际展览中心,museum,121.403946,31.198754,长宁区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0088,明通文化创意产业园,large_residential,121.489713,31.141278,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0089,上海开放大学,large_residential,121.723784,31.192844,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0090,龙湖北城天街,parent_child_mall,121.36249,31.357454,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0091,唐镇文化体育中心,large_residential,121.673744,31.213895,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0092,LCM置汇旭辉广场,large_residential,121.552348,31.23912,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0093,旺族商业广场,parent_child_mall,121.681083,31.196551,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0094,上海市东方医院(南院),parent_child_mall,121.514453,31.149841,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0095,南京东路商圈、上海外滩美术馆,museum,121.484831,31.23762,黄浦区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0096,南浦大桥长途旅行客运站,transport_hub,121.499733,31.20844,黄浦区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0097,上海大学,large_residential,121.398968,31.321387,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0098,沪东商业购物中心,large_residential,121.58668,31.263518,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0099,虹桥国际商务广场,parent_child_mall,121.384827,31.166435,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0100,同济大学站,large_residential,121.506321,31.282101,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0101,卢湾体育中心,large_residential,121.460788,31.202709,徐汇区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0102,上海外国语大学附属外国语学校东校,large_residential,121.501536,31.274839,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0103,复旦大学、百安居(杨浦),large_residential,121.510033,31.289253,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0104,上海白玉兰广场、金光新外滩、海员医院,parent_child_mall,121.498188,31.250086,虹口区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0105,大场镇小学,large_residential,121.413645,31.303568,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0106,大世界、音乐广场,parent_child_mall,121.479327,31.226969,黄浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0107,美隆生活广场,parent_child_mall,121.423087,31.274009,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0108,宜家、红星美凯龙、百安居(沪太)、场南建材市场、彭浦科技园,parent_child_mall,121.416563,31.293154,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0109,日晖新村小学、西南位育中学,large_residential,121.463212,31.19405,徐汇区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0110,国歌展示馆、上海市中西医结合医院,parent_child_mall,121.513037,31.257979,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0111,上海服饰城,parent_child_mall,121.482739,31.243748,虹口区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0112,缤谷广场,parent_child_mall,121.387241,31.214868,长宁区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0113,虹桥艺术中心,parent_child_mall,121.404064,31.211142,长宁区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0114,上海体育学院,parent_child_mall,121.531877,31.314751,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0115,欧尚购物中心,parent_child_mall,121.532349,31.268557,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0116,上海儿童博物馆、上海爱尔眼科医院,large_residential,121.412272,31.196111,长宁区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0117,徐汇宜山路商业中心,parent_child_mall,121.427206,31.186671,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0118,上海市中华路第三小学,parent_child_mall,121.498339,31.216767,黄浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0119,品尊国际中心、沪西工人文化宫体育中心,parent_child_mall,121.421885,31.256108,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0120,川沙商业中心,parent_child_mall,121.698206,31.186749,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0121,0,parent_child_mall,121.588354,31.280721,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0122,上海市国和中学,large_residential,121.531877,31.322633,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0123,淮海路、上海音乐学院,parent_child_mall,121.450886,31.213283,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0124,张江高科技园区,parent_child_mall,121.621055,31.21106,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0125,百安居(杨浦),parent_child_mall,121.535053,31.288533,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0126,张江科技园区、传奇商业广场,parent_child_mall,121.587678,31.201837,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0127,红星美凯龙(浦东),parent_child_mall,121.57093,31.158099,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0128,房地产交易中心、名人苑、永达,parent_child_mall,121.564235,31.245395,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0129,浦东鑫天地商业广场,parent_child_mall,121.761689,31.053744,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0130,林家花园休闲生活广场,parent_child_mall,121.496407,31.170511,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0131,新天地,parent_child_mall,121.475357,31.216226,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0132,上海工程技术大学(新村),large_residential,121.422657,31.263958,普陀区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0133,嘉誉国际广场,parent_child_mall,121.506814,31.328531,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0134,诺宝中心,large_residential,121.36912,31.158026,闵行区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0135,大悦城,parent_child_mall,121.471538,31.242271,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0136,曲阳医院,large_residential,121.491107,31.276503,虹口区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0137,曹杨办公商业中心,parent_child_mall,121.41755,31.237831,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0138,同济大学,parent_child_mall,121.389956,31.268979,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0139,恒大长青商城,parent_child_mall,121.493661,31.16089,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0140,浦江游船,large_residential,121.517157,31.251925,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0141,进才中学、丁香国际商业中心,large_residential,121.548764,31.227447,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0142,高桥-东陆学校证大校区、金桥市民体育休闲公园,parent_child_mall,121.602988,31.280038,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0143,上海申东医院,parent_child_mall,121.525139,31.187552,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0144,松江体育中心,parent_child_mall,121.230547,31.015575,松江区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0145,曹杨商城,large_residential,121.411371,31.241757,普陀区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0146,普天信息产业园,parent_child_mall,121.418087,31.174697,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0147,恒达休闲广场、白丽生活广场,parent_child_mall,121.349658,31.281633,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0148,中鑫企业广场,parent_child_mall,121.364593,31.276682,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0149,智慧广场,parent_child_mall,121.43064,31.234272,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0150,上海民办福山正达外国语小学,large_residential,121.54355,31.235854,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0151,洛城广场、上海国际舞蹈中心,parent_child_mall,121.392531,31.199194,长宁区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0152,江浦公园,large_residential,121.523744,31.264485,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0153,上海浦江郊野公园,parent_child_mall,121.512265,31.061391,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0154,长青企业广场,parent_child_mall,121.539044,31.150864,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0155,东昌东校,large_residential,121.519346,31.240038,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0156,浦电路商业办公中心,parent_child_mall,121.529087,31.220148,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0157,金融街海伦中心,large_residential,121.489734,31.259006,虹口区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0158,虹桥科技园区,parent_child_mall,121.359583,31.218207,长宁区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0159,源深体育中心,large_residential,121.534624,31.232956,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0160,滴水湖,large_residential,121.929616,30.907124,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0161,徐汇日月光中心、光大会展中心,parent_child_mall,121.435007,31.168054,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0162,龙湖北城天街,parent_child_mall,121.355881,31.364124,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0163,森宏购物广场,parent_child_mall,121.495227,31.148629,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0164,上海海洋大学,large_residential,121.552669,31.279763,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0165,高尚领域国际购物城,parent_child_mall,121.407251,31.250673,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0166,上海大学,large_residential,121.373391,31.32234,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0167,上海康建商务广场,parent_child_mall,121.376051,31.271583,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0168,万象城,parent_child_mall,121.364378,31.169548,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0169,上海体育学院,parent_child_mall,121.532091,31.304888,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0170,世博商圈、世博源、上海世博展览馆,museum,121.494691,31.178443,浦东新区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0171,黄浦中心,parent_child_mall,121.48394,31.218648,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0172,复旦大学(枫林)、复旦大学附属医院,large_residential,121.450209,31.199153,徐汇区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0173,闵行文化公园,parent_child_mall,121.355452,31.165068,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0174,浦东棒垒球/高尔夫体育公园,parent_child_mall,121.497781,31.118869,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0175,新国际博览中心,parent_child_mall,121.562733,31.211193,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0176,上海市第一妇婴保健院,parent_child_mall,121.550202,31.192986,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0177,富都广场,parent_child_mall,121.527757,31.211633,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0178,虹口体育中心、虹口龙之梦,parent_child_mall,121.479225,31.27135,虹口区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0179,上海虹桥国际机场,transport_hub,121.347384,31.191265,长宁区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0180,宜家、百安居(沪太)、红星美凯龙、众汇旺建材市场,parent_child_mall,121.42137,31.284865,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0181,上海市第六十中学,large_residential,121.468706,31.263481,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0182,上海外国语大学附属大境中学,large_residential,121.489519,31.201906,黄浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0183,国际设计中心,large_residential,121.494326,31.26842,虹口区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0184,松江火车站,transport_hub,121.229302,31.001083,松江区,0.9,红豆 categoryTags + 公开站点坐标,approx
+poi:0185,新紫茂商业中心,large_residential,121.61554,31.279744,宝山区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0186,月星环球港、华东师范大学,parent_child_mall,121.411843,31.23108,普陀区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0187,张江科技园区、长泰、汇智,parent_child_mall,121.601979,31.204205,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0188,万达广场,parent_child_mall,121.319446,31.240767,嘉定区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0189,山姆会员店(北蔡)、浦东图书馆,parent_child_mall,121.54016,31.187479,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0190,普陀公园,large_residential,121.43167,31.246642,普陀区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0191,同济创园,parent_child_mall,121.491451,31.331931,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0192,上海市第一妇婴保健院浦东分院,parent_child_mall,121.486086,31.174555,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0193,新邻生活广场、复旦大学附属妇产科医院,parent_child_mall,121.486108,31.211739,黄浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0194,复旦软件园,parent_child_mall,121.544752,31.275141,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0195,静安寺、上海展览中心,parent_child_mall,121.447945,31.224135,静安区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0196,控江旭辉MALL,large_residential,121.509647,31.273129,杨浦区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0197,顾村公园、复旦大学华山医院(北院),parent_child_mall,121.372704,31.344774,宝山区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0198,新天地,parent_child_mall,121.477267,31.209463,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0199,中建广场,large_residential,121.509861,31.18579,浦东新区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0200,汇暻生活广场,parent_child_mall,121.475186,31.19919,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0201,市东医院、百安居(杨浦),parent_child_mall,121.533164,31.295684,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0202,百安居(杨浦),parent_child_mall,121.528487,31.27874,杨浦区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0203,龙华旅游商业办公区,parent_child_mall,121.457505,31.185129,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0204,新华红星国际广场、红星美凯龙(吴中),parent_child_mall,121.370644,31.176671,闵行区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0205,新虹桥中学,parent_child_mall,121.380085,31.194275,长宁区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0206,上海远大心胸医院,large_residential,121.444415,31.169451,徐汇区,0.6,红豆 categoryTags + 公开站点坐标,approx
+poi:0207,龙耀商业中心,parent_child_mall,121.459693,31.159715,徐汇区,1.0,红豆 categoryTags + 公开站点坐标,approx
+poi:0208,龙阳商业广场、新国际博览中心、百安居(龙阳)、麦德龙(浦东),parent_child_mall,121.557369,31.202994,浦东新区,1.0,红豆 categoryTags + 公开站点坐标,approx

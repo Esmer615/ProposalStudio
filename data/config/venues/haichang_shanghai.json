@@ -1,0 +1,99 @@
+{
+  "id": "haichang_shanghai",
+  "name": "上海海昌海洋公园",
+  "en_name": "Shanghai Haichang Ocean Park",
+  "district": "浦东新区",
+  "sub_area": "临港新片区",
+  "coords": {
+    "lng": 121.903,
+    "lat": 30.894,
+    "confidence": "approx",
+    "note": "临港滴水湖区域近似坐标（WGS84），非精确园区大门"
+  },
+  "access_modes": {
+    "metro": {
+      "direct": true,
+      "line": "上海地铁16号线",
+      "station": "滴水湖站",
+      "note": "16号线至滴水湖站后需接驳/短驳车",
+      "confidence": "high"
+    },
+    "metro_share": {
+      "share": 0.4,
+      "note": "地铁+短驳为主要集客方式",
+      "confidence": "low"
+    },
+    "self_drive": {
+      "share": 0.45,
+      "note": "临港较远，自驾占比较高（估算）",
+      "confidence": "low"
+    },
+    "other": {
+      "share": 0.15,
+      "note": "旅游大巴/打车余量",
+      "confidence": "low"
+    }
+  },
+  "catchment_rings_km": [
+    6,
+    20,
+    50
+  ],
+  "catchment_note": "海昌在临港，16号线直达滴水湖+短驳；叠加16号线沿线家庭客源枢纽",
+  "target_population": {
+    "value": 3000000,
+    "unit": "persons",
+    "note": "规划假设，未使用精确调研数字",
+    "assumption": true
+  },
+  "reach_k": 245,
+  "reach_note": "到达率为带物理上限的饱和曲线，k按乐园行业取保守值",
+  "media_mix_bounds": {
+    "bus": {
+      "min": 0.45,
+      "max": 0.65
+    },
+    "metro": {
+      "min": 0.35,
+      "max": 0.55
+    },
+    "note": "海昌地铁16号线+短驳；公交+地铁混合"
+  },
+  "level_weights": {
+    "S": 1.25,
+    "A++": 1.0,
+    "A+": 0.8,
+    "AA": 0.65
+  },
+  "poi_type_weights": {
+    "science_museum_planetarium": 0.9,
+    "museum": 0.8,
+    "parent_child_mall": 1.0,
+    "transport_hub": 0.9,
+    "children_hospital_maternity": 0.6,
+    "youth_palace": 0.9,
+    "aquarium_indoor_play": 1.0,
+    "large_residential": 0.6
+  },
+  "compliance_avoid_list": [
+    "不得在学校校园内投放（仅可覆盖学校周边300-500米）",
+    "不得承诺到园人数/销量/门票收益",
+    "不得使用未核实的客流/触达精确数字，须标注估算口径"
+  ],
+  "messaging_points": [
+    "海洋主题亲子乐园，孩子们亲近自然的首选",
+    "地铁16号线直达滴水湖+短驳，公共交通可达",
+    "科普+娱乐融合，暑期亲子研学热点"
+  ],
+  "audience_persona": {
+    "primary": "亲子家庭（学龄前至小学生，25-45岁）",
+    "secondary": "年轻成人、研学团",
+    "season": "主档期2027暑期7-8月，节假日高峰"
+  },
+  "campaign_goals": [
+    "提升上海海昌海洋公园品牌知名度",
+    "暑期亲子客流引导，强调地铁16号线接驳便利",
+    "海洋科普亲子定位建立"
+  ],
+  "confidence": "all"
+}

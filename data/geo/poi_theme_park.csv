@@ -1,0 +1,104 @@
+﻿id,name,type,lng,lat,district,source,confidence,weight,notes
+poi_000,上海科技馆,science_museum_planetarium,121.536733,31.220602,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_001,上海自然博物馆,science_museum_planetarium,121.4577,31.236866,静安区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_002,上海天文馆,science_museum_planetarium,121.922585,30.91513,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_003,上海儿童博物馆,science_museum_planetarium,121.408483,31.195953,长宁区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_004,上海铁路博物馆,science_museum_planetarium,121.47179,31.251986,静安区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_005,上海航运博物馆,science_museum_planetarium,121.165775,31.280532,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_006,上海昆虫博物馆,science_museum_planetarium,121.165775,31.280532,徐汇区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_007,上海消防博物馆,science_museum_planetarium,121.165775,31.280532,长宁区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_008,上海博物馆,museum,121.471,31.230158,黄浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_009,上海历史博物馆,museum,121.466055,31.233185,黄浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_010,上海城市规划展示馆,museum,121.470882,31.233371,黄浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_011,上海汽车博物馆,museum,121.165775,31.280532,嘉定区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_012,上海电影博物馆,museum,121.433655,31.188091,徐汇区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_013,中华艺术宫,museum,121.489926,31.186484,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_014,上海当代艺术博物馆,museum,121.493897,31.203059,黄浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_015,上海松江博物馆,museum,121.165775,31.280532,松江区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_016,上海青浦博物馆,museum,121.165775,31.280532,青浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_017,上海玻璃博物馆,museum,121.467324,31.345676,宝山区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_018,上海纺织博物馆,museum,121.441527,31.248646,普陀区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_019,上海中医药博物馆,museum,121.594987,31.194989,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_020,上海邮政博物馆,museum,121.480755,31.246407,虹口区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_021,上海犹太难民纪念馆,museum,121.50482,31.256147,虹口区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_022,上海动漫博物馆,museum,121.165775,31.280532,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_023,环球港,parent_child_mall,119.976649,31.843313,普陀区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_024,大悦城,parent_child_mall,121.467506,31.245987,静安区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_025,虹桥天地,parent_child_mall,121.31102,31.19464,闵行区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_026,正大广场,parent_child_mall,121.494738,31.23865,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_027,环球金融中心商场,parent_child_mall,104.061455,30.552739,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_028,仲盛世界商城,parent_child_mall,121.382272,31.108977,闵行区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_029,LCM置地旭辉广场,parent_child_mall,121.551154,31.244418,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_030,七宝万科广场,parent_child_mall,121.345931,31.156482,闵行区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_031,南翔印象城,parent_child_mall,121.301443,31.306853,嘉定区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_032,宝山万达广场,parent_child_mall,121.442532,31.325738,宝山区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_033,松江万达广场,parent_child_mall,121.203624,31.017364,松江区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_034,周浦万达广场,parent_child_mall,121.567706,31.245944,浦东新区,district centroid fallback,low,1.0,区县质心兜底，精确度低
+poi_035,世纪汇广场,parent_child_mall,121.522493,31.229797,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_036,五角场万达广场,parent_child_mall,121.511266,31.301964,杨浦区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_037,虹口龙之梦,parent_child_mall,121.473341,31.272848,虹口区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_038,中山公园龙之梦,parent_child_mall,121.4222,31.218123,长宁区,district centroid fallback,low,1.0,区县质心兜底，精确度低
+poi_039,徐家汇恒隆广场,parent_child_mall,121.43752,31.179973,徐汇区,district centroid fallback,low,1.0,区县质心兜底，精确度低
+poi_040,静安大悦城,parent_child_mall,121.422794,31.281401,静安区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_041,世纪公园商业区,parent_child_mall,121.567706,31.245944,浦东新区,district centroid fallback,low,1.0,区县质心兜底，精确度低
+poi_042,虹桥火车站,transport_hub,121.314311,31.195958,闵行区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_043,虹桥机场T2,transport_hub,121.322858,31.195435,闵行区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_044,上海南站,transport_hub,121.425986,31.154963,徐汇区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_045,上海火车站,transport_hub,121.451162,31.248984,静安区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_046,浦东国际机场,transport_hub,118.313989,33.956854,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_047,龙阳路交通枢纽,transport_hub,121.555508,31.20542,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_048,世纪大道站,transport_hub,121.522934,31.23078,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_049,人民广场站,transport_hub,121.606692,38.910587,黄浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_050,徐家汇站,transport_hub,121.434382,31.19554,徐汇区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_051,静安寺站,transport_hub,121.440792,31.225215,静安区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_052,五角场站,transport_hub,121.510069,31.29974,杨浦区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_053,莘庄站,transport_hub,121.380462,31.111438,闵行区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_054,宜山路站,transport_hub,121.423102,31.187134,徐汇区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_055,东方体育中心站,transport_hub,121.474882,31.15445,浦东新区,OSM Photon geocode (approx),approx,0.9,公共信息近似坐标，非精确点位
+poi_056,上海市儿童医院,children_hospital_maternity,121.443656,31.231631,静安区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_057,复旦大学附属儿科医院,children_hospital_maternity,121.390096,31.141637,闵行区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_058,上海儿童医学中心,children_hospital_maternity,121.518351,31.207755,浦东新区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_059,上海市第一妇婴保健院,children_hospital_maternity,121.545754,31.19155,浦东新区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_060,新华医院,children_hospital_maternity,121.513889,31.274996,杨浦区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_061,国际和平妇幼保健院,children_hospital_maternity,121.433967,31.198095,徐汇区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_062,红房子妇产科医院,children_hospital_maternity,121.522797,31.270755,杨浦区,district centroid fallback,low,0.7,区县质心兜底，精确度低
+poi_063,上海市第六人民医院,children_hospital_maternity,121.417882,31.1804,徐汇区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_064,复旦大学附属妇产科医院,children_hospital_maternity,121.529531,31.26123,徐汇区,OSM Photon geocode (approx),approx,0.7,公共信息近似坐标，非精确点位
+poi_065,上海市儿童医院普陀新院,children_hospital_maternity,121.392499,31.241701,普陀区,district centroid fallback,low,0.7,区县质心兜底，精确度低
+poi_066,上海市少年宫,youth_palace,120.852262,30.035346,静安区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_067,上海市青少年活动中心,youth_palace,121.448224,31.229003,静安区,district centroid fallback,low,0.8,区县质心兜底，精确度低
+poi_068,中国福利会少年宫,youth_palace,121.438894,31.223049,长宁区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_069,浦东新区少年宫,youth_palace,121.578613,31.250202,浦东新区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_070,徐汇区青少年活动中心,youth_palace,121.429578,31.177054,徐汇区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_071,闵行区青少年活动中心,youth_palace,121.375972,31.111658,闵行区,district centroid fallback,low,0.8,区县质心兜底，精确度低
+poi_072,宝山区少年宫,youth_palace,113.876856,22.549329,宝山区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_073,杨浦区少年宫,youth_palace,121.538056,31.282419,杨浦区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_074,虹口区青少年活动中心,youth_palace,121.489124,31.294401,虹口区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_075,普陀区少年宫,youth_palace,121.402803,31.249906,普陀区,OSM Photon geocode (approx),approx,0.8,公共信息近似坐标，非精确点位
+poi_076,上海海洋水族馆,aquarium_indoor_play,121.497282,31.242646,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_077,长风海洋世界,aquarium_indoor_play,121.392407,31.226657,普陀区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_078,上海海昌海洋公园,aquarium_indoor_play,121.900466,30.915778,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_079,杜莎夫人蜡像馆,aquarium_indoor_play,114.338723,30.557586,黄浦区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_080,上海乐高探索中心,aquarium_indoor_play,121.392499,31.241701,普陀区,district centroid fallback,low,1.0,区县质心兜底，精确度低
+poi_081,宝燕乐园,aquarium_indoor_play,120.393913,36.296816,闵行区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_082,上海欢乐谷,aquarium_indoor_play,121.209879,31.098536,松江区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_083,锦江乐园,aquarium_indoor_play,121.409515,31.144069,徐汇区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_084,上海水族馆,aquarium_indoor_play,121.567706,31.245944,浦东新区,district centroid fallback,low,1.0,区县质心兜底，精确度低
+poi_085,迪士尼小镇,aquarium_indoor_play,121.65711,31.142327,浦东新区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_086,东方绿舟,aquarium_indoor_play,121.014895,31.100504,青浦区,OSM Photon geocode (approx),approx,1.0,公共信息近似坐标，非精确点位
+poi_087,联洋社区,large_residential,117.362332,34.873715,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_088,碧云国际社区,large_residential,114.26818,30.680385,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_089,古北社区,large_residential,118.32366,28.758584,长宁区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_090,大华社区,large_residential,112.435235,34.81683,宝山区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_091,莘庄社区,large_residential,121.369673,31.129987,闵行区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_092,顾村公园区域,large_residential,121.368529,31.346229,宝山区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_093,三林社区,large_residential,106.540299,31.247653,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_094,金桥社区,large_residential,106.556181,29.658959,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_095,周浦社区,large_residential,119.569997,33.007094,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_096,临港新城社区,large_residential,120.242843,31.918714,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_097,七宝社区,large_residential,114.560488,39.842067,闵行区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_098,南翔社区,large_residential,115.221503,40.374781,嘉定区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_099,川沙社区,large_residential,121.067534,31.93037,浦东新区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_100,松江新城,large_residential,121.226259,31.032211,松江区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_101,嘉定新城,large_residential,121.249823,31.332081,嘉定区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位
+poi_102,青浦新城,large_residential,121.1211,31.160784,青浦区,OSM Photon geocode (approx),approx,0.6,公共信息近似坐标，非精确点位

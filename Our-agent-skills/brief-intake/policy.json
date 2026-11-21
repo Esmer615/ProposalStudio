@@ -1,0 +1,47 @@
+{
+  "version": "1.0.0",
+  "required_slots": ["venue", "budget_wan", "media"],
+  "optional_slots": ["start_date", "weeks", "customer_type", "objective"],
+  "budget_range_wan": {"min_wan": 100, "max_wan": 500},
+  "default_budget_wan": 200,
+  "allowed_weeks": [2, 4, 6, 8, 12],
+  "max_questions": 5,
+  "defaults": {
+    "venue": "lego_shanghai",
+    "budget_wan": 200,
+    "media": ["bus", "metro"],
+    "start_date": "2027-07-01",
+    "weeks": 8,
+    "customer_type": "direct"
+  },
+  "objective_keywords": {
+    "efficiency": ["效率", "性价比", "最值", "划算", "预算有限", "花得值", "投产比"],
+    "precision": ["精准", "目标人群", "核心人群", "亲子家庭", "家长", "触达", "浓度"],
+    "reach": ["曝光", "覆盖", "广度", "全城", "声量", "看到", "到达"],
+    "brand": ["品牌", "知名度", "心智", "认知", "形象"]
+  },
+  "venue_aliases": {
+    "lego_shanghai": ["乐高", "乐高乐园", "legoland", "lego"],
+    "disney_shanghai": ["迪士尼", "迪士尼乐园", "disney"],
+    "haichang_shanghai": ["海昌", "海洋公园", "海昌海洋公园", "ocean park"]
+  },
+  "media_aliases": {
+    "bus": ["公交", "公交车", "公交车身", "巴士", "车身"],
+    "metro": ["地铁", "轨道交通", "轨交", "地铁口", "出入口", "站点"]
+  },
+  "question_priority": [
+    "venue_conflict",
+    "venue_missing",
+    "budget_missing_or_out_of_range",
+    "media_missing_or_invalid",
+    "start_date_out_of_2027",
+    "weeks_out_of_allowed",
+    "customer_type_unknown"
+  ],
+  "assumption_rules": [
+    "每用一个 default 或 inferred 值，必须写一条 assumption",
+    "预算越界时优先提问；allow_defaults 时收敛到最近边界并写明",
+    "档期只接受 2027 年；年份不符时提问或收敛到 2027-07-01",
+    "媒介缺省时用公交+地铁，但必须写明这是假设"
+  ]
+}

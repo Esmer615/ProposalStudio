@@ -1,0 +1,9 @@
+{
+  "name": "xinyun-bigdata-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Runtime dependencies for the xinyun-bigdata skill scripts",
+  "dependencies": {
+    "playwright": "^1.65.1"
+  }
+}

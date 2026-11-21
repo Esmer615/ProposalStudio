@@ -1,0 +1,24 @@
+红豆广告媒体管理系统 · OAuth2 客户端登录说明
+
+所有对接账号共用同一个 OAuth 客户端。每个人仍用自己的平台用户名和密码取令牌。
+
+POST https://flairmedia.com.cn:881/admin-api/system/oauth2/token
+
+HTTP Basic 认证：
+  用户名：inventory-agent-test
+  密码：inventory-agent-test
+
+请求头：
+  tenant-id: 1
+  Content-Type: application/x-www-form-urlencoded
+
+表单参数：
+  grant_type=password
+  username=<自己的平台用户名>
+  password=<自己的平台密码>
+
+此流程不需要图形验证码。返回 code=0 时，取 data.access_token，令牌有效期见 data.expires_in（秒）。
+调用已提供的库存接口时，携带 tenant-id: 1 和 Authorization: Bearer <access_token>。
+
+我自己的平台用户名:test16
+自己的平台密码为:xin1234

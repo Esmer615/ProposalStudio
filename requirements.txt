@@ -1,0 +1,11 @@
+# 本地演示环境（Python 3.14）
+ortools>=9.15,<10
+scipy>=1.18
+pandas>=3.1
+numpy>=2.5
+fastapi>=0.165
+uvicorn[standard]>=0.54
+pydantic>=2.14
+PyYAML>=6.0
+pytest>=9.2
+httpx>=0.28

@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "thresholds": {
+    "absorption_floor": 0.85,
+    "absorption_partial": 0.70,
+    "reach_low": 0.45,
+    "frequency_high": 20,
+    "frequency_critical": 30,
+    "saturation_high": 0.95,
+    "capacity_high": 0.80,
+    "poi_low": 5,
+    "media_mix_deviation": 0.15
+  },
+  "score_weights": {
+    "balanced": {"reach": 0.30, "efficiency": 0.25, "absorption": 0.25, "poi": 0.20},
+    "reach": {"reach": 0.60, "efficiency": 0.15, "absorption": 0.15, "poi": 0.10},
+    "precision": {"reach": 0.20, "efficiency": 0.15, "absorption": 0.20, "poi": 0.45},
+    "efficiency": {"reach": 0.15, "efficiency": 0.55, "absorption": 0.25, "poi": 0.05},
+    "brand": {"reach": 0.50, "efficiency": 0.10, "absorption": 0.20, "poi": 0.20}
+  },
+  "score_penalties": {
+    "utilization_below_floor": 0.75,
+    "frequency_above_25": 0.90,
+    "validation_blocker": 0.0
+  },
+  "budget_utilization_bands": {
+    "absorbed": ">= 0.85",
+    "partial": "0.70–0.85",
+    "underused": "< 0.70"
+  },
+  "comparison_rules": [
+    "只比较 validation.passed=true 的场景",
+    "同预算可直接比 Reach/曝光/频次/POI",
+    "不同预算必须先比 utilization，再比 reach_people_per_wan",
+    "不同预算的 Reach 绝对值不能直接得出优劣",
+    "至少保留两个场景与各自适用条件",
+    "评分是 objective 视角下的相对排序，不是客户价值本身"
+  ],
+  "required_disclosures": [
+    "库存来自红豆快照，上刊前需重核",
+    "POI 为公开近似数据",
+    "曝光/Reach/频次/CPM 为模型估算",
+    "当前未接可视化平台实测人流",
+    "折扣档位口径待赞助方确认",
+    "不承诺到园人数/销量/财务 ROI"
+  ],
+  "derived_metrics": {
+    "utilization": "quote.total_paid_wan / inputs.budget_wan",
+    "reach_people": "effects.reach * effects.target_population",
+    "impressions_per_wan": "effects.impressions / quote.total_paid_wan",
+    "reach_people_per_wan": "reach_people / quote.total_paid_wan",
+    "premium_share": "(S + A++ + A+) units / total units",
+    "saturation": "effects.reach / effects.parameters.reach_cap"
+  }
+}

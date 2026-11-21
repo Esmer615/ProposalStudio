@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-22",
+  "loader": "agent.skills.SkillRegistry",
+  "load_order": ["brief-intake", "audience-strategy", "plan-analysis", "proposal-narrative"],
+  "skills": [
+    {
+      "name": "brief-intake",
+      "stage": "intake",
+      "order": 10,
+      "path": "brief-intake/SKILL.md",
+      "policy": "brief-intake/policy.json",
+      "references": [
+        "brief-intake/references/slot-rules.md",
+        "brief-intake/references/clarification-playbook.md"
+      ],
+      "outputs": ["brief-state", "questions", "assumptions", "compliance-flags"]
+    },
+    {
+      "name": "audience-strategy",
+      "stage": "strategy",
+      "order": 20,
+      "path": "audience-strategy/SKILL.md",
+      "policy": "audience-strategy/policy.json",
+      "references": [
+        "audience-strategy/references/audience-and-poi.md",
+        "audience-strategy/references/budget-supply.md",
+        "audience-strategy/references/compliance-language.md"
+      ],
+      "outputs": ["scenario-plan", "strategy-rationale"]
+    },
+    {
+      "name": "plan-analysis",
+      "stage": "analysis",
+      "order": 30,
+      "path": "plan-analysis/SKILL.md",
+      "policy": "plan-analysis/policy.json",
+      "references": [
+        "plan-analysis/references/tool-contract.md",
+        "plan-analysis/references/metrics-dictionary.md",
+        "plan-analysis/references/warning-playbook.md"
+      ],
+      "outputs": ["scenario-metrics", "feasibility", "comparison", "risks"]
+    },
+    {
+      "name": "proposal-narrative",
+      "stage": "narrative",
+      "order": 40,
+      "path": "proposal-narrative/SKILL.md",
+      "policy": "proposal-narrative/policy.json",
+      "references": [
+        "proposal-narrative/references/claims-guide.md",
+        "proposal-narrative/references/narrative-templates.md",
+        "proposal-narrative/references/number-format.md"
+      ],
+      "outputs": ["headline", "markdown", "disclosures", "guardrails"]
+    }
+  ]
+}

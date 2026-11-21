@@ -1,0 +1,9 @@
+# 凭证与令牌只在本地，绝不提交
+.credentials
+.oauth_cache.json
+.oauth_cache.json.tmp
+.token
+
+# Python
+__pycache__/
+*.pyc

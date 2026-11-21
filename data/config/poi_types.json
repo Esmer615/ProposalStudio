@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "note": "乐园（主题公园）行业 POI 类型权重；用于候选点位周边 <20 岁人群浓度评分",
+  "radius_rules": {
+    "metro": { "radius_m": 800, "note": "地铁口覆盖半径800米" },
+    "bus": { "radius_m": 500, "note": "公交线路覆盖半径500米" }
+  },
+  "no_in_school_advertising": true,
+  "no_in_school_note": "不得在学校校园内投放，仅可覆盖学校周边300-500米",
+  "types": {
+    "science_museum_planetarium": { "label": "科技馆/天文馆", "weight": 1.0, "note": "亲子科普聚集点，<20岁人群浓度高" },
+    "museum": { "label": "博物馆", "weight": 0.9, "note": "亲子文化聚集点" },
+    "parent_child_mall": { "label": "亲子商场", "weight": 1.0, "note": "亲子消费聚集点，周末高峰" },
+    "transport_hub": { "label": "交通枢纽", "weight": 0.9, "note": "集客/换乘节点，亲子出游必经" },
+    "children_hospital_maternity": { "label": "儿童医院/妇幼", "weight": 0.7, "note": "婴幼儿家庭聚集点" },
+    "youth_palace": { "label": "少年宫", "weight": 0.8, "note": "青少年培训/活动聚集点" },
+    "aquarium_indoor_play": { "label": "水族馆/室内乐园", "weight": 1.0, "note": "亲子室内游乐聚集点" },
+    "large_residential": { "label": "大型住宅/亲子社区", "weight": 0.6, "note": "家庭居住聚集点，稳定客源" }
+  }
+}

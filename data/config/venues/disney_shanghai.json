@@ -1,0 +1,99 @@
+{
+  "id": "disney_shanghai",
+  "name": "上海迪士尼度假区",
+  "en_name": "Shanghai Disney Resort",
+  "district": "浦东新区",
+  "sub_area": "川沙新镇",
+  "coords": {
+    "lng": 121.699,
+    "lat": 31.146,
+    "confidence": "approx",
+    "note": "川沙新镇区域近似坐标（WGS84），非精确园区大门"
+  },
+  "access_modes": {
+    "metro": {
+      "direct": true,
+      "line": "上海地铁11号线",
+      "station": "迪士尼站",
+      "note": "11号线直达园区",
+      "confidence": "high"
+    },
+    "self_drive": {
+      "share": 0.35,
+      "note": "自驾占比估算",
+      "confidence": "low"
+    },
+    "metro_share": {
+      "share": 0.45,
+      "note": "地铁为重要集客方式",
+      "confidence": "low"
+    },
+    "other": {
+      "share": 0.2,
+      "note": "打车/旅游大巴等余量",
+      "confidence": "low"
+    }
+  },
+  "catchment_rings_km": [
+    6,
+    20,
+    50
+  ],
+  "catchment_note": "迪士尼有地铁11号线直达，可有效使用6/20/50km圈层；叠加地铁沿线节点",
+  "target_population": {
+    "value": 5000000,
+    "unit": "persons",
+    "note": "规划假设，未使用精确调研数字",
+    "assumption": true
+  },
+  "reach_k": 240,
+  "reach_note": "到达率为带物理上限的饱和曲线，k按乐园行业取保守值",
+  "media_mix_bounds": {
+    "bus": {
+      "min": 0.25,
+      "max": 0.55
+    },
+    "metro": {
+      "min": 0.45,
+      "max": 0.75
+    },
+    "note": "迪士尼地铁11号线直达；地铁权重更高"
+  },
+  "level_weights": {
+    "S": 1.25,
+    "A++": 1.0,
+    "A+": 0.8,
+    "AA": 0.65
+  },
+  "poi_type_weights": {
+    "science_museum_planetarium": 0.8,
+    "museum": 0.8,
+    "parent_child_mall": 1.0,
+    "transport_hub": 1.0,
+    "children_hospital_maternity": 0.6,
+    "youth_palace": 0.8,
+    "aquarium_indoor_play": 0.9,
+    "large_residential": 0.6
+  },
+  "compliance_avoid_list": [
+    "不得在学校校园内投放（仅可覆盖学校周边300-500米）",
+    "不得承诺到园人数/销量/门票收益",
+    "不得使用未核实的客流/触达精确数字，须标注估算口径"
+  ],
+  "messaging_points": [
+    "全球顶级主题乐园，家庭亲子与年轻成人双人群",
+    "地铁11号线直达，公共交通便利",
+    "暑期主档期，节假日高峰客流"
+  ],
+  "audience_persona": {
+    "primary": "亲子家庭（25-45岁）+ 年轻成人情侣/朋友",
+    "secondary": "全国游客、长三角短途游客",
+    "season": "主档期2027暑期7-8月，节假日高峰"
+  },
+  "campaign_goals": [
+    "强化迪士尼在上海及长三角的品牌曝光",
+    "暑期旺季客流引导，强调地铁直达便利性",
+    "亲子与年轻成人双人群覆盖"
+  ],
+  "confidence": "all"
+}

@@ -1,0 +1,37 @@
+# 前端（本仓库不含 web/，前端另行管理）
+/web/
+
+# 密钥与凭证
+.env
+.env.*
+!.env.example
+scripts/.token
+scripts/.credentials
+scripts/.oauth_cache.json
+
+# 业务数据快照与派生数据集（不公开）
+/data/*
+!/data/config/
+!/data/geo/
+
+# 本地运行状态 / 缓存
+.run/
+.tmp/
+.impeccable/
+.claude/settings.local.json
+*.log
+out/
+
+# Python
+*.pyc
+__pycache__/
+.venv/
+.pytest_cache/
+
+# 前端构建产物（以防目录被误恢复）
+web/node_modules/
+web/dist/
+web/dist-export/
+web/.vite/
+web/playwright-report/
+web/test-results/

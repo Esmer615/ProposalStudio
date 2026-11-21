@@ -1,0 +1,11 @@
+model_schema:
+  industry: string          # 五选一
+  budget_default: number    # 万元
+  compliance_forbidden: [string]
+  target_population: number # 目标人群基数
+  region_weights: {string: number}
+  media_preference: {bus: number, metro: number}
+  level_weights: {S: number, A++: number, A+: number, AA: number}
+  reach_k: number           # 饱和常数，越大越保守
+  high_share: [number, number]   # 高等级车数占比区间
+  messaging: [string]       # 话术要点
