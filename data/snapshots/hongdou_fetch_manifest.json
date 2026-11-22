@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-11-22T02:55:35Z",
+  "base": "https://flairmedia.com.cn:881",
+  "out": "data\\snapshots",
+  "months": [
+    "2027-07"
+  ],
+  "media": [
+    "bus",
+    "metro"
+  ],
+  "overwrite": true,
+  "failures": 0,
+  "entries": [
+    {
+      "month": "2027-07",
+      "start": "2027-07-01",
+      "end": "2027-07-31",
+      "media": "bus",
+      "file": "data\\snapshots\\bus_2027-07-01_2027-07-31.csv",
+      "status": "ok",
+      "rows": 431,
+      "free_total": 1470,
+      "sha256": "ec3da56e0a59ee6183eb7d28d267b725f5539a1bfe751288576fada002884306",
+      "fetch": {
+        "media": "bus",
+        "pages": 4,
+        "raw_items": 431,
+        "unique_rows": 431,
+        "api_total": 552,
+        "page_size": 200,
+        "server_params": {},
+        "truncated": false,
+        "stalled": false
+      }
+    },
+    {
+      "month": "2027-07",
+      "start": "2027-07-01",
+      "end": "2027-07-31",
+      "media": "metro",
+      "file": "data\\snapshots\\metro_2027-07-01_2027-07-31.csv",
+      "status": "ok",
+      "rows": 861,
+      "free_total": 845,
+      "sha256": "21994a20beed0a0e3a23a79dfb1efc7942b79a2efb9cdf8a473b4582d189c2e8",
+      "fetch": {
+        "media": "metro",
+        "pages": 6,
+        "raw_items": 861,
+        "unique_rows": 861,
+        "api_total": 861,
+        "page_size": 200,
+        "server_params": {},
+        "truncated": false,
+        "stalled": false
+      }
+    }
+  ],
+  "note": "抓取审计文件；项目数据管线 manifest 由 scripts/build_dataset.py 生成。"
+}

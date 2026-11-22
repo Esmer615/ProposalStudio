@@ -1,0 +1,294 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResultHeader from '../../components/ResultHeader.astro';
+
+// Effects: KPI (曝光/GRP/Reach/Frequency/CPM) + by-media, elasticity dual-axis + 9-budget table,
+// validator checks / self-check-10, limitations, data source/version/timestamp, agent+data timeline.
+---
+<Base
+  title="效果与校验 · 新云媒介提案台"
+  description="曝光、GRP、Reach、Frequency、CPM，分媒体归因，预算弹性双轴与九档表，validator 校验与局限。"
+  active=""
+>
+<main id="top" class="page">
+  <ResultHeader active="effects" title="效果与校验" />
+
+  <div data-result-empty hidden class="empty section">
+    <div class="wrap">
+      <h2 class="empty__title">暂无可展示的方案</h2>
+      <p class="empty__body" data-empty-body>没有有效的 run 参数。请返回输入页重新生成。</p>
+      <a class="btn btn--primary" href="/input.html">去生成方案</a>
+    </div>
+  </div>
+
+  <div data-result-content class="app-section" hidden>
+    <div class="wrap" style="display:grid;gap:var(--s-6)">
+
+      <!-- effects KPIs -->
+      <section aria-labelledby="fx-kpi-h">
+        <h2 id="fx-kpi-h" style="margin-bottom:var(--s-4)">效果 KPI</h2>
+        <div class="kpi-grid">
+          <div class="kpi"><span class="kpi__label">有效曝光</span><span class="kpi__value" data-k="impressions">—</span><span class="kpi__sub">人次</span></div>
+          <div class="kpi"><span class="kpi__label">GRP</span><span class="kpi__value" data-k="grp">—</span></div>
+          <div class="kpi"><span class="kpi__label">Reach</span><span class="kpi__value" data-k="reach">—</span></div>
+          <div class="kpi"><span class="kpi__label">Frequency</span><span class="kpi__value" data-k="frequency">—</span></div>
+        </div>
+        <div class="kpi-grid" style="margin-top:var(--s-4)">
+          <div class="kpi"><span class="kpi__label">CPM</span><span class="kpi__value" data-k="cpm">—</span><span class="kpi__sub">元</span></div>
+          <div class="kpi"><span class="kpi__label">目标人群</span><span class="kpi__value" data-k="target-pop">—</span><span class="kpi__sub">策划假设</span></div>
+          <div class="kpi" style="grid-column:span 2"><span class="kpi__label">分媒体归因（不可相加成到达率）</span><span class="kpi__value" data-k="by-media" style="font-size:16px">—</span></div>
+        </div>
+      </section>
+
+      <!-- elasticity dual-axis + 9-budget table -->
+      <section aria-labelledby="fx-elast-h">
+        <h2 id="fx-elast-h" style="margin-bottom:var(--s-4)">预算弹性</h2>
+        <div class="card">
+          <div class="card-head"><span>累计曝光（左轴）· 边际每万元曝光（右轴）</span><span class="chip chip--quiet mono" data-k="knee">拐点 —</span></div>
+          <div style="padding:var(--s-4)">
+            <svg class="chart" data-k="elast-chart" viewBox="0 0 1200 360" role="img" aria-label="预算弹性双轴图"></svg>
+            <p class="faint" style="font-size:12px;margin-top:var(--s-2)" data-k="elast-note">—</p>
+          </div>
+        </div>
+        <div class="table-shell" style="margin-top:var(--s-4)">
+          <div class="table-scroll">
+            <table class="data">
+              <thead>
+                <tr><th class="num">预算(万)</th><th class="num">曝光</th><th class="num">Reach</th><th class="num">频率</th><th class="num">CPM(元)</th><th class="num">边际曝光/万</th></tr>
+              </thead>
+              <tbody data-k="elast-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- validator checks + self-check-10 -->
+      <section aria-labelledby="fx-val-h">
+        <h2 id="fx-val-h" style="margin-bottom:var(--s-4)">自主校验</h2>
+        <div class="gsplit">
+          <div class="card">
+            <div class="card-head"><span>Validator 检查</span><span class="chip" data-k="val-pass">—</span></div>
+            <div data-k="checks" style="padding:0 var(--s-4)"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span>10 条自检</span></div>
+            <div data-k="self-check" style="padding:0 var(--s-4)"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- limitations + data source -->
+      <section aria-labelledby="fx-limits-h">
+        <h2 id="fx-limits-h" style="margin-bottom:var(--s-3)">局限 · 数据来源 · 版本 · 时间戳</h2>
+        <div class="card">
+          <div class="kv" style="padding:var(--s-4)" data-k="limits"></div>
+          <div class="kv" style="padding:var(--s-4)" data-k="sources"></div>
+        </div>
+      </section>
+
+      <!-- agent + data timeline -->
+      <section aria-labelledby="fx-timeline-h">
+        <h2 id="fx-timeline-h" style="margin-bottom:var(--s-4)">Agent 与数据阶段时间线</h2>
+        <div class="card">
+          <div class="card-head"><span>workflow.stages</span><span class="chip chip--quiet mono" data-k="workflow-mode">—</span></div>
+          <div style="padding:var(--s-4);display:grid;gap:8px" data-k="timeline"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+</Base>
+<script>
+  import { initResult } from '../../scripts/result';
+  import { fmtWan, fmtInt, pctReadable, ratioPct, nf } from '../../lib/format';
+
+  initResult((plan, run) => {
+    const e = plan.effects || {};
+    const params = e.parameters || {};
+    const validation = plan.validation || {};
+    const workflow = plan.workflow || {};
+    // The orchestrator keeps the nine-budget sweep on the run (`/api/proposals/{id}`),
+    // while a direct /api/plan response may carry it inside the plan. Prefer the run.
+    const runElast = (run as any)?.elasticity;
+    const elast = (runElast?.points?.length) ? runElast
+      : (plan.elasticity && plan.elasticity.points?.length) ? plan.elasticity : null;
+
+    set('[data-k="impressions"]', `${fmtWan((e.impressions || 0) / 10000, 1)} 万`);
+    set('[data-k="grp"]', fmtWan(e.grp, 1));
+    set('[data-k="reach"]', pctReadable(e.reach_pct ?? e.reach));
+    set('[data-k="frequency"]', fmtWan(e.frequency, 1));
+    set('[data-k="cpm"]', fmtWan(e.cpm_yuan, 2));
+    set('[data-k="target-pop"]', `${fmtWan((e.target_population || 0) / 10000, 0)} 万`);
+
+    // by-media
+    const byMedia = document.querySelector('[data-k="by-media"]')!;
+    byMedia.replaceChildren();
+    (e.by_media || []).forEach((m: any) => {
+      const s = document.createElement('span');
+      s.className = 'chip chip--quiet';
+      s.style.marginRight = '8px';
+      s.textContent = `${m.media === 'bus' ? '公交' : '地铁'} ${ratioPct(m.share)} · CPM ${fmtWan(m.cpm_yuan, 1)} 元`;
+      byMedia.append(s);
+    });
+    if (!(e.by_media || []).length) byMedia.textContent = '—';
+
+    // elasticity
+    if (elast) drawElasticity(elast);
+    else {
+      document.querySelector('[data-k="elast-chart"]')!.innerHTML = '<text x="20" y="30" font-size="13">九档弹性未加载（按需 /api/elasticity）</text>';
+      set('[data-k="elast-note"]', '九档弹性为可选计算；本次 run 未返回弹性数据，价格与曝光仍以上方确定性结果为准。');
+    }
+    if (elast) set('[data-k="elast-note"]', elast.note || '');
+
+    // validator checks
+    const checks = validation.checks || [];
+    const blockers = checks.filter((c: any) => c.level === 'blocker' && !c.passed);
+    const passChip = document.querySelector('[data-k="val-pass"]')!;
+    passChip.textContent = blockers.length ? `${blockers.length} blocker` : '通过';
+    passChip.className = 'chip ' + (blockers.length ? 'chip--danger' : 'chip--accent');
+    const checksEl = document.querySelector('[data-k="checks"]')!;
+    checksEl.replaceChildren();
+    checks.forEach((c: any) => {
+      const r = document.createElement('div'); r.className = 'row'; r.style.gridTemplateColumns = '70px minmax(0,1fr) auto';
+      const id = document.createElement('span'); id.className = 'mono faint'; id.textContent = c.id;
+      const main = document.createElement('div');
+      const b = document.createElement('b'); b.textContent = c.name;
+      const small = document.createElement('small'); small.textContent = c.detail || '';
+      main.append(b, small);
+      const chip = document.createElement('span');
+      chip.className = 'chip ' + (c.passed ? 'chip--quiet' : c.level === 'blocker' ? 'chip--danger' : 'chip--warn');
+      chip.textContent = c.passed ? (c.level === 'blocker' ? '通过' : '通过') : '未通过';
+      r.append(id, main, chip);
+      checksEl.append(r);
+    });
+
+    // self-check 10
+    const sc = document.querySelector('[data-k="self-check"]')!;
+    sc.replaceChildren();
+    (validation.self_check_10 || []).forEach((c: any) => {
+      const r = document.createElement('div'); r.className = 'row'; r.style.gridTemplateColumns = '40px minmax(0,1fr) auto';
+      const id = document.createElement('span'); id.className = 'mono faint'; id.textContent = c.id;
+      const main = document.createElement('div'); const b = document.createElement('b'); b.textContent = c.text; main.append(b);
+      const chip = document.createElement('span'); chip.className = 'chip ' + (c.passed ? 'chip--quiet' : 'chip--danger'); chip.textContent = c.passed ? '✓' : '✕';
+      r.append(id, main, chip);
+      sc.append(r);
+    });
+
+    // limitations
+    const lim = document.querySelector('[data-k="limits"]')!;
+    lim.replaceChildren();
+    (validation.limitations || []).forEach((t: string, i: number) => {
+      const d = document.createElement('div'); d.innerHTML = `<span>局限 ${String(i + 1).padStart(2, '0')}</span><b>${t}</b>`; lim.append(d);
+    });
+
+    // sources
+    const src = document.querySelector('[data-k="sources"]')!;
+    src.replaceChildren();
+    const m = plan.meta || {};
+    const inv = validation.inventory_check || {};
+    [['数据来源', (plan.coverage?.sources || ['红豆广告媒体管理系统 2027 月度快照', '公开 POI/地图近似数据']).join('；')],
+     ['数据版本', m.data_version || '—'],
+     ['库存时间戳', inv.timestamp || m.inventory_ts || '—'],
+     ['库存校验档期', inv.period || '—'],
+     ['效果公式', e.formula || '—'],
+     ['声明', e.disclaimer || '曝光估算，非到园人数/销量/财务 ROI。'],
+    ].forEach(([k, v]) => { const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; src.append(d); });
+
+    // timeline
+    set('[data-k="workflow-mode"]', workflow.mode === 'offline-rules' ? 'offline-rules' : (workflow.mode || '—'));
+    const tl = document.querySelector('[data-k="timeline"]')!;
+    tl.replaceChildren();
+    (workflow.stages || []).forEach((s: any) => {
+      const r = document.createElement('div'); r.className = 'row'; r.style.gridTemplateColumns = '120px minmax(0,1fr) auto';
+      const name = document.createElement('span'); name.textContent = s.name;
+      const main = document.createElement('div'); const b = document.createElement('b'); b.textContent = s.status || s.state || ''; const small = document.createElement('small'); small.textContent = `${s.model || ''}${s.latency_ms != null ? ' · ' + s.latency_ms + 'ms' : ''}${s.summary ? ' · ' + s.summary : ''}`; main.append(b, small);
+      const chip = document.createElement('span'); chip.className = 'chip chip--quiet'; chip.textContent = s.id;
+      r.append(name, main, chip);
+      tl.append(r);
+    });
+    if (!(workflow.stages || []).length) tl.innerHTML = '<span class="muted">无阶段记录</span>';
+
+    function set(sel: string, v: string) { const el = document.querySelector(sel); if (el) el.textContent = v; }
+  });
+
+  // dual-axis elasticity chart (SVG): left = cumulative impressions, right = marginal per 万
+  function drawElasticity(elast: any) {
+    const pts = elast.points || [];
+    const svg = document.querySelector('[data-k="elast-chart"]')!;
+    svg.replaceChildren();
+    const W = 1200, H = 360, padL = 64, padR = 64, padT = 24, padB = 48;
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const bMin = Math.min(...pts.map((p: any) => p.budget_wan));
+    const bMax = Math.max(...pts.map((p: any) => p.budget_wan));
+    const iMax = Math.max(...pts.map((p: any) => p.impressions));
+    const mMax = Math.max(...pts.map((p: any) => p.marginal_impressions_per_wan || 0));
+    const x = (b: number) => padL + ((b - bMin) / (bMax - bMin)) * iw;
+    const yI = (v: number) => padT + (1 - v / iMax) * ih;
+    const yM = (v: number) => padT + (1 - v / mMax) * ih;
+
+    // axis + grid
+    for (let g = 0; g <= 4; g++) {
+      const yy = padT + (g / 4) * ih;
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', padL); line.setAttribute('x2', W - padR); line.setAttribute('y1', yy); line.setAttribute('y2', yy); line.setAttribute('class', 'grid-line');
+      svg.append(line);
+    }
+    const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    xAxis.setAttribute('x1', padL); xAxis.setAttribute('x2', W - padR); xAxis.setAttribute('y1', padT + ih); xAxis.setAttribute('y2', padT + ih); xAxis.setAttribute('class', 'axis'); svg.append(xAxis);
+
+    // left axis labels (impressions, 万)
+    for (let g = 0; g <= 4; g++) {
+      const v = (iMax * g) / 4;
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', padL - 8); t.setAttribute('y', yI(v) + 4); t.setAttribute('text-anchor', 'end');
+      t.textContent = fmtWan(v / 10000, 1);
+      svg.append(t);
+    }
+    // x labels
+    pts.forEach((p: any) => {
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', x(p.budget_wan)); t.setAttribute('y', H - 20); t.setAttribute('text-anchor', 'middle');
+      t.textContent = String(p.budget_wan);
+      svg.append(t);
+    });
+
+    // area under impressions
+    const areaPath = pts.map((p: any, i: number) => `${i === 0 ? 'M' : 'L'}${x(p.budget_wan).toFixed(1)} ${yI(p.impressions).toFixed(1)}`).join(' ') + ` L${x(bMax).toFixed(1)} ${padT + ih} L${x(bMin).toFixed(1)} ${padT + ih} Z`;
+    const area = document.createElementNS('http://www.w3.org/2000/svg', 'path'); area.setAttribute('d', areaPath); area.setAttribute('class', 'area'); svg.append(area);
+
+    // impressions line
+    const iLine = pts.map((p: any, i: number) => `${i === 0 ? 'M' : 'L'}${x(p.budget_wan).toFixed(1)} ${yI(p.impressions).toFixed(1)}`).join(' ');
+    const il = document.createElementNS('http://www.w3.org/2000/svg', 'path'); il.setAttribute('d', iLine); il.setAttribute('class', 'line'); svg.append(il);
+
+    // marginal line (dashed)
+    const mLine = pts.map((p: any, i: number) => `${i === 0 ? 'M' : 'L'}${x(p.budget_wan).toFixed(1)} ${yM(p.marginal_impressions_per_wan || 0).toFixed(1)}`).join(' ');
+    const ml = document.createElementNS('http://www.w3.org/2000/svg', 'path'); ml.setAttribute('d', mLine); ml.setAttribute('class', 'marginal'); svg.append(ml);
+
+    // dots
+    pts.forEach((p: any) => {
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', x(p.budget_wan)); c.setAttribute('cy', yI(p.impressions)); c.setAttribute('r', p.is_current ? 6 : 4);
+      c.setAttribute('class', p.is_current ? 'dot dot--now' : 'dot'); svg.append(c);
+    });
+
+    // knee marker
+    if (elast.knee_budget_wan) {
+      const kx = x(elast.knee_budget_wan);
+      const k = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      k.setAttribute('x1', kx); k.setAttribute('x2', kx); k.setAttribute('y1', padT); k.setAttribute('y2', padT + ih); k.setAttribute('class', 'knee'); svg.append(k);
+    }
+    set('[data-k="knee"]', `拐点 ${elast.knee_budget_wan ?? '—'} 万`);
+
+    // 9-budget table
+    const rows = document.querySelector('[data-k="elast-rows"]')!;
+    rows.replaceChildren();
+    pts.forEach((p: any) => {
+      const tr = document.createElement('tr');
+      const mk = (v: any, className: string) => { const td = document.createElement('td'); td.className = className; td.textContent = v; return td; };
+      tr.append(mk(p.budget_wan, 'num'), mk(fmtWan(p.impressions / 10000, 1), 'num'), mk(pctReadable(p.reach), 'num'), mk(fmtWan(p.frequency, 1), 'num'), mk(fmtWan(p.cpm_yuan, 1), 'num'), mk(fmtInt(p.marginal_impressions_per_wan), 'num'));
+      rows.append(tr);
+    });
+
+    function set(sel: string, v: string) { const el = document.querySelector(sel); if (el) el.textContent = v; }
+  }
+</script>

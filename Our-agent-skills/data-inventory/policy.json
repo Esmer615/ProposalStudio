@@ -1,0 +1,27 @@
+{
+  "version": "1.1.0",
+  "skill_dir": ".claude/skills/hongdou-inventory/scripts",
+  "python": ".venv/Scripts/python.exe",
+  "allowed_months": ["2027-06", "2027-07", "2027-08", "2027-09", "2027-10"],
+  "default_months": ["2027-07", "2027-08"],
+  "timeout_sec": 180,
+  "credential_source_names": ["HONGDOU_USER/HONGDOU_PASS", "HONGDOU_CREDENTIALS", "gitignored .credentials"],
+  "allowed_tools": ["auth.py", "snapshot.py", "analyze.py"],
+  "snapshot": {
+    "skip_existing_by_default": true,
+    "overwrite_flag": "--overwrite",
+    "workflow_overwrite": "always",
+    "data_mode_ignored": true,
+    "workflow_media": "all",
+    "overwrite_only_when": "always（ProposalRunner 强制实时拉取；忽略 data_mode）",
+    "out_dir": "data/snapshots",
+    "never_put_fetch_filtered_into_snapshots": true
+  },
+  "failure_strategy": {
+    "auth_fail": "status=degraded，使用现有快照；目标月缺失则 DATA_UNAVAILABLE",
+    "partial_month_fail": "保留旧文件，status=degraded，记录 warnings",
+    "no_credentials": "status=skipped，reason=NO_CREDENTIALS，不阻塞引擎（若快照完整）",
+    "silent_month_swap": false
+  },
+  "redact": ["access_token", "refresh_token", "password", "token", "security_code"]
+}

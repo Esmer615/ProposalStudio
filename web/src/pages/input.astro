@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+import StaticMap from '../components/StaticMap.astro';
+
+// User input page: one workbench (title + process line + form/map), Agent dialog, stage timeline.
+// Options fill via GET /api/meta; all money/inventory numbers come only from the run payload.
+---
+<Base
+  title="生成投放方案 · 新云媒介提案台"
+  description="输入场馆、预算、媒介、档期与客户类型，Agent 实时取数后启动确定性引擎，生成四页方案。"
+  active="input"
+>
+<main id="top">
+  <section class="app-section input-workbench" aria-labelledby="page-h">
+    <div class="wrap">
+      <div class="hero-text">
+      <header class="input-intro">
+        <h1 id="page-h" style="font-size:var(--t-h2)">AI 户外媒体 · 投放方案生成</h1>
+        <p class="muted" style="margin-top:var(--s-2)">填写四项输入（可选一句话 brief）；点下方「生成方案」，Agent 会实时拉取数据并由确定性引擎求解。</p>
+        <p class="input-fact mono" data-out="intro-fact">2027 年 7–8 月可售快照 · 红豆库存 + 公开 POI · 数据版本与时间戳见右侧</p>
+      </header>
+      </div>
+
+      <div class="workbench-body">
+      <div class="input-flow" role="img" aria-label="流程示意：四项输入 → 红豆库存与新云补充 → CP-SAT 确定性求解 → 四页方案">
+        <span class="input-flow__node">四项输入</span>
+        <span class="input-flow__arrow" aria-hidden="true">→</span>
+        <span class="input-flow__node">红豆库存 / 新云补充</span>
+        <span class="input-flow__arrow" aria-hidden="true">→</span>
+        <span class="input-flow__node input-flow__node--accent">CP-SAT 确定性求解</span>
+        <span class="input-flow__arrow" aria-hidden="true">→</span>
+        <span class="input-flow__node">四页方案</span>
+      </div>
+
+      <div class="input-split">
+        <!-- 左栏：表单 + Agent 交流 -->
+        <div class="input-split__main" style="display:grid;gap:var(--s-5)">
+          <div class="form-card" style="display:grid;gap:var(--s-4)">
+            <div id="plan-form" class="form" style="grid-template-columns:1fr 1fr">
+              <div class="field field--full">
+                <label for="f-venue">目标场馆</label>
+                <select id="f-venue" name="venue"></select>
+                <div class="venue-search" role="search" aria-label="自定义地点查询">
+                  <input id="f-venue-query" type="search" autocomplete="off" placeholder="或输入地点名称搜索，如：上海天文馆" />
+                  <button type="button" class="btn btn--secondary" id="btn-venue-search">查询</button>
+                </div>
+                <span class="faint" id="venue-search-note" style="font-size:12px" hidden></span>
+              </div>
+              <div class="field field--full">
+                <label for="f-budget">预算（万元）<span class="mono muted" id="budget-val" style="font-weight:400">500</span></label>
+                <input type="range" id="f-budget" name="budget_wan" min="100" max="500" step="10" value="500" style="height:auto" />
+              </div>
+              <div class="field field--full" id="f-media-group">
+                <span>投放媒介</span>
+                <div style="display:flex;gap:16px">
+                  <label class="check-label"><input type="checkbox" name="media" value="bus" checked /> 公交车身</label>
+                  <label class="check-label"><input type="checkbox" name="media" value="metro" checked /> 地铁出入口</label>
+                </div>
+                <span class="field__error" data-error="media" hidden></span>
+              </div>
+              <div class="field">
+                <label for="f-start">档期（起始月）</label>
+                <select id="f-start" name="start_date"></select>
+              </div>
+              <div class="field">
+                <label for="f-weeks">周数</label>
+                <select id="f-weeks" name="weeks">
+                  <option value="2">2 周</option>
+                  <option value="4">4 周</option>
+                  <option value="6">6 周</option>
+                  <option value="8" selected>8 周</option>
+                  <option value="12">12 周</option>
+                </select>
+              </div>
+              <div class="field field--full">
+                <label for="f-customer">客户类型</label>
+                <select id="f-customer" name="customer_type">
+                  <option value="direct" selected>直客</option>
+                  <option value="4a">4A 代理</option>
+                </select>
+              </div>
+              <details class="field field--full">
+                <summary style="cursor:pointer;font-weight:500;font-size:var(--t-small)">高级锁定（可选）</summary>
+                <div style="display:grid;gap:var(--s-3);margin-top:var(--s-3);grid-template-columns:1fr 1fr">
+                  <div class="field">
+                    <label for="f-lock-include">锁定点位（资源 ID，逗号分隔）</label>
+                    <input id="f-lock-include" name="lock_include" placeholder="例：metro:人民广场:14号口" />
+                  </div>
+                  <div class="field">
+                    <label for="f-lock-exclude">排除点位（资源 ID，逗号分隔）</label>
+                    <input id="f-lock-exclude" name="lock_exclude" placeholder="例：bus:17:大三侧" />
+                  </div>
+                </div>
+              </details>
+
+              <div class="field field--full">
+                <label for="f-brief">一句话 brief（可选）</label>
+                <textarea id="f-brief" name="brief_text" rows="2" placeholder="例：乐高 2027 暑期，500 万，公交地铁都要，走直客"></textarea>
+                <div class="input-submit">
+                  <button type="button" class="btn btn--primary" id="btn-generate">生成方案</button>
+                  <span class="muted" id="run-note" style="font-size:13px"></span>
+                </div>
+              </div>
+
+              <span class="field__error field--full" id="form-error" data-error="form" hidden></span>
+            </div>
+
+            <div class="dialog" id="agent-dialog" role="log" aria-live="polite" aria-label="Agent 交流">
+              <div class="msg msg--agent">
+                <div class="msg__head">Agent · 方案生成</div>
+                填好左侧输入后点「生成方案」；我会在后台实时拉取红豆与新云数据、求解并生成四页方案。缺月份不会静默换月。
+              </div>
+            </div>
+          </div>
+          <!-- 阶段时间线放在表单下方，与右侧地图/数据卡高度相称 -->
+          <div class="stage-live" data-out="stage-live">等待生成</div>
+          <div class="stages input-stages" id="run-stages" aria-label="运行阶段">
+            <div class="stage" data-stage="intake" data-state="pending"><b>解析需求</b></div>
+            <div class="stage" data-stage="data_inventory" data-state="pending"><b>实时取数</b></div>
+            <div class="stage" data-stage="data_bigdata" data-state="pending"><b>补充数据</b></div>
+            <div class="stage" data-stage="engine" data-state="pending"><b>求解</b></div>
+            <div class="stage" data-stage="data_routes" data-state="pending"><b>线路</b></div>
+            <div class="stage" data-stage="visualize" data-state="pending"><b>可视化</b></div>
+            <div class="stage" data-stage="narrative" data-state="pending"><b>解释</b></div>
+            <div class="stage" data-stage="done" data-state="pending"><b>完成</b></div>
+          </div>
+        </div>
+
+        <!-- 右栏：高德预览 + 数据状态 -->
+        <div class="grail input-split__rail">
+          <div class="card" style="padding:0;overflow:clip">
+            <div class="card-head"><span>场馆与圈层预览</span><span class="chip chip--quiet mono" data-out="map-status">加载中</span></div>
+            <div class="map-frame" id="input-map" data-default-venue="lego_shanghai" data-mode="fallback" style="border:0;border-radius:0;min-height:640px">
+              <div id="amap"></div>
+              <div class="map-fallback">
+                <StaticMap showPois labels />
+              </div>
+              <div class="map-note" data-map-note>静态图层预览</div>
+              <div class="map-legend">
+                <span><i class="ring"></i>场馆圈层</span>
+                <span><i class="accent"></i>入选点位</span>
+                <span><i></i>地铁出入口</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><span>数据状态</span><span class="chip chip--quiet mono" data-out="data-version">—</span></div>
+            <div class="kv" style="font-size:13px">
+              <div><span>红豆快照</span><b data-out="inventory-ts">—</b></div>
+              <div><span>数据版本</span><b data-out="data-version-2" class="mono">—</b></div>
+              <div><span>覆盖月份</span><b data-out="inventory-months" class="mono">—</b></div>
+              <div><span>新云会话</span><b data-out="xinyun-status">—</b></div>
+            </div>
+            <p class="muted" style="font-size:12px;margin-top:var(--s-3)" data-out="xinyun-note">新云补充图层（2023-05）需人工登录一次；不在登录态时只显示本地图层。</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+</main>
+</Base>
+<script>
+  import '../scripts/input';
+</script>

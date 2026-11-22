@@ -1,0 +1,484 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResultHeader from '../../components/ResultHeader.astro';
+import StaticMap from '../../components/StaticMap.astro';
+
+// Media: full-screen AMap (venue/rings/selected metro/POI/district; bus is district/schematics),
+// layer + level filters, bus+metro paginated table, click drawer, POI hits & district mix,
+// xinyun coverage as a "platform supplement" layer when present.
+---
+<Base
+  title="媒体点位 · 新云媒介提案台"
+  description="入选公交线路与地铁出入口、图层与等级筛选、选点抽屉、POI 命中与区县配比。"
+  active=""
+>
+<main id="top" class="page">
+  <ResultHeader active="media" title="媒体点位" />
+
+  <div data-result-empty hidden class="empty section">
+    <div class="wrap">
+      <h2 class="empty__title">暂无可展示的方案</h2>
+      <p class="empty__body" data-empty-body>没有有效的 run 参数。请返回输入页重新生成。</p>
+      <a class="btn btn--primary" href="/input.html">去生成方案</a>
+    </div>
+  </div>
+
+  <div data-result-content class="app-section" hidden>
+    <div class="wrap" style="display:grid;gap:var(--s-6)">
+
+      <!-- map + filter rail -->
+      <div class="gsplit" style="grid-template-columns:minmax(0,1fr) 300px">
+        <div class="map-frame" id="media-map" data-mode="fallback" style="min-height:640px">
+          <div id="amap"></div>
+          <div class="map-fallback"><StaticMap showPois labels /></div>
+          <div class="map-note" data-map-note>静态图层预览</div>
+          <div class="map-legend">
+            <span><i class="ring"></i>场馆圈层</span>
+            <span><i class="accent"></i>入选</span>
+            <span><i></i>地铁口</span>
+            <span data-k="routes-legend-bus"><i class="route"></i>公交线路 · 2023-05</span>
+            <span data-k="routes-legend-metro" hidden><i class="route route--metro"></i>地铁线路 · 2023-05</span>
+          </div>
+        </div>
+
+        <aside class="card" style="align-self:start">
+          <div class="card-head"><span>图层与筛选</span></div>
+          <div style="padding:var(--s-4);display:grid;gap:var(--s-3)">
+            <div style="display:grid;gap:8px">
+              <label class="check-label"><input type="checkbox" data-layer="metro" checked /> 地铁出入口</label>
+              <label class="check-label"><input type="checkbox" data-layer="routes" checked /> 方案线路（公交/地铁 · 2023-05）</label>
+              <label class="check-label"><input type="checkbox" data-layer="poi" checked /> POI 命中</label>
+              <label class="check-label"><input type="checkbox" data-layer="districts" checked /> 区县边界</label>
+              <label class="check-label"><input type="checkbox" data-layer="coverage" data-layer-xinyun disabled /> 平台补充（新云）</label>
+              <p class="muted" style="font-size:12px;margin:0" data-k="routes-help">新云 AI线路 · 2023-05 · 近似轨迹（仅可视化；缺失按区县示意）</p>
+            </div>
+            <div class="field">
+              <label class="muted" style="font-size:13px;font-weight:500" for="level-filter">等级筛选</label>
+              <div class="seg" id="level-filter" role="group" aria-label="等级筛选">
+                <button type="button" data-level="all" aria-pressed="true">全部等级</button>
+                <button type="button" data-level="S" aria-pressed="false">S</button>
+                <button type="button" data-level="A++" aria-pressed="false">A++</button>
+                <button type="button" data-level="A+" aria-pressed="false">A+</button>
+              </div>
+            </div>
+            <div class="field">
+              <label class="muted" style="font-size:13px;font-weight:500" for="media-filter">媒介</label>
+              <div class="seg" id="media-filter" role="group" aria-label="媒介筛选">
+                <button type="button" data-media="all" aria-pressed="true">全部媒介</button>
+                <button type="button" data-media="bus" aria-pressed="false">公交</button>
+                <button type="button" data-media="metro" aria-pressed="false">地铁</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- POI hits + district mix -->
+      <div class="gsplit" style="grid-template-columns:1fr 1fr">
+        <div class="card">
+          <div class="card-head"><span>POI 命中</span><span class="chip chip--quiet mono" data-k="poi-n">0</span></div>
+          <div class="rows" data-k="poi-hits" style="padding:0 var(--s-4)"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span>区县配比</span></div>
+          <div class="kv" data-k="district-mix" style="padding:0 var(--s-4)"></div>
+        </div>
+      </div>
+
+      <!-- point table -->
+      <section aria-labelledby="media-table-h">
+        <h2 id="media-table-h" style="margin-bottom:var(--s-3)">公交 + 地铁点位</h2>
+        <div class="table-shell">
+          <div class="table-scroll">
+            <table class="data" id="media-table">
+              <thead>
+                <tr>
+                  <th>媒介</th><th>名称</th><th>等级</th><th>区县</th><th class="num">可售</th><th class="num">折后(万)</th>
+                </tr>
+              </thead>
+              <tbody data-k="rows"></tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <span data-k="total">共 0 条</span>
+            <div class="pager__nav">
+              <button type="button" id="prev-page" aria-label="上一页">上一页</button>
+              <span class="mono" data-k="page">1 / 1</span>
+              <button type="button" id="next-page" aria-label="下一页">下一页</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- drawer -->
+  <div class="drawer__scrim" id="drawer-scrim" data-open="false" aria-hidden="true"></div>
+  <aside class="drawer" id="drawer" data-open="false" role="dialog" aria-modal="true" aria-label="点位详情">
+    <div class="drawer__head">
+      <h3 id="drawer-title">—</h3>
+      <button type="button" class="btn btn--ghost" id="drawer-close" aria-label="关闭">关闭</button>
+    </div>
+    <div class="drawer__body" id="drawer-body"></div>
+  </aside>
+</main>
+</Base>
+<script>
+  import { initResult } from '../../scripts/result';
+  import { loadAmap, loadMapData, fitMarkers, wgsToGcj } from '../../scripts/amap';
+  import { fmtWan, shortName } from '../../lib/format';
+
+  let PLAN: any = null;
+  let ITEMS: any[] = [];
+  let page = 0;
+  const PAGE = 20;
+  let level = 'all';
+  let media = 'all';
+  let amapKit: any = null;
+  let ROUTE_OVERLAYS: any[] = [];
+
+  const $$ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s);
+
+  function filtered() {
+    return ITEMS.filter((it) => {
+      if (level !== 'all' && it.level !== level) return false;
+      if (media !== 'all' && it.kind !== media) return false;
+      return true;
+    });
+  }
+
+  function renderRow(it: any) {
+    const tr = document.createElement('tr');
+    const td1 = document.createElement('td'); td1.textContent = it.kind === 'bus' ? '公交' : '地铁';
+    const td2 = document.createElement('td');
+    const a = document.createElement('a'); a.className = 'rowlink'; a.href = '#'; a.textContent = shortName(it.name);
+    a.addEventListener('click', (e) => { e.preventDefault(); openDrawer(it); });
+    td2.append(a);
+    const td3 = document.createElement('td'); td3.textContent = it.level ?? '—';
+    const td4 = document.createElement('td'); td4.textContent = it.district ?? '—';
+    const td5 = document.createElement('td'); td5.className = 'num'; td5.textContent = it.free_count != null ? String(it.free_count) : '—';
+    const td6 = document.createElement('td'); td6.className = 'num'; td6.textContent = fmtWan(it.total_wan, 2);
+    tr.append(td1, td2, td3, td4, td5, td6);
+    return tr;
+  }
+
+  function renderTable() {
+    const list = filtered();
+    const pages = Math.max(1, Math.ceil(list.length / PAGE));
+    if (page >= pages) page = pages - 1;
+    const slice = list.slice(page * PAGE, page * PAGE + PAGE);
+    const tb = $$('[data-k="rows"]')!;
+    tb.replaceChildren(...slice.map(renderRow));
+    $$('[data-k="total"]')!.textContent = `共 ${list.length} 条 · 每页 ${PAGE} 条`;
+    $$('[data-k="page"]')!.textContent = `${page + 1} / ${pages}`;
+    $$<HTMLButtonElement>('#prev-page')!.disabled = page === 0;
+    $$<HTMLButtonElement>('#next-page')!.disabled = page >= pages - 1;
+  }
+
+  function openDrawer(it: any) {
+    $$('#drawer-title')!.textContent = shortName(it.name);
+    const body = $$('#drawer-body')!;
+    body.replaceChildren();
+    const chips = document.createElement('div');
+    chips.style.display = 'flex'; chips.style.gap = '6px'; chips.style.flexWrap = 'wrap';
+    const routeChip = it.route_ref ? `${it.route_ref} · ${it.route_status === 'ready' ? '真实轨迹' : '区县示意'}` : '';
+    [it.level, it.district, it.free_count != null ? `${it.free_count} 可售` : '', it.media_type, routeChip].filter(Boolean).forEach((c) => {
+      const s = document.createElement('span'); s.className = 'chip chip--quiet'; s.textContent = String(c); chips.append(s);
+    });
+    body.append(chips);
+
+    const kv = document.createElement('div'); kv.className = 'kv';
+    [['单价(万/月)', it.unit_price_wan != null ? fmtWan(it.unit_price_wan, 1) : '—'],
+     ['计费月数', it.months ?? '—'],
+     ['刊例小计(万)', fmtWan(it.gross_wan, 2)],
+     ['折后媒体费(万)', fmtWan(it.net_wan, 2)],
+     ['制作费(万)', fmtWan(it.production_wan, 2)],
+     ['行分摊总价(万)', fmtWan(it.total_wan, 2)]].forEach(([k, v]) => {
+      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; kv.append(d);
+    });
+    body.append(kv);
+
+    if (it.score_breakdown) {
+      const sh = document.createElement('div'); sh.className = 'panel-head'; sh.textContent = '评分分解';
+      const score = document.createElement('div'); score.className = 'score'; score.style.padding = '0 4px';
+      const labels: Record<string, string> = { exposure: '曝光', audience_fit: '人群', poi: 'POI', zone: '区县', corridor: '换乘', cost_efficiency: '成本' };
+      Object.entries(it.score_breakdown).forEach(([k, v]) => {
+        const row = document.createElement('div'); row.className = 'score__row';
+        row.innerHTML = `<span>${labels[k] || k}</span><span class="score__bar"><i style="width:${Math.round(Number(v) * 100)}%"></i></span><b>${Number(v).toFixed(2)}</b>`;
+        score.append(row);
+      });
+      body.append(sh, score);
+    }
+
+    if (it.reasons?.length) {
+      const rh = document.createElement('div'); rh.className = 'panel-head'; rh.textContent = '选点理由';
+      const ul = document.createElement('ul'); ul.className = 'check-list';
+      it.reasons.forEach((r: string) => { const li = document.createElement('li'); li.textContent = r; ul.append(li); });
+      body.append(rh, ul);
+    }
+    if (it.evidence?.length) {
+      const eh = document.createElement('div'); eh.className = 'panel-head'; eh.textContent = '证据';
+      const rows = document.createElement('div'); rows.className = 'kv';
+      it.evidence.forEach((e: any) => { const d = document.createElement('div'); d.innerHTML = `<span>${e.type || '证据'}</span><b>${e.text || ''}</b>`; rows.append(d); });
+      body.append(eh, rows);
+    }
+    if (it.alternatives?.length) {
+      const ah = document.createElement('div'); ah.className = 'panel-head'; ah.textContent = '替代项';
+      const rows = document.createElement('div'); rows.className = 'kv';
+      it.alternatives.forEach((a: any) => { const d = document.createElement('div'); d.innerHTML = `<span>${shortName(a.name)}</span><b>${a.reason || ''}</b>`; rows.append(d); });
+      body.append(ah, rows);
+    }
+    $$('#drawer')!.setAttribute('data-open', 'true');
+    $$('#drawer-scrim')!.setAttribute('data-open', 'true');
+  }
+
+  function openRouteDrawer(r: any, mediaType: 'bus' | 'metro' = 'bus') {
+    const isMetro = mediaType === 'metro';
+    const items = (r.items || []) as string[];
+    $$('#drawer-title')!.textContent = r.lineName || `${r.line}路`;
+    const body = $$('#drawer-body')!;
+    body.replaceChildren();
+    const chips = document.createElement('div');
+    chips.style.display = 'flex'; chips.style.gap = '6px'; chips.style.flexWrap = 'wrap';
+    [r.line, isMetro ? '地铁' : '公交', '2023-05 近似轨迹', '仅用于可视化'].forEach((c) => {
+      const s = document.createElement('span'); s.className = 'chip chip--quiet'; s.textContent = String(c); chips.append(s);
+    });
+    body.append(chips);
+    const kv = document.createElement('div'); kv.className = 'kv';
+    [['线路', r.lineName || r.line || '—'],
+     ['媒介', isMetro ? '地铁' : '公交'],
+     ['几何点数', r.geometry?.points ?? (r.geometry?.path?.length || 0)],
+     ['方案选点', items.length ? items.join('、') : '—'],
+     ['来源', r.source || '新云传媒大数据可视化平台 · AI线路'],
+     ['数据月份', '2023-05'],
+     ['用途', '地图可视化；不参与报价、库存、Reach 或评分']].forEach(([k, v]) => {
+      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; kv.append(d);
+    });
+    body.append(kv);
+    $$('#drawer')!.setAttribute('data-open', 'true');
+    $$('#drawer-scrim')!.setAttribute('data-open', 'true');
+  }
+
+  function closeDrawer() {
+    $$('#drawer')!.setAttribute('data-open', 'false');
+    $$('#drawer-scrim')!.setAttribute('data-open', 'false');
+  }
+
+  // --- map ---
+  async function drawMap(data: any) {
+    const frame = $$('#media-map')!;
+    const kit = await loadAmap('amap');
+    if (!kit) { frame.setAttribute('data-mode', 'fallback'); return; }
+    amapKit = kit;
+    frame.setAttribute('data-mode', 'live');
+    $$('[data-map-note]')!.textContent = '高德在线';
+    const { AMap, map } = kit;
+    // venue rings + markers
+    const v = data.venues.find((x: any) => x.id === (PLAN.inputs?.venue || PLAN.venue?.id));
+    const venueCoords = v?.coords;
+    if (venueCoords?.lng) {
+      const c = wgsToGcj(venueCoords.lng, venueCoords.lat);
+      (v.rings_km || [6, 20, 50]).slice(0, 2).forEach((km: number) => {
+        map.add(new AMap.Circle({ center: c, radius: km * 1000, strokeColor: '#2e5b44', strokeOpacity: 0.5, strokeWeight: 1, strokeStyle: 'dashed', fillOpacity: 0 }));
+      });
+      map.add(new AMap.Marker({ position: c, content: '<div class="amap-pin amap-pin--venue" role="img" aria-label="场馆"></div>', offset: new AMap.Pixel(-9, -9) }));
+    }
+    // selected metro markers
+    const metroPts: any[] = [];
+    (PLAN.plan?.metro || []).forEach((m: any) => {
+      if (!m.geo?.coords?.lng) return;
+      const c = wgsToGcj(m.geo.coords.lng, m.geo.coords.lat);
+      const mk = new AMap.Marker({ position: c, content: '<div class="amap-pin"></div>', offset: new AMap.Pixel(-7, -7), zIndex: 200 });
+      mk.on('click', () => openDrawer(m));
+      map.add(mk);
+      metroPts.push(mk);
+    });
+    // xinyun AI-route geometry: the plan's selected bus/metro lines, 2023-05 approximate tracks.
+    const routeToggle = document.querySelector<HTMLInputElement>('[data-layer="routes"]');
+    const ml = PLAN.coverage?.map_layers || {};
+    const routeGroups: { r: any; media: 'bus' | 'metro' }[] = [
+      ...(ml.bus_routes || []).map((r: any) => ({ r, media: 'bus' as const })),
+      ...(ml.metro_routes || []).map((r: any) => ({ r, media: 'metro' as const })),
+      ...(ml.routes || []).map((r: any) => ({ r, media: r.media === 'metro' ? 'metro' as const : 'bus' as const })),
+    ];
+    const seenRoutes = new Set<string>();
+    const routeList = routeGroups.filter(({ r }) => {
+      const key = String(r.lineId ?? r.line ?? r.lineName ?? '');
+      if (!key || seenRoutes.has(key)) return false;
+      seenRoutes.add(key);
+      return true;
+    });
+    const routeFitPts: [number, number][] = [];
+    ROUTE_OVERLAYS = [];
+    if (routeToggle?.checked !== false) {
+      routeList.forEach(({ r, media }) => {
+        const isMetro = media === 'metro';
+        const path = (r.geometry?.path || [])
+          .map(([lng, lat]: number[]) => wgsToGcj(Number(lng), Number(lat)))
+          .filter((p: [number, number]) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
+        if (path.length < 2) return;
+        routeFitPts.push(...path);
+        const line = new AMap.Polyline({
+          path,
+          strokeColor: isMetro ? '#a8794a' : '#2e5b44',
+          strokeWeight: 4,
+          strokeOpacity: 0.85,
+          strokeStyle: isMetro ? 'dashed' : 'solid',
+          lineJoin: 'round',
+          lineCap: 'round',
+          zIndex: 120,
+          cursor: 'pointer',
+        });
+        line.on('click', () => openRouteDrawer(r, media));
+        map.add(line);
+        ROUTE_OVERLAYS.push(line);
+        // a small selected-point dot on the route; the line name appears on hover, details on click
+        const mid = path[Math.floor(path.length / 2)];
+        if (mid) {
+          const dot = new AMap.Marker({
+            position: mid,
+            content: `<div class="amap-route-dot${isMetro ? ' is-metro' : ''}" role="img" aria-label="${isMetro ? '地铁' : '公交'}线路选点"></div>`,
+            offset: new AMap.Pixel(-5, -5),
+            zIndex: 150,
+          });
+          dot.on('click', () => openRouteDrawer(r, media));
+          map.add(dot);
+          ROUTE_OVERLAYS.push(dot);
+          const safeName = String(r.lineName || r.line || '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c] || c));
+          const itemCount = (r.items || []).length;
+          const label = new AMap.Marker({
+            position: mid,
+            content: `<div class="amap-route-label${isMetro ? ' is-metro' : ''}">${isMetro ? '地铁' : '公交'} · ${safeName}${itemCount ? ` · ${itemCount} 点` : ''}</div>`,
+            offset: new AMap.Pixel(-28, -30),
+            zIndex: 160,
+          });
+          map.add(label);
+          label.hide();
+          line.on('mouseover', () => label.show());
+          line.on('mouseout', () => label.hide());
+          dot.on('mouseover', () => label.show());
+          dot.on('mouseout', () => label.hide());
+          ROUTE_OVERLAYS.push(label);
+        }
+      });
+    }
+    const metroFitPts = metroPts.map((x) => {
+      const p = x.getPosition();
+      return [p.lng, p.lat] as [number, number];
+    });
+    fitMarkers(
+      map,
+      [...metroFitPts, ...routeFitPts].length
+        ? [...metroFitPts, ...routeFitPts]
+        : venueCoords?.lng ? [wgsToGcj(venueCoords.lng, venueCoords.lat)] : [],
+    );
+    // POI layer (heat)
+    try {
+      const heat = new AMap.HeatMap(map, { radius: 26, opacity: [0, 0.5], gradient: { 0.4: 'rgba(46,91,68,0)', 0.7: 'rgba(46,91,68,.22)', 1: 'rgba(46,91,68,.5)' } });
+      heat.setDataSet({ data: data.poi.map((p: any) => { const [lng, lat] = wgsToGcj(p.lng, p.lat); return [lng, lat, 1]; }), max: 2 });
+    } catch { /* optional */ }
+    // district boundaries
+    fetch('/data/shanghai_districts.geojson').then((r) => r.json()).then((geo) => {
+      const P = AMap.Polygon;
+      const dist = new AMap.GeoJSON({ geoJSON: geo, getPolygon: (_g: any, lnglats: number[][]) => new P({ path: lnglats, strokeColor: '#5f7a66', strokeWeight: 1, strokeOpacity: 0.35, fillColor: '#d9ccb7', fillOpacity: 0.32 }) });
+      map.add(dist);
+    }).catch(() => {});
+  }
+
+  initResult((plan) => {
+    PLAN = plan;
+    // Largest spend first, so the first page mixes bus and metro instead of showing only bus.
+    ITEMS = [...(plan.plan?.bus || []), ...(plan.plan?.metro || [])]
+      .sort((a: any, b: any) => (Number(b.total_wan) || 0) - (Number(a.total_wan) || 0));
+    renderTable();
+
+    // Route layer status: only lines with real 2023-05 geometry are drawn; missing lines stay district-level.
+    const ml = plan.coverage?.map_layers || {};
+    const busRoutes = (ml.bus_routes || []) as any[];
+    const metroRoutes = (ml.metro_routes || []) as any[];
+    const genericRoutes = (ml.routes || []) as any[];
+    const busCount = busRoutes.length + genericRoutes.filter((r: any) => r.media !== 'metro').length;
+    const metroCount = metroRoutes.length + genericRoutes.filter((r: any) => r.media === 'metro').length;
+    const totalRoutes = busCount + metroCount;
+    const selectedMetro = (plan.plan?.metro || []).length;
+    const routesMeta = ml.bus_routes_meta || {};
+    const routesHelp = document.querySelector<HTMLElement>('[data-k="routes-help"]');
+    if (routesHelp) {
+      routesHelp.textContent = totalRoutes
+        ? `新云 AI线路 · 2023-05 · 公交 ${busCount} / 地铁 ${metroCount} 条有几何${selectedMetro && metroCount === 0 ? ' · 地铁线路几何未返回' : ''}${routesMeta.status && routesMeta.status !== 'ready' ? '（其余按区县示意）' : ''}`
+        : '无 2023-05 线路几何；缺失线路按区县示意（需人工登录新云一次）';
+    }
+    const routeToggle = document.querySelector<HTMLInputElement>('[data-layer="routes"]');
+    if (routeToggle) {
+      routeToggle.disabled = totalRoutes === 0;
+      routeToggle.checked = totalRoutes > 0;
+      if (!totalRoutes) routeToggle.parentElement!.style.opacity = '0.5';
+    }
+    const busLegend = document.querySelector<HTMLElement>('[data-k="routes-legend-bus"]');
+    if (busLegend) busLegend.hidden = busCount === 0;
+    const metroLegend = document.querySelector<HTMLElement>('[data-k="routes-legend-metro"]');
+    if (metroLegend) metroLegend.hidden = metroCount === 0;
+
+    // POI hits (all of them; the count chip states the total)
+    const poiHits = plan.coverage?.poi_hits || [];
+    $$('[data-k="poi-n"]')!.textContent = String(poiHits.length);
+    const ph = $$('[data-k="poi-hits"]')!;
+    ph.replaceChildren();
+    poiHits.forEach((p: any) => {
+      const r = document.createElement('div'); r.className = 'row';
+      const mark = document.createElement('span'); mark.className = 'row__mark'; mark.textContent = 'P';
+      const main = document.createElement('div');
+      const b = document.createElement('b'); b.textContent = p.name;
+      const small = document.createElement('small'); small.textContent = `${p.type || ''}${p.weight != null ? ' · 权重 ' + p.weight : ''}`;
+      main.append(b, small);
+      r.append(mark, main, document.createTextNode(''));
+      ph.append(r);
+    });
+
+    // district mix
+    const dm = $$('[data-k="district-mix"]')!;
+    dm.replaceChildren();
+    const mix = plan.plan?.summary?.district_mix || {};
+    Object.entries(mix).sort((a, b) => (b[1] as number) - (a[1] as number)).forEach(([k, v]) => {
+      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; dm.append(d);
+    });
+
+    // xinyun coverage supplement
+    loadMapData().then((data) => {
+      const cov = plan.data?.coverage_context || plan.plan?.coverage_context;
+      const hasCov = cov && (cov.poi || cov.districts);
+      const chk = document.querySelector<HTMLInputElement>('[data-layer="coverage"]');
+      if (chk) {
+        chk.disabled = !hasCov;
+        if (!hasCov) chk.parentElement!.style.opacity = '0.5';
+      }
+      if (data) drawMap(data);
+    });
+  });
+
+  // filters
+  document.querySelectorAll<HTMLButtonElement>('[data-level]').forEach((b) => b.addEventListener('click', () => {
+    level = b.dataset.level!;
+    document.querySelectorAll<HTMLButtonElement>('[data-level]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    page = 0; renderTable();
+  }));
+  document.querySelectorAll<HTMLButtonElement>('[data-media]').forEach((b) => b.addEventListener('click', () => {
+    media = b.dataset.media!;
+    document.querySelectorAll<HTMLButtonElement>('[data-media]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    page = 0; renderTable();
+  }));
+  $$('#prev-page')!.addEventListener('click', () => { page--; renderTable(); });
+  $$('#next-page')!.addEventListener('click', () => { page++; renderTable(); });
+  $$('#drawer-close')!.addEventListener('click', closeDrawer);
+  $$('#drawer-scrim')!.addEventListener('click', closeDrawer);
+
+  // route layer on/off (only lines with real geometry are in ROUTE_OVERLAYS)
+  const routesToggle = document.querySelector<HTMLInputElement>('[data-layer="routes"]');
+  routesToggle?.addEventListener('change', () => {
+    if (!amapKit) return;
+    ROUTE_OVERLAYS.forEach((l) => {
+      if (routesToggle.checked) amapKit.map.add(l);
+      else amapKit.map.remove(l);
+    });
+  });
+</script>

@@ -1,0 +1,137 @@
+[
+ {
+  "id": "disney_shanghai",
+  "name": "上海迪士尼度假区",
+  "en_name": "Shanghai Disney Resort",
+  "district": "浦东新区",
+  "coords": {
+   "lng": 121.699,
+   "lat": 31.146
+  },
+  "rings_km": [
+   6,
+   20,
+   50
+  ],
+  "access": {
+   "metro": {
+    "direct": true,
+    "line": "上海地铁11号线",
+    "station": "迪士尼站",
+    "note": "11号线直达园区",
+    "confidence": "high"
+   },
+   "self_drive": {
+    "share": 0.35,
+    "note": "自驾占比估算",
+    "confidence": "low"
+   },
+   "metro_share": {
+    "share": 0.45,
+    "note": "地铁为重要集客方式",
+    "confidence": "low"
+   },
+   "other": {
+    "share": 0.2,
+    "note": "打车/旅游大巴等余量",
+    "confidence": "low"
+   }
+  },
+  "target_population": {
+   "value": 5000000,
+   "unit": "persons",
+   "note": "规划假设，未使用精确调研数字",
+   "assumption": true
+  },
+  "reach_k": 240
+ },
+ {
+  "id": "haichang_shanghai",
+  "name": "上海海昌海洋公园",
+  "en_name": "Shanghai Haichang Ocean Park",
+  "district": "浦东新区",
+  "coords": {
+   "lng": 121.903,
+   "lat": 30.894
+  },
+  "rings_km": [
+   6,
+   20,
+   50
+  ],
+  "access": {
+   "metro": {
+    "direct": true,
+    "line": "上海地铁16号线",
+    "station": "滴水湖站",
+    "note": "16号线至滴水湖站后需接驳/短驳车",
+    "confidence": "high"
+   },
+   "metro_share": {
+    "share": 0.4,
+    "note": "地铁+短驳为主要集客方式",
+    "confidence": "low"
+   },
+   "self_drive": {
+    "share": 0.45,
+    "note": "临港较远，自驾占比较高（估算）",
+    "confidence": "low"
+   },
+   "other": {
+    "share": 0.15,
+    "note": "旅游大巴/打车余量",
+    "confidence": "low"
+   }
+  },
+  "target_population": {
+   "value": 3000000,
+   "unit": "persons",
+   "note": "规划假设，未使用精确调研数字",
+   "assumption": true
+  },
+  "reach_k": 245
+ },
+ {
+  "id": "lego_shanghai",
+  "name": "上海乐高乐园度假区",
+  "en_name": "Shanghai LEGOLAND Resort",
+  "district": "金山区",
+  "coords": {
+   "lng": 121.104,
+   "lat": 30.88
+  },
+  "rings_km": [
+   6,
+   20,
+   50
+  ],
+  "access": {
+   "self_drive": {
+    "share": 0.68,
+    "note": "自驾为主，公开报道口径",
+    "confidence": "approx"
+   },
+   "high_speed_rail": {
+    "share": 0.14,
+    "note": "枫泾高铁站（沪杭高铁）",
+    "confidence": "approx"
+   },
+   "metro": {
+    "direct": false,
+    "note": "无直达地铁；需金山铁路或者自驾接驳"
+   },
+   "other": {
+    "share": 0.18,
+    "note": "旅游大巴/打车等，为余量估算",
+    "confidence": "low"
+   }
+  },
+  "target_population": {
+   "value": 2500000,
+   "unit": "persons",
+   "note": "规划假设：以上海及长三角亲子家庭为目标人群，未使用精确调研数字",
+   "assumption": true
+  },
+  "reach_k": 250
+ }
+]

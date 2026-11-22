@@ -34,7 +34,10 @@ def registry():
 def test_skills_load_and_validate(registry):
     assert registry.validate() == []
     names = [s.name for s in registry.ordered()]
-    assert names == ["brief-intake", "audience-strategy", "plan-analysis", "proposal-narrative"]
+    assert names == [
+        "brief-intake", "data-inventory", "data-bigdata",
+        "audience-strategy", "plan-analysis", "proposal-narrative",
+    ]
     assert registry.policy("analysis")["thresholds"]["absorption_floor"] == 0.85
     assert registry.policy("narrative")["forbidden_claims"]
 

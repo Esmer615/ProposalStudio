@@ -1,0 +1,218 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResultHeader from '../../components/ResultHeader.astro';
+
+// Overview: run/meta/inputs, 4 KPIs, H1–H7, strategy/audience/transport/media-roles,
+// media-mix small bar, tabs (in header), 口径/局限 summary.
+---
+<Base
+  title="方案概览 · 新云媒介提案台"
+  description="运行状态、四项输入、假设书 H1–H7、策略、媒体配比与局限摘要。"
+  active=""
+>
+<main id="top" class="page">
+  <ResultHeader active="overview" title="方案概览" />
+
+  <div data-result-empty hidden class="empty section">
+    <div class="wrap">
+      <h2 class="empty__title">暂无可展示的方案</h2>
+      <p class="empty__body" data-empty-body>没有有效的 run 参数，或该方案未生成。请返回输入页重新生成。</p>
+      <a class="btn btn--primary" href="/input.html">去生成方案</a>
+    </div>
+  </div>
+
+  <div data-result-content class="app-section" hidden>
+    <div class="wrap" style="display:grid;gap:var(--s-6)">
+      <!-- summary + inputs (the page's single h1 lives in ResultHeader) -->
+      <section aria-label="方案摘要">
+        <div style="display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap">
+          <p class="muted" data-k="inputs-line" style="margin:0">—</p>
+          <a class="btn btn--secondary" data-pdf-download href="#" download style="margin-left:auto">下载提案 PDF</a>
+        <script is:inline data-pdf-href-sync>
+          (() => {
+            const runId = new URLSearchParams(location.search).get('run');
+            const link = document.querySelector('[data-pdf-download]');
+            if (!link) return;
+            if (runId) link.setAttribute('href', `/proposals/${encodeURIComponent(runId)}.pdf`);
+            else link.setAttribute('hidden', '');
+          })();
+        </script>
+        </div>
+        <div class="kpi-grid" style="margin-top:var(--s-5)">
+          <div class="kpi"><span class="kpi__label">有效曝光</span><span class="kpi__value" data-k="impressions">—</span></div>
+          <div class="kpi"><span class="kpi__label">Reach</span><span class="kpi__value" data-k="reach">—</span></div>
+          <div class="kpi"><span class="kpi__label">Frequency</span><span class="kpi__value" data-k="frequency">—</span></div>
+          <div class="kpi"><span class="kpi__label">CPM（元）</span><span class="kpi__value" data-k="cpm">—</span></div>
+        </div>
+      </section>
+
+      <!-- H1–H7 -->
+      <section aria-labelledby="ov-hyp-h">
+        <h2 id="ov-hyp-h" style="margin-bottom:var(--s-4)">Campaign 假设书</h2>
+        <div class="hyp" data-k="hypothesis"></div>
+        <div class="card" style="margin-top:var(--s-4)">
+          <div class="card-head"><span>一句话策略</span></div>
+          <p style="font-size:15px;padding:var(--s-4)" data-k="one-liner">—</p>
+        </div>
+      </section>
+
+      <!-- strategy / audience / transport / media roles -->
+      <section aria-labelledby="ov-strat-h">
+        <h2 id="ov-strat-h" style="margin-bottom:var(--s-4)">策略 · 人群 · 交通 · 媒介角色</h2>
+        <div class="gsplit">
+          <div class="card" style="align-self:stretch">
+            <div class="card-head"><span>策略主线</span></div>
+            <p style="padding:var(--s-4);font-size:14px" data-k="strategy">—</p>
+          </div>
+          <div class="card">
+            <div class="card-head"><span>人群与交通</span></div>
+            <div class="kv" style="padding:var(--s-4)" data-k="audi-transport"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:var(--s-4)">
+          <div class="card-head"><span>媒介角色</span></div>
+          <div class="rows" data-k="media-roles" style="padding:0 var(--s-4)"></div>
+        </div>
+      </section>
+
+      <!-- media mix small bar -->
+      <section aria-labelledby="ov-mix-h">
+        <h2 id="ov-mix-h" style="margin-bottom:var(--s-4)">媒体配比</h2>
+        <div class="card">
+          <div class="card-head"><span>媒体配比（按折后媒体费）</span></div>
+          <div style="padding:var(--s-4);display:grid;gap:var(--s-4)">
+            <svg class="chart" viewBox="0 0 360 56" role="img" aria-label="媒体配比条形图：公交与地铁按折后媒体费的占比">
+              <rect x="0" y="0" width="360" height="18" rx="4" fill="color-mix(in oklab, var(--ink) 10%, transparent)"></rect>
+              <rect class="bar" data-k="bus-bar" x="0" y="0" width="0" height="18" rx="4"></rect>
+              <rect class="bar bar--alt" data-k="metro-bar" x="0" y="0" width="0" height="18" rx="4"></rect>
+              <text x="0" y="40" font-size="11" data-k="bus-label">公交 0%</text>
+              <text x="360" y="40" text-anchor="end" font-size="11" data-k="metro-label">地铁 0%</text>
+            </svg>
+            <div class="kv">
+              <div><span>公交线路 / 车辆</span><b data-k="bus-units">—</b></div>
+              <div><span>地铁站点 / 出入口</span><b data-k="metro-units">—</b></div>
+              <div><span>总付费单元</span><b data-k="paid-units">—</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 口径/局限摘要 -->
+      <section aria-labelledby="ov-limits-h">
+        <h2 id="ov-limits-h" style="margin-bottom:var(--s-3)">口径与局限摘要</h2>
+        <div class="card">
+          <div class="kv" style="padding:var(--s-4)" data-k="limits"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+</Base>
+<script>
+  import { initResult } from '../../scripts/result';
+  import { fmtWan, fmtPct, pctReadable, ratioPct, fmtMoney, shortName } from '../../lib/format';
+
+  initResult((plan, run) => {
+    const inputs = plan.inputs || {};
+    const effects = plan.effects || {};
+    const hyp = plan.hypothesis || {};
+    const strategy = plan.strategy || {};
+    const summary = plan.plan?.summary || {};
+    const quote = plan.quote || {};
+    const limits = plan.validation?.limitations || [];
+
+    const h1 = `${inputs.venue_name || plan.venue?.name || '方案'} · ${inputs.budget_wan ?? '—'} 万 · ${inputs.start_date ?? ''} 起`;
+    const title = document.querySelector('[data-result-title]');
+    if (title) title.textContent = h1;
+    document.querySelector('[data-k="inputs-line"]')!.textContent =
+      `${(inputs.media || []).map((m: string) => m === 'bus' ? '公交车身' : '地铁出入口').join(' + ')} · ${inputs.weeks ?? '—'} 周 · ${inputs.customer_type_label || (inputs.customer_type === '4a' ? '4A 代理' : '直客')} · 档期 ${inputs.start_date ?? '—'} → ${inputs.end_date ?? '—'}`;
+
+    const pdfLink = document.querySelector<HTMLAnchorElement>('[data-pdf-download]');
+    const runId = (run as any)?.run_id;
+    if (pdfLink && runId) pdfLink.href = `/proposals/${encodeURIComponent(runId)}.pdf`;
+    else if (pdfLink) pdfLink.hidden = true;
+
+    set('[data-k="impressions"]', `${fmtWan((effects.impressions || 0) / 10000, 1)} 万`);
+    set('[data-k="reach"]', pctReadable(effects.reach_pct ?? effects.reach));
+    set('[data-k="frequency"]', fmtWan(effects.frequency, 1));
+    set('[data-k="cpm"]', fmtWan(effects.cpm_yuan, 2));
+
+    // hypothesis
+    const hypEl = document.querySelector('[data-k="hypothesis"]')!;
+    hypEl.replaceChildren();
+    (hyp.fields || []).forEach((f: any) => {
+      const it = document.createElement('div');
+      it.className = 'hyp__item';
+      const id = document.createElement('span'); id.className = 'hyp__id'; id.textContent = f.id;
+      const body = document.createElement('div');
+      const label = document.createElement('div'); label.className = 'hyp__label'; label.textContent = f.label;
+      const val = document.createElement('div'); val.className = 'hyp__value'; val.textContent = f.value;
+      body.append(label, val);
+      it.append(id, body);
+      hypEl.append(it);
+    });
+    set('[data-k="one-liner"]', hyp.one_liner || '—');
+
+    // strategy
+    set('[data-k="strategy"]', strategy.one_liner || plan.strategy?.one_liner || '—');
+    const at = document.querySelector('[data-k="audi-transport"]')!;
+    at.replaceChildren();
+    const aud = strategy.audience || {};
+    const tr = strategy.transport || {};
+    const atRows: [string, string][] = [];
+    if (aud.primary) atRows.push(['核心人群', aud.primary]);
+    if (aud.secondary) atRows.push(['次级人群', aud.secondary]);
+    if (tr.metro_access) atRows.push(['地铁可达', tr.metro_access]);
+    if (tr.note) atRows.push(['交通说明', tr.note]);
+    atRows.forEach(([k, v]) => {
+      const d = document.createElement('div');
+      d.innerHTML = `<span>${k}</span><b>${v}</b>`;
+      at.append(d);
+    });
+
+    // media roles
+    const mr = document.querySelector('[data-k="media-roles"]')!;
+    mr.replaceChildren();
+    (strategy.media_roles || []).forEach((r: any) => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const mark = document.createElement('span'); mark.className = 'row__mark'; mark.textContent = r.media === 'bus' ? 'B' : 'M';
+      const main = document.createElement('div');
+      const b = document.createElement('b'); b.textContent = r.role || r.media;
+      const small = document.createElement('small'); small.textContent = r.share_target != null ? `目标占比 ${Math.round(r.share_target * 100)}%` : '';
+      main.append(b, small);
+      row.append(mark, main, document.createTextNode(''));
+      mr.append(row);
+    });
+
+    // media mix
+    const busPct = summary.media_mix?.bus_pct ?? 0;
+    const metroPct = summary.media_mix?.metro_pct ?? 0;
+    const busBar = document.querySelector('[data-k="bus-bar"]') as SVGElement; busBar.setAttribute('width', String(busPct * 360));
+    const metroBar = document.querySelector('[data-k="metro-bar"]') as SVGElement; metroBar.setAttribute('x', String(busPct * 360)); metroBar.setAttribute('width', String(metroPct * 360));
+    set('[data-k="bus-label"]', `公交 ${ratioPct(busPct)}`);
+    set('[data-k="metro-label"]', `地铁 ${ratioPct(metroPct)}`);
+    set('[data-k="bus-units"]', `${summary.bus_lines ?? '—'} 条 / ${summary.bus_units ?? '—'} 辆`);
+    set('[data-k="metro-units"]', `${summary.metro_stations ?? '—'} 站 / ${summary.metro_units ?? '—'} 口`);
+    set('[data-k="paid-units"]', String((summary.bus_units ?? 0) + (summary.metro_units ?? 0)));
+
+    // limits
+    const lim = document.querySelector('[data-k="limits"]')!;
+    lim.replaceChildren();
+    const extra = [
+      '曝光 / Reach / Frequency / CPM 为模型估算，目标人群为策划假设',
+      '折扣档位门槛待赞助方确认',
+      '公交几何缺失时按区县示意，POI/站点坐标为公开近似',
+    ];
+    [...limits, ...extra].forEach((t, i) => {
+      const d = document.createElement('div');
+      d.innerHTML = `<span>局限 ${String(i + 1).padStart(2, '0')}</span><b>${t}</b>`;
+      lim.append(d);
+    });
+
+    function set(sel: string, v: string) {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = v;
+    }
+  });
+</script>

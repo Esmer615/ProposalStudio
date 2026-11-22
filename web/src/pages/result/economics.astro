@@ -1,0 +1,158 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResultHeader from '../../components/ResultHeader.astro';
+import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
+
+// Economics: quote waterfall (刊例→折扣→折后→制作→4A→总价), line allocation check,
+// gift, budget utilization/slack, date-based schedule (phases + install batches) + night capacity / rain / SLA / 误一补二.
+// All numbers come from the run payload; no price math here.
+---
+<Base
+  title="报价与排期 · 新云媒介提案台"
+  description="报价瀑布、逐行分摊核对、赠媒、预算使用率与余量、排期批次与监测 SLA。"
+  active=""
+>
+<main id="top" class="page">
+  <ResultHeader active="economics" title="报价与排期" />
+
+  <div data-result-empty hidden class="empty section">
+    <div class="wrap">
+      <h2 class="empty__title">暂无可展示的方案</h2>
+      <p class="empty__body" data-empty-body>没有有效的 run 参数。请返回输入页重新生成。</p>
+      <a class="btn btn--primary" href="/input.html">去生成方案</a>
+    </div>
+  </div>
+
+  <div data-result-content class="app-section" hidden>
+    <div class="wrap" style="display:grid;gap:var(--s-6)">
+
+      <!-- quote waterfall -->
+      <section aria-labelledby="eco-quote-h">
+        <h2 id="eco-quote-h" style="margin-bottom:var(--s-4)">报价瀑布</h2>
+        <div class="gsplit">
+          <div class="card">
+            <div class="card-head"><span>刊例 → 总价</span><span class="chip chip--quiet mono" data-k="discount-tier-label">—</span></div>
+            <div class="kv" style="padding:var(--s-4)" data-k="waterfall"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span>逐行分摊核对</span><span class="chip" data-k="alloc-pass" id="alloc-chip">—</span></div>
+            <div class="kv" style="padding:var(--s-4)" data-k="allocation"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- budget utilization + gift -->
+      <section aria-labelledby="eco-budget-h">
+        <h2 id="eco-budget-h" style="margin-bottom:var(--s-4)">预算使用与赠媒</h2>
+        <div class="kpi-grid">
+          <div class="kpi"><span class="kpi__label">预算</span><span class="kpi__value" data-k="budget">—</span><span class="kpi__sub">万元</span></div>
+          <div class="kpi"><span class="kpi__label">应付总价</span><span class="kpi__value" data-k="total-paid">—</span><span class="kpi__sub">万元</span></div>
+          <div class="kpi"><span class="kpi__label">预算使用率</span><span class="kpi__value" data-k="util">—</span></div>
+          <div class="kpi"><span class="kpi__label">预算余量</span><span class="kpi__value" data-k="slack">—</span><span class="kpi__sub">万元</span></div>
+        </div>
+        <div class="card" style="margin-top:var(--s-4)">
+          <div class="card-head"><span>赠媒（等值，不计付费 KPI）</span><span class="chip chip--quiet mono" data-k="gift-wan">—</span></div>
+          <div class="rows" data-k="gift-items" style="padding:0 var(--s-4)"></div>
+        </div>
+      </section>
+
+      <!-- date-based schedule -->
+      <section aria-labelledby="eco-sched-h">
+        <h2 id="eco-sched-h" style="margin-bottom:var(--s-4)">排期</h2>
+        <div class="card">
+          <div class="card-head"><span>日期排期</span><span class="chip chip--quiet mono" data-k="sched-span">—</span></div>
+          <ScheduleCalendar />
+        </div>
+        <div class="card" style="margin-top:var(--s-4)">
+          <div class="card-head"><span>夜间产能 · 监测 · 补偿</span></div>
+          <div class="kv" style="padding:var(--s-4)" data-k="schedule-kv"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+</Base>
+<script>
+  import { initResult } from '../../scripts/result';
+  import { renderSchedule } from '../../scripts/schedule';
+  import { fmtWan, fmtInt, ratioPct } from '../../lib/format';
+
+  initResult((plan) => {
+    const q = plan.quote || {};
+    const summary = plan.plan?.summary || {};
+    const sched = plan.schedule || {};
+
+    // waterfall
+    const wf = document.querySelector('[data-k="waterfall"]')!;
+    wf.replaceChildren();
+    const rows: [string, string, boolean][] = [
+      ['刊例总额', fmtWan(q.rate_card_total_wan), false],
+      ['折扣', q.discount != null ? `${Math.round(q.discount * 100)}%` : '—', false],
+      ['折后媒体费', fmtWan(q.media_net_wan), false],
+      ['制作费', fmtWan(q.production_wan), false],
+      ['4A 服务费', fmtWan(q.agency_fee_wan), false],
+      ['应付总价', fmtWan(q.total_paid_wan), true],
+    ];
+    rows.forEach(([k, v, total]) => {
+      const d = document.createElement('div');
+      d.className = total ? 'total' : '';
+      d.innerHTML = `<span>${k}</span><b>${v}</b>`;
+      wf.append(d);
+    });
+    document.querySelector('[data-k="discount-tier-label"]')!.textContent = q.discount_tier?.label || (q.discount != null ? `折扣 ${Math.round(q.discount * 100)}%` : '—');
+
+    // allocation check
+    const ac = q.allocation_check || {};
+    const pass = ac.passed != null ? ac.passed : true;
+    const chip = document.getElementById('alloc-chip')!;
+    chip.textContent = pass ? '通过' : '待核对';
+    chip.className = 'chip ' + (pass ? 'chip--accent' : 'chip--danger');
+    const alloc = document.querySelector('[data-k="allocation"]')!;
+    alloc.replaceChildren();
+    [['逐行加总', fmtWan(ac.sum_lines)], ['总价', fmtWan(ac.total)], ['误差', fmtWan(ac.diff, 2)]].forEach(([k, v]) => {
+      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; alloc.append(d);
+    });
+
+    // budget KPIs
+    set('[data-k="budget"]', fmtWan(q.budget_wan, 1));
+    set('[data-k="total-paid"]', fmtWan(q.total_paid_wan, 2));
+    set('[data-k="util"]', summary.budget_utilization != null ? ratioPct(summary.budget_utilization) : (q.budget_wan ? ((q.total_paid_wan / q.budget_wan) * 100).toFixed(1) + '%' : '—'));
+    set('[data-k="slack"]', fmtWan(q.budget_slack_wan, 2));
+
+    // gift
+    set('[data-k="gift-wan"]', `${fmtWan(q.gift_wan)} 万`);
+    const gi = document.querySelector('[data-k="gift-items"]')!;
+    gi.replaceChildren();
+    (q.gift_items || []).forEach((it: any) => {
+      const r = document.createElement('div'); r.className = 'row';
+      const mark = document.createElement('span'); mark.className = 'row__mark'; mark.textContent = 'G';
+      const main = document.createElement('div'); const b = document.createElement('b'); b.textContent = it.name || it.id || '—';
+      main.append(b);
+      const chip = document.createElement('span'); chip.className = 'chip chip--quiet'; chip.textContent = fmtWan(it.gross_wan);
+      r.append(mark, main, chip);
+      gi.append(r);
+    });
+
+    // date-based schedule: calendar + dated task rows (phases and install batches)
+    set('[data-k="sched-span"]', sched.go_live && sched.take_down
+      ? `${sched.go_live} → ${sched.take_down}${sched.total_days ? ` · ${sched.total_days} 天` : ''}`
+      : '—');
+    renderSchedule(document.querySelector<HTMLElement>('[data-sched]'), sched);
+
+    // schedule kv
+    const nc = sched.night_capacity || {};
+    const mon = sched.monitoring?.[0];
+    const skv = document.querySelector('[data-k="schedule-kv"]')!;
+    skv.replaceChildren();
+    const lines: [string, string][] = [
+      ['夜间产能', `公交 ${nc.bus_per_night ?? '—'} 辆 / 地铁 ${nc.metro_per_night ?? '—'} 口`],
+      ['施工夜 / 雨备夜', `${nc.nights ?? '—'} / ${nc.rain_buffer_nights ?? '—'}`],
+      ['上刊 / 下刊', `${sched.go_live || '—'} → ${sched.take_down || '—'}`],
+      ['监测 SLA', `${mon?.name || '上刊监测'} · ${mon?.sla || mon?.due || '—'}`],
+      ['补偿', sched.compensation?.rule || '误一补二'],
+    ];
+    lines.forEach(([k, v]) => { const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; skv.append(d); });
+
+    function set(sel: string, v: string) { const el = document.querySelector(sel); if (el) el.textContent = v; }
+  });
+</script>

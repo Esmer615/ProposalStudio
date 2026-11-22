@@ -1,0 +1,306 @@
+/* Application CSS — supplements the taste kit (system.css + cards.css) with workbench widgets:
+   data tables, dialog bubbles, drawer, map frame, SVG charts, run-stage timeline, result layouts.
+   The kit owns chrome (.btn/.nav/.wrap/.grid/.card/.panel/.field/.stats/.tabs/.link/.pill). */
+
+/* ------------------------------------------------------------------ badges (chip) */
+.chip { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; font-weight: 500; color: color-mix(in oklab, var(--ink) 74%, var(--accent)); background: color-mix(in oklab, var(--accent) 13%, white); white-space: nowrap; }
+.chip--quiet { background: color-mix(in oklab, var(--ink) 6%, transparent); color: var(--muted); }
+.chip--accent { background: var(--accent); color: #fff; }
+.chip--warn { background: color-mix(in oklab, var(--ground-accent) 16%, white); color: #6d4523; }
+.chip--danger { background: color-mix(in oklab, var(--error, #8c3a2b) 14%, white); color: var(--error, #8c3a2b); }
+
+/* ------------------------------------------------------------------ KPI grid */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 0; }
+.kpi { padding: var(--s-4); border-left: 1px solid var(--line); display: grid; gap: 4px; align-content: start; }
+.kpi:first-child { border-left: 0; padding-left: 0; }
+.kpi__label { font-size: var(--t-small); color: var(--muted); }
+.kpi__value { font: 500 28px/1.15 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.kpi__value small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 2px; }
+.kpi__sub { font-size: 12px; color: var(--muted); }
+@media (max-width: 1100px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+
+/* card / panel head (a 1px-divider header line used in app cards) */
+.card-head, .panel-head { display: flex; align-items: center; gap: 10px; padding: 12px var(--s-4); border-bottom: 1px solid var(--line); font-size: var(--t-small); font-weight: 500; flex-wrap: wrap; }
+.card-head .chip, .panel-head .chip, .card-head .pill, .panel-head .pill { margin-left: auto; }
+
+/* page shell for the app pages (not the one-screen-per-section marketing rhythm) */
+.app-main { min-height: 60vh; }
+.app-section { padding: var(--s-8) 0; }
+.app-section + .app-section { border-top: 1px solid var(--line); }
+/* The kit gives every main > section a screen height for the marketing rhythm. App pages use
+   sections as plain layout wrappers (input has a page-title band + the workbench), so opt them
+   out of the 100vh rule and let their content set the height. */
+body main > section.app-section,
+body main > section.app-section > .wrap { height: auto; min-height: 0; }
+
+/* split side-by-side layouts used on input + result pages */
+.gsplit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-6); align-items: start; }
+.gsplit--form { grid-template-columns: minmax(0, 1fr) var(--rail, 400px); }
+.grail { position: sticky; top: calc(var(--nav) + var(--s-4)); align-self: start; display: grid; gap: var(--s-5); align-content: start; }
+.gsplit--3 { grid-template-columns: minmax(0, 1fr) 320px; }
+
+@media (max-width: 1100px) {
+  .gsplit, .gsplit--form, .gsplit--3 { grid-template-columns: 1fr; }
+  .grail { position: static; }
+}
+
+/* ------------------------------------------------------------------ key/value list */
+.kv { display: grid; }
+.kv > div { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); padding: 9px 0; border-top: 1px solid var(--line); }
+.kv > div:first-child { border-top: 0; }
+.kv span { color: var(--muted); font-size: var(--t-small); }
+.kv b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.kv .total { border-top: 1px solid var(--line-strong); }
+.kv .total span, .kv .total b { color: var(--ink); }
+
+/* ------------------------------------------------------------------ data table (20-row paginated) */
+.table-shell { display: grid; gap: var(--s-4); }
+.table-scroll { overflow-x: auto; }
+table.data { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.data thead th { text-align: left; font-size: 12px; font-weight: 500; color: var(--muted); padding: 9px 12px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+table.data thead th.num, table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.data tbody td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.data a.rowlink { text-decoration: none; color: var(--ink); }
+table.data a.rowlink:hover { color: var(--action); }
+
+.pager { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.pager__nav { display: flex; gap: 6px; margin-left: auto; }
+.pager button { appearance: none; border: 1px solid var(--line-strong); background: transparent; cursor: pointer; font: 500 13px/1 var(--font-text); color: var(--ink); padding: 7px 11px; border-radius: var(--r-sm); }
+.pager button:disabled { opacity: .4; cursor: default; }
+.pager button:hover:not(:disabled) { border-color: var(--action); }
+
+/* ------------------------------------------------------------------ agent dialog */
+.dialog { display: grid; gap: 10px; max-height: 460px; overflow-y: auto; padding-right: 4px; }
+.msg { max-width: 92%; padding: 10px 13px; border-radius: var(--r-md); font-size: 14px; line-height: 1.55; }
+.msg--user { justify-self: end; background: var(--p-inv-bg); color: var(--p-inv-ink); border-radius: var(--r-md) var(--r-md) 3px var(--r-md); }
+.msg--agent { justify-self: start; background: var(--card); border: 0; border-left: 2px solid var(--line-strong); border-radius: 0; padding-left: 0; padding-right: 0; }
+.msg--error { justify-self: start; background: color-mix(in oklab, var(--error, #8c3a2b) 8%, white); border-color: color-mix(in oklab, var(--error, #8c3a2b) 35%, transparent); }
+.msg__head { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.msg__list { display: grid; gap: 4px; padding-left: 16px; margin: 4px 0; }
+.msg__list li { font-size: 13px; }
+
+/* question chips that refill the form */
+.q-chip { appearance: none; border: 1px solid var(--line-strong); background: var(--card); font: 400 13px/1.4 var(--font-text); color: var(--ink); padding: 7px 11px; border-radius: var(--r-sm); cursor: pointer; text-align: left; }
+.q-chip:hover { border-color: var(--action); }
+
+/* segmented control (level / media filters) */
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg button { appearance: none; border: 0; font: 500 13px/1 var(--font-text); padding: 9px 12px; border-radius: var(--r-sm); cursor: pointer; color: var(--ink); background: color-mix(in oklab, var(--ink) 5%, transparent); box-shadow: inset 0 0 0 1px var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); box-shadow: none; }
+
+.check-label { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.check-label input { accent-color: var(--action); width: 16px; height: 16px; }
+
+/* ------------------------------------------------------------------ run stage timeline */
+.stages { display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 0; }
+.stage { padding: 14px 8px 0 0; border-top: 2px solid var(--line); font-size: 12px; color: var(--muted); position: relative; transition: color .25s ease; }
+.stage + .stage { padding-left: 8px; border-left: 1px solid var(--line); }
+.stage::before { content: ""; position: absolute; top: -6px; left: 0; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line-strong); transition: background .25s ease, border-color .25s ease, transform .25s ease; }
+.stage + .stage::before { left: 8px; }
+.stage b { display: block; font-weight: 500; font-size: 12px; color: var(--ink); margin-bottom: 2px; white-space: nowrap; }
+.stage[data-state="active"]::before, .stage[data-state="done"]::before { border-color: var(--accent); background: var(--accent); }
+.stage[data-state="active"]::before { animation: stagePulse 1.35s ease-out infinite; }
+.stage[data-state="active"] b { color: var(--accent); }
+.stage[data-state="done"] { color: var(--ink); }
+.stage[data-state="skip"] { opacity: .6; }
+.stage[data-state="error"]::before { border-color: var(--error, #8c3a2b); background: var(--error, #8c3a2b); }
+.stage[data-state="error"] b { color: var(--error, #8c3a2b); }
+.input-stages { position: relative; }
+.input-stages::after { content: ""; position: absolute; left: 0; top: 0; height: 2px; width: var(--stage-progress, 0%); background: var(--accent); transition: width .45s ease; pointer-events: none; }
+.stage-live { margin-top: var(--s-5); margin-bottom: 4px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+@keyframes stagePulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent) 55%, transparent); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage[data-state="active"]::before { animation: none; }
+  .input-stages::after { transition: none; }
+}
+@media (max-width: 1100px) { .stages { grid-template-columns: 1fr 1fr; gap: 14px 0; } }
+
+/* ------------------------------------------------------------------ status bar */
+.statusbar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 10px var(--s-4); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--card); font-size: 13px; color: var(--muted); }
+.statusbar b { font-weight: 500; color: var(--ink); }
+.statusbar--warn { border-color: color-mix(in oklab, var(--ground-accent) 45%, transparent); }
+.statusbar--danger { border-color: color-mix(in oklab, var(--error, #8c3a2b) 40%, transparent); }
+
+/* ------------------------------------------------------------------ empty state */
+.empty { text-align: center; padding: var(--s-10) var(--s-4); display: grid; gap: var(--s-4); justify-items: center; }
+.empty__title { font-size: var(--t-h2); }
+.empty__body { max-width: 460px; color: var(--muted); }
+
+/* ------------------------------------------------------------------ score bars (drawer) */
+.score { display: grid; gap: 7px; }
+.score__row { display: grid; grid-template-columns: 90px minmax(0,1fr) 44px; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+.score__bar { height: 5px; border-radius: 99px; background: color-mix(in oklab, var(--ink) 8%, transparent); overflow: hidden; }
+.score__bar i { display: block; height: 100%; background: var(--accent); }
+.score__row b { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-align: right; color: var(--ink); }
+
+/* ------------------------------------------------------------------ drawer */
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 92vw); background: var(--bg); border-left: 1px solid var(--line); z-index: 60; transform: translateX(100%); transition: transform 220ms var(--ease); box-shadow: -24px 0 60px -30px rgb(34 38 31 / 40%); display: flex; flex-direction: column; }
+.drawer[data-open="true"] { transform: none; }
+.drawer__head { display: flex; align-items: center; gap: 10px; padding: var(--s-4); border-bottom: 1px solid var(--line); }
+.drawer__head h3 { font-size: 18px; margin: 0; }
+.drawer__head .btn { margin-left: auto; }
+.drawer__body { padding: var(--s-4); overflow-y: auto; display: grid; gap: var(--s-4); align-content: start; }
+.drawer__scrim { position: fixed; inset: 0; background: rgb(34 38 31 / 32%); z-index: 55; opacity: 0; pointer-events: none; transition: opacity 200ms var(--ease); }
+.drawer__scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+/* ------------------------------------------------------------------ map frame */
+.map-frame { position: relative; min-height: 560px; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line-strong); background: var(--ground-bg); }
+.map-frame > #amap, .map-frame > .map-fallback { position: absolute; inset: 0; }
+.map-frame > .map-fallback svg { width: 100%; height: 100%; display: block; }
+.map-frame > #amap { display: none; }
+.map-frame[data-mode="live"] > #amap { display: block; }
+.map-frame[data-mode="live"] > .map-fallback { display: none; }
+/* Until AMap reports its first complete paint, keep the static fallback (never a white canvas). */
+.map-frame[data-mode="live"]:not([data-map-ready="true"]) > #amap { display: none; }
+.map-frame[data-mode="live"]:not([data-map-ready="true"]) > .map-fallback { display: block; }
+.map-frame .map-note { position: absolute; left: 12px; top: 12px; z-index: 5; font-size: 12px; color: var(--muted); padding: 0; background: none; border-radius: 0; box-shadow: none; }
+.map-frame .map-legend { position: absolute; right: 12px; bottom: 12px; z-index: 5; display: grid; gap: 4px; font-size: 12px; color: var(--muted); background: color-mix(in oklab, var(--card) 94%, transparent); padding: 8px 10px; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--line); }
+.map-frame .map-legend span { display: flex; align-items: center; gap: 6px; }
+.map-frame .map-legend i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+.map-frame .map-legend i.accent { background: var(--accent); }
+.map-frame .map-legend i.ring { background: none; box-shadow: inset 0 0 0 1px var(--accent); width: 11px; height: 11px; }
+.map-frame .map-legend i.route { width: 14px; height: 3px; border-radius: 2px; background: var(--accent); }
+.map-frame .map-legend i.route--metro { background: var(--ground-accent); }
+
+.amap-pin { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px color-mix(in oklab, var(--accent) 55%, transparent); position: relative; }
+.amap-pin--venue { width: 16px; height: 16px; border-radius: 4px; transform: rotate(45deg); box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px color-mix(in oklab, var(--accent) 40%, transparent); }
+.amap-route-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px color-mix(in oklab, var(--accent) 55%, transparent); cursor: pointer; }
+.amap-route-dot.is-metro { background: var(--ground-accent); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px color-mix(in oklab, var(--ground-accent) 55%, transparent); }
+.amap-route-label { padding: 3px 7px; border-radius: 5px; border: 1px solid var(--accent); background: color-mix(in oklab, var(--card) 94%, transparent); color: var(--accent); font: 500 11px/1.2 var(--font-text); white-space: nowrap; cursor: pointer; box-shadow: 0 4px 12px -8px rgb(0 0 0 / 45%); }
+.amap-route-label.is-metro { border-color: var(--ground-accent); color: #6d4523; }
+.amap-venue { padding: 5px 9px; border-radius: 7px; background: var(--p-inv-bg); color: var(--p-inv-ink); font: 500 12px/1 var(--font-text); white-space: nowrap; box-shadow: 0 6px 16px -8px rgb(0 0 0 / 45%); }
+.amap-venue-marker { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.amap-venue-marker.is-selected .amap-venue { background: var(--accent); color: var(--p-inv-ink); box-shadow: 0 0 0 2px var(--bg), 0 8px 20px -10px rgb(0 0 0 / 55%); }
+.amap-venue-marker em { margin-left: 5px; font-style: normal; font-size: 10px; opacity: .72; }
+.amap-point-marker { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.amap-pin--metro { width: 8px; height: 8px; background: var(--ground-accent); box-shadow: 0 0 0 1px var(--bg), 0 0 0 2px color-mix(in oklab, var(--ground-accent) 45%, transparent); }
+.amap-point-label { padding: 2px 6px; border-radius: 5px; border: 1px solid var(--line); background: color-mix(in oklab, var(--card) 92%, transparent); color: var(--muted); font: 500 10px/1.25 var(--font-text); white-space: nowrap; box-shadow: 0 4px 12px -8px rgb(0 0 0 / 45%); }
+.venue-search { display: flex; gap: 8px; margin-top: 8px; }
+.venue-search input { flex: 1; }
+.input-submit { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+/* AMap injects a logo link and control iframe; keep both keyboard-safe and visibly focused. */
+#amap iframe:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+#amap .amap-logo img { max-width: 100%; }
+
+/* ------------------------------------------------------------------ input page */
+.input-workbench { padding-top: calc(var(--nav) + var(--s-5)); }
+.input-intro { display: grid; gap: var(--s-2); }
+.input-intro__action { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; margin-top: var(--s-3); }
+.input-fact { font-size: 13px; color: var(--muted); margin-top: var(--s-2); }
+/* A plain process line on the page ground (not a band, not button-shaped nodes). */
+.input-flow { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); padding: var(--s-4) 0; margin-top: var(--s-5); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.input-flow__node { display: inline-flex; align-items: center; padding: 2px 0; border: 0; background: none; font-size: 14px; font-weight: 500; color: var(--ink); white-space: nowrap; }
+.input-flow__node--accent { color: var(--accent); }
+.input-flow__arrow { color: var(--muted); }
+/* the form shares the kit's 12-column split lines: 6 columns, one empty column, 5 columns */
+.input-split { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); align-items: start; }
+.input-split__main { grid-column: 1 / span 6; min-width: 0; }
+.input-split__rail { grid-column: 8 / -1; min-width: 0; }
+.form-card { background: none; border: 0; padding: 0; }
+/* Keep the disclosure's chevron on the right so its summary text starts on the page margin. */
+#plan-form summary { list-style: none; cursor: pointer; }
+#plan-form summary::-webkit-details-marker { display: none; }
+#plan-form summary::after { content: " ▸"; color: var(--muted); }
+#plan-form details[open] summary::after { content: " ▾"; }
+.input-stages { margin-top: var(--s-6); }
+@media (max-width: 1100px) {
+  .input-split { grid-template-columns: 1fr; }
+  .input-split__main, .input-split__rail { grid-column: auto; }
+}
+
+/* app pages close on a utility data line, not a one-screen marketing close */
+.app-footer { border-top: 1px solid var(--line); padding: var(--s-5) 0; }
+@media (max-width: 639px) {
+  .input-flow { align-items: stretch; }
+  .input-flow__node { white-space: normal; }
+  .input-actions { position: static; }
+}
+
+/* ------------------------------------------------------------------ SVG charts */
+.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.chart text { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+.chart .grid-line { stroke: color-mix(in oklab, var(--ink) 10%, transparent); stroke-width: 1; }
+.chart .axis { stroke: color-mix(in oklab, var(--ink) 16%, transparent); stroke-width: 1; }
+.chart .bar { fill: var(--accent); }
+.chart .bar--alt { fill: color-mix(in oklab, var(--ink) 26%, transparent); }
+.chart .line { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.chart .area { fill: color-mix(in oklab, var(--accent) 12%, transparent); }
+.chart .dot { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
+.chart .dot--now { fill: var(--accent); }
+.chart .marginal { fill: none; stroke: var(--ground-accent); stroke-width: 2; stroke-dasharray: 4 3; }
+.chart .knee { stroke: color-mix(in oklab, var(--ink) 30%, transparent); stroke-dasharray: 3 3; }
+
+/* ------------------------------------------------------------------ hypothesis list */
+.hyp { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s-6); }
+.hyp__item { display: grid; grid-template-columns: 40px minmax(0,1fr); gap: 10px; padding: 14px 0; border-top: 1px solid var(--line); }
+.hyp__id { font-family: var(--font-mono); font-size: 12px; color: var(--accent); padding-top: 3px; }
+.hyp__label { font-size: 13px; color: var(--muted); }
+.hyp__value { font-size: 15px; line-height: 1.55; margin-top: 3px; }
+
+/* compact rows (list details) */
+.rows { display: grid; }
+.row { display: grid; grid-template-columns: 28px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.row:first-child { border-top: 0; }
+.row__mark { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 11px; font-weight: 500; background: color-mix(in oklab, var(--accent) 12%, white); color: var(--accent); }
+.row b { font-weight: 500; display: block; line-height: 1.3; }
+.row small { display: block; color: var(--muted); font-size: 12px; line-height: 1.3; }
+
+/* result-page tabs row */
+.result-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); }
+.result-tabs a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--muted); padding: 11px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.result-tabs a:hover { color: var(--ink); }
+.result-tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* a right-edge mono label in the nav (anchors SR-6 container-edges; also the whole-nav fill) */
+.nav__tag { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 639px) { .nav__tag { display: none; } }
+
+/* ------------------------------------------------------------------ hero summary card (home) */
+/* The plan-summary card in the hero's right frame: no fixed height, no clipping — it sizes to its
+   content and stays inside the frame on narrow widths (cut-text / overflow). */
+.hero-card { display: flex; flex-direction: column; justify-content: center; gap: var(--s-4); height: 100%; min-height: 0; overflow: visible; }
+.hero-stats { grid-template-columns: 1fr 1fr; row-gap: var(--s-5); }
+.hero-kv { margin-top: var(--s-1); }
+.hero-card__note { font-size: 12px; }
+
+/* the proof facts: the number rolls (counter-rolls), the unit sits beside it, never inside */
+.hero-facts dd { display: flex; align-items: baseline; gap: var(--s-2); }
+.hero-facts .t-unit { font-size: var(--t-small); color: var(--muted); white-space: nowrap; }
+
+/* ------------------------------------------------------------------ step cards (home) */
+/* A light UI fragment per step card: a mini form, a data-flow, a tab strip. No photos, no motion. */
+.step-visual { display: grid; gap: var(--s-3); padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-md); background: color-mix(in oklab, var(--ground-bg) 30%, var(--card)); margin-bottom: var(--s-4); min-height: 200px; align-content: center; }
+.step-visual__fld { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); font-size: 13px; color: var(--muted); padding-bottom: var(--s-3); border-bottom: 1px dashed var(--line); }
+.step-visual__fld:last-child { border-bottom: 0; padding-bottom: 0; }
+.step-visual__label { flex: none; }
+.step-visual__fld b { font-weight: 500; color: var(--ink); text-align: right; font-size: 13px; }
+.step-visual--flow { grid-template-columns: auto max-content auto max-content auto; align-items: center; justify-content: center; gap: var(--s-3); padding-block: var(--s-6); }
+.step-visual__node { font-size: 13px; font-weight: 500; color: var(--ink); padding: 8px 12px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--card); white-space: nowrap; }
+.step-visual__node--accent { border-color: var(--accent); color: var(--accent); }
+.step-visual__arrow { color: var(--muted); }
+.step-visual--tabs { grid-auto-flow: column; grid-auto-columns: 1fr; justify-content: stretch; gap: 2px; padding: var(--s-3); text-align: center; }
+.step-visual__tab { font-size: 13px; font-weight: 500; color: var(--muted); padding: 14px 8px; border-bottom: 2px solid transparent; }
+.step-visual__tab.is-on { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* the three step cards: their h3 is the section's h3, not a card title — one h3 size, and the
+   scope note's h3 matches it (heading-scale). */
+.grid.steps .card > h3 { font-size: var(--t-h3); line-height: 1.2; font-family: var(--font-display); }
+
+/* the data-scope line, open text from the container's left edge (no band, no rule) */
+.scope-note { padding-top: var(--s-5); }
+.scope-note h3 { margin: 0; font-size: var(--t-h3); }
+.scope-note p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+/* the three step cards stack fully on a phone so nothing spills (a quick overflow fix, not a mobile re-layout) */
+@media (max-width: 639px) {
+  .grid.steps { grid-template-columns: minmax(0, 1fr); }
+  .grid.steps > * { grid-column: 1 / -1; width: 100%; }
+  .step-visual--flow { grid-template-columns: 1fr; justify-items: stretch; }
+  .step-visual--flow .step-visual__arrow { display: none; }
+  .hero-visual { min-height: 0; height: auto; }
+  .hero-card { height: auto; }
+}

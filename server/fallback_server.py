@@ -98,22 +98,6 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/agent/analyze":
             code, payload, headers = core.agent_analyze(body)
             self._json(payload, code, headers)
-        elif path == "/api/export":
-            code, html, filename = core.export_html(body)
-            if code == 200:
-                self._html(html, 200, filename)
-            else:
-                self._json(
-                    {
-                        "error": {
-                            "code": "EXPORT_UNAVAILABLE",
-                            "message": "静态导出尚未构建；请先运行 pnpm --dir web export",
-                            "suggestions": ["pnpm --dir web export"],
-                            "recoverable": True,
-                        }
-                    },
-                    code,
-                )
         else:
             self._json({"error": {"code": "NOT_FOUND", "message": path}}, 404)
 

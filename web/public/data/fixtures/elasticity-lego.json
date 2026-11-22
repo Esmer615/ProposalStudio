@@ -1,0 +1,97 @@
+{
+ "unit": "万元",
+ "points": [
+  {
+   "budget_wan": 100,
+   "impressions": 12919173,
+   "reach": 0.6948,
+   "frequency": 7.44,
+   "cpm_yuan": 65.39,
+   "marginal_impressions_per_wan": 0,
+   "delta_reach": 0.0,
+   "is_current": false
+  },
+  {
+   "budget_wan": 150,
+   "impressions": 21499269,
+   "reach": 0.784,
+   "frequency": 10.97,
+   "cpm_yuan": 58.68,
+   "marginal_impressions_per_wan": 171602,
+   "delta_reach": 0.0892,
+   "is_current": false
+  },
+  {
+   "budget_wan": 200,
+   "impressions": 27029917,
+   "reach": 0.8039,
+   "frequency": 13.45,
+   "cpm_yuan": 57.71,
+   "marginal_impressions_per_wan": 110613,
+   "delta_reach": 0.0199,
+   "is_current": false
+  },
+  {
+   "budget_wan": 250,
+   "impressions": 35252509,
+   "reach": 0.8151,
+   "frequency": 17.3,
+   "cpm_yuan": 56.64,
+   "marginal_impressions_per_wan": 164452,
+   "delta_reach": 0.0112,
+   "is_current": false
+  },
+  {
+   "budget_wan": 300,
+   "impressions": 41940898,
+   "reach": 0.8182,
+   "frequency": 20.5,
+   "cpm_yuan": 52.91,
+   "marginal_impressions_per_wan": 133768,
+   "delta_reach": 0.0031,
+   "is_current": false
+  },
+  {
+   "budget_wan": 350,
+   "impressions": 47656877,
+   "reach": 0.8192,
+   "frequency": 23.27,
+   "cpm_yuan": 53.92,
+   "marginal_impressions_per_wan": 114320,
+   "delta_reach": 0.001,
+   "is_current": false
+  },
+  {
+   "budget_wan": 400,
+   "impressions": 54464325,
+   "reach": 0.8197,
+   "frequency": 26.58,
+   "cpm_yuan": 50.94,
+   "marginal_impressions_per_wan": 136149,
+   "delta_reach": 0.0005,
+   "is_current": false
+  },
+  {
+   "budget_wan": 450,
+   "impressions": 59737570,
+   "reach": 0.8199,
+   "frequency": 29.15,
+   "cpm_yuan": 51.91,
+   "marginal_impressions_per_wan": 105465,
+   "delta_reach": 0.0002,
+   "is_current": false
+  },
+  {
+   "budget_wan": 500,
+   "impressions": 67261282,
+   "reach": 0.82,
+   "frequency": 32.81,
+   "cpm_yuan": 51.36,
+   "marginal_impressions_per_wan": 150474,
+   "delta_reach": 0.0001,
+   "is_current": true
+  }
+ ],
+ "knee_budget_wan": 200,
+ "note": "同一优化器的确定性预算扩展估值（同一库存/配比/预算规则）；拐点=Reach 达到最高值 98% 的预算，此后加钱主要买频次/覆盖。主方案以 CP-SAT 结果为准。"
+}

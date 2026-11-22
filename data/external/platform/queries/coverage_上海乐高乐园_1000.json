@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "api": "/baseInfoLine/matchCoverLines",
+    "platform": "https://flairmedia.com.cn:38880",
+    "center": {
+      "name": "上海乐高乐园",
+      "address": "上海乐高乐园",
+      "lng": 121.10782876001737,
+      "lat": 30.89309082539151
+    },
+    "radius": 1000,
+    "mediaTypes": [
+      "bus",
+      "metro"
+    ],
+    "fetchedAt": "2026-11-21T15:55:26.586Z",
+    "note": "覆盖分析按中心点半径与系统线路轨迹计算；平台接口无 2023-05 日期参数，属当前轨迹快照。"
+  },
+  "summary": {
+    "total": 2,
+    "bus": 2,
+    "metro": 0,
+    "bus_lines": [
+      "1675路",
+      "枫泾七路"
+    ],
+    "metro_stations": []
+  },
+  "items": [
+    {
+      "centerLng": 121.10782876001737,
+      "mediaTypeName": "公交线路",
+      "lineId": 10082,
+      "lineName": "1675路",
+      "mediaType": "bus",
+      "nearestLat": 30.893236749204306,
+      "nearestLng": 121.11184625928787,
+      "linePath": "D:\\SOP\\media-res\\JSON\\1675路.json",
+      "colorin": null,
+      "minDistance": 384.12199261715523,
+      "centerLat": 30.89309082539151,
+      "radius": 1000,
+      "centerName": "上海乐高乐园"
+    },
+    {
+      "centerLng": 121.10782876001737,
+      "mediaTypeName": "公交线路",
+      "lineId": 10633,
+      "lineName": "枫泾七路",
+      "mediaType": "bus",
+      "nearestLat": 30.893206724696153,
+      "nearestLng": 121.09739377372182,
+      "linePath": "D:\\SOP\\media-res\\JSON\\枫泾七路",
+      "colorin": null,
+      "minDistance": 996.8979070472799,
+      "centerLat": 30.89309082539151,
+      "radius": 1000,
+      "centerName": "上海乐高乐园"
+    }
+  ]
+}

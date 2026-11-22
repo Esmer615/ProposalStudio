@@ -614,6 +614,7 @@ def reload_data() -> None:
     """清缓存并重载（数据更新后调用）。"""
     _CACHE.clear()
     _CACHE_ORDER.clear()
+    _ELASTICITY_CACHE.clear()
 
 
 __all__ = ["generate_plan", "generate_elasticity", "reload_data"]

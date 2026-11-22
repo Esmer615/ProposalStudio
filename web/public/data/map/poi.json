@@ -1,0 +1,2922 @@
+[
+ {
+  "id": null,
+  "name": "上海科技馆",
+  "type": "science_museum_planetarium",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.536733,
+  "lat": 31.220602,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海自然博物馆",
+  "type": "science_museum_planetarium",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.4577,
+  "lat": 31.236866,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海天文馆",
+  "type": "science_museum_planetarium",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.922585,
+  "lat": 30.91513,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海儿童博物馆",
+  "type": "science_museum_planetarium",
+  "district": "长宁区",
+  "weight": null,
+  "lng": 121.408483,
+  "lat": 31.195953,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海铁路博物馆",
+  "type": "science_museum_planetarium",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.47179,
+  "lat": 31.251986,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海航运博物馆",
+  "type": "science_museum_planetarium",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海昆虫博物馆",
+  "type": "science_museum_planetarium",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海消防博物馆",
+  "type": "science_museum_planetarium",
+  "district": "长宁区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海博物馆",
+  "type": "museum",
+  "district": "黄浦区",
+  "weight": null,
+  "lng": 121.471,
+  "lat": 31.230158,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海历史博物馆",
+  "type": "museum",
+  "district": "黄浦区",
+  "weight": null,
+  "lng": 121.466055,
+  "lat": 31.233185,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海城市规划展示馆",
+  "type": "museum",
+  "district": "黄浦区",
+  "weight": null,
+  "lng": 121.470882,
+  "lat": 31.233371,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海汽车博物馆",
+  "type": "museum",
+  "district": "嘉定区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海电影博物馆",
+  "type": "museum",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.433655,
+  "lat": 31.188091,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "中华艺术宫",
+  "type": "museum",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.489926,
+  "lat": 31.186484,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海当代艺术博物馆",
+  "type": "museum",
+  "district": "黄浦区",
+  "weight": null,
+  "lng": 121.493897,
+  "lat": 31.203059,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海松江博物馆",
+  "type": "museum",
+  "district": "松江区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海青浦博物馆",
+  "type": "museum",
+  "district": "青浦区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海玻璃博物馆",
+  "type": "museum",
+  "district": "宝山区",
+  "weight": null,
+  "lng": 121.467324,
+  "lat": 31.345676,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海纺织博物馆",
+  "type": "museum",
+  "district": "普陀区",
+  "weight": null,
+  "lng": 121.441527,
+  "lat": 31.248646,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海中医药博物馆",
+  "type": "museum",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.594987,
+  "lat": 31.194989,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海邮政博物馆",
+  "type": "museum",
+  "district": "虹口区",
+  "weight": null,
+  "lng": 121.480755,
+  "lat": 31.246407,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海犹太难民纪念馆",
+  "type": "museum",
+  "district": "虹口区",
+  "weight": null,
+  "lng": 121.50482,
+  "lat": 31.256147,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海动漫博物馆",
+  "type": "museum",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.165775,
+  "lat": 31.280532,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "大悦城",
+  "type": "parent_child_mall",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.467506,
+  "lat": 31.245987,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "虹桥天地",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.31102,
+  "lat": 31.19464,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "正大广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.494738,
+  "lat": 31.23865,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "仲盛世界商城",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.382272,
+  "lat": 31.108977,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "LCM置地旭辉广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.551154,
+  "lat": 31.244418,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "七宝万科广场",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.345931,
+  "lat": 31.156482,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "南翔印象城",
+  "type": "parent_child_mall",
+  "district": "嘉定区",
+  "weight": null,
+  "lng": 121.301443,
+  "lat": 31.306853,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "宝山万达广场",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": null,
+  "lng": 121.442532,
+  "lat": 31.325738,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "松江万达广场",
+  "type": "parent_child_mall",
+  "district": "松江区",
+  "weight": null,
+  "lng": 121.203624,
+  "lat": 31.017364,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "周浦万达广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.567706,
+  "lat": 31.245944,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "世纪汇广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.522493,
+  "lat": 31.229797,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "五角场万达广场",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": null,
+  "lng": 121.511266,
+  "lat": 31.301964,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "虹口龙之梦",
+  "type": "parent_child_mall",
+  "district": "虹口区",
+  "weight": null,
+  "lng": 121.473341,
+  "lat": 31.272848,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "中山公园龙之梦",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": null,
+  "lng": 121.4222,
+  "lat": 31.218123,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "徐家汇恒隆广场",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.43752,
+  "lat": 31.179973,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "静安大悦城",
+  "type": "parent_child_mall",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.422794,
+  "lat": 31.281401,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "世纪公园商业区",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.567706,
+  "lat": 31.245944,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "虹桥火车站",
+  "type": "transport_hub",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.314311,
+  "lat": 31.195958,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "虹桥机场T2",
+  "type": "transport_hub",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.322858,
+  "lat": 31.195435,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海南站",
+  "type": "transport_hub",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.425986,
+  "lat": 31.154963,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海火车站",
+  "type": "transport_hub",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.451162,
+  "lat": 31.248984,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "龙阳路交通枢纽",
+  "type": "transport_hub",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.555508,
+  "lat": 31.20542,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "世纪大道站",
+  "type": "transport_hub",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.522934,
+  "lat": 31.23078,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "徐家汇站",
+  "type": "transport_hub",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.434382,
+  "lat": 31.19554,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "静安寺站",
+  "type": "transport_hub",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.440792,
+  "lat": 31.225215,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "五角场站",
+  "type": "transport_hub",
+  "district": "杨浦区",
+  "weight": null,
+  "lng": 121.510069,
+  "lat": 31.29974,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "莘庄站",
+  "type": "transport_hub",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.380462,
+  "lat": 31.111438,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "宜山路站",
+  "type": "transport_hub",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.423102,
+  "lat": 31.187134,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "东方体育中心站",
+  "type": "transport_hub",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.474882,
+  "lat": 31.15445,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海市儿童医院",
+  "type": "children_hospital_maternity",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.443656,
+  "lat": 31.231631,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "复旦大学附属儿科医院",
+  "type": "children_hospital_maternity",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.390096,
+  "lat": 31.141637,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海儿童医学中心",
+  "type": "children_hospital_maternity",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.518351,
+  "lat": 31.207755,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海市第一妇婴保健院",
+  "type": "children_hospital_maternity",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.545754,
+  "lat": 31.19155,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "新华医院",
+  "type": "children_hospital_maternity",
+  "district": "杨浦区",
+  "weight": null,
+  "lng": 121.513889,
+  "lat": 31.274996,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "国际和平妇幼保健院",
+  "type": "children_hospital_maternity",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.433967,
+  "lat": 31.198095,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "红房子妇产科医院",
+  "type": "children_hospital_maternity",
+  "district": "杨浦区",
+  "weight": null,
+  "lng": 121.522797,
+  "lat": 31.270755,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海市第六人民医院",
+  "type": "children_hospital_maternity",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.417882,
+  "lat": 31.1804,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "复旦大学附属妇产科医院",
+  "type": "children_hospital_maternity",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.529531,
+  "lat": 31.26123,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海市儿童医院普陀新院",
+  "type": "children_hospital_maternity",
+  "district": "普陀区",
+  "weight": null,
+  "lng": 121.392499,
+  "lat": 31.241701,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海市青少年活动中心",
+  "type": "youth_palace",
+  "district": "静安区",
+  "weight": null,
+  "lng": 121.448224,
+  "lat": 31.229003,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "中国福利会少年宫",
+  "type": "youth_palace",
+  "district": "长宁区",
+  "weight": null,
+  "lng": 121.438894,
+  "lat": 31.223049,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "浦东新区少年宫",
+  "type": "youth_palace",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.578613,
+  "lat": 31.250202,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "徐汇区青少年活动中心",
+  "type": "youth_palace",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.429578,
+  "lat": 31.177054,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "闵行区青少年活动中心",
+  "type": "youth_palace",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.375972,
+  "lat": 31.111658,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "杨浦区少年宫",
+  "type": "youth_palace",
+  "district": "杨浦区",
+  "weight": null,
+  "lng": 121.538056,
+  "lat": 31.282419,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "虹口区青少年活动中心",
+  "type": "youth_palace",
+  "district": "虹口区",
+  "weight": null,
+  "lng": 121.489124,
+  "lat": 31.294401,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "普陀区少年宫",
+  "type": "youth_palace",
+  "district": "普陀区",
+  "weight": null,
+  "lng": 121.402803,
+  "lat": 31.249906,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海海洋水族馆",
+  "type": "aquarium_indoor_play",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.497282,
+  "lat": 31.242646,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "长风海洋世界",
+  "type": "aquarium_indoor_play",
+  "district": "普陀区",
+  "weight": null,
+  "lng": 121.392407,
+  "lat": 31.226657,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海海昌海洋公园",
+  "type": "aquarium_indoor_play",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.900466,
+  "lat": 30.915778,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海乐高探索中心",
+  "type": "aquarium_indoor_play",
+  "district": "普陀区",
+  "weight": null,
+  "lng": 121.392499,
+  "lat": 31.241701,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海欢乐谷",
+  "type": "aquarium_indoor_play",
+  "district": "松江区",
+  "weight": null,
+  "lng": 121.209879,
+  "lat": 31.098536,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "锦江乐园",
+  "type": "aquarium_indoor_play",
+  "district": "徐汇区",
+  "weight": null,
+  "lng": 121.409515,
+  "lat": 31.144069,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "上海水族馆",
+  "type": "aquarium_indoor_play",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.567706,
+  "lat": 31.245944,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "迪士尼小镇",
+  "type": "aquarium_indoor_play",
+  "district": "浦东新区",
+  "weight": null,
+  "lng": 121.65711,
+  "lat": 31.142327,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "东方绿舟",
+  "type": "aquarium_indoor_play",
+  "district": "青浦区",
+  "weight": null,
+  "lng": 121.014895,
+  "lat": 31.100504,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "莘庄社区",
+  "type": "large_residential",
+  "district": "闵行区",
+  "weight": null,
+  "lng": 121.369673,
+  "lat": 31.129987,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "顾村公园区域",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": null,
+  "lng": 121.368529,
+  "lat": 31.346229,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "松江新城",
+  "type": "large_residential",
+  "district": "松江区",
+  "weight": null,
+  "lng": 121.226259,
+  "lat": 31.032211,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "嘉定新城",
+  "type": "large_residential",
+  "district": "嘉定区",
+  "weight": null,
+  "lng": 121.249823,
+  "lat": 31.332081,
+  "source": "theme-park"
+ },
+ {
+  "id": null,
+  "name": "青浦新城",
+  "type": "large_residential",
+  "district": "青浦区",
+  "weight": null,
+  "lng": 121.1211,
+  "lat": 31.160784,
+  "source": "theme-park"
+ },
+ {
+  "id": "poi:0001",
+  "name": "上海科技馆",
+  "type": "science_museum_planetarium",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.544,
+  "lat": 31.221,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0002",
+  "name": "上海自然博物馆",
+  "type": "science_museum_planetarium",
+  "district": "静安区",
+  "weight": 1.0,
+  "lng": 121.461,
+  "lat": 31.236,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0003",
+  "name": "上海天文馆",
+  "type": "science_museum_planetarium",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.929,
+  "lat": 30.912,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0004",
+  "name": "上海博物馆",
+  "type": "museum",
+  "district": "黄浦区",
+  "weight": 0.9,
+  "lng": 121.476,
+  "lat": 31.228,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0005",
+  "name": "上海海洋水族馆",
+  "type": "aquarium_indoor_play",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.509,
+  "lat": 31.24,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0006",
+  "name": "上海野生动物园",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.834,
+  "lat": 31.056,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0007",
+  "name": "上海迪士尼度假区",
+  "type": "destination",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.657,
+  "lat": 31.144,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0008",
+  "name": "上海乐高乐园度假区",
+  "type": "destination",
+  "district": "金山区",
+  "weight": 1.0,
+  "lng": 121.104,
+  "lat": 30.88,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0009",
+  "name": "上海海昌海洋公园",
+  "type": "destination",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.903,
+  "lat": 30.894,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0010",
+  "name": "上海欢乐谷",
+  "type": "attraction",
+  "district": "松江区",
+  "weight": 1.0,
+  "lng": 121.216,
+  "lat": 31.097,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0011",
+  "name": "东方明珠",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.499,
+  "lat": 31.239,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0012",
+  "name": "上海中心",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.505,
+  "lat": 31.233,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0013",
+  "name": "金茂大厦",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.505,
+  "lat": 31.235,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0014",
+  "name": "环球金融中心",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.506,
+  "lat": 31.234,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0015",
+  "name": "正大广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.501,
+  "lat": 31.238,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0016",
+  "name": "国金中心",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.505,
+  "lat": 31.238,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0017",
+  "name": "港汇恒隆广场",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.437,
+  "lat": 31.195,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0018",
+  "name": "美罗城",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.437,
+  "lat": 31.194,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0019",
+  "name": "静安嘉里中心",
+  "type": "parent_child_mall",
+  "district": "静安区",
+  "weight": 1.0,
+  "lng": 121.445,
+  "lat": 31.224,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0020",
+  "name": "久光百货",
+  "type": "parent_child_mall",
+  "district": "静安区",
+  "weight": 1.0,
+  "lng": 121.445,
+  "lat": 31.223,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0021",
+  "name": "环球港",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.412,
+  "lat": 31.236,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0022",
+  "name": "中山公园龙之梦",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.419,
+  "lat": 31.22,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0023",
+  "name": "五角场万达",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.514,
+  "lat": 31.303,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0024",
+  "name": "合生汇",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.515,
+  "lat": 31.306,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0025",
+  "name": "大宁国际",
+  "type": "parent_child_mall",
+  "district": "静安区",
+  "weight": 1.0,
+  "lng": 121.455,
+  "lat": 31.276,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0026",
+  "name": "虹桥天地",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.318,
+  "lat": 31.197,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0027",
+  "name": "前滩太古里",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.48,
+  "lat": 31.15,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0028",
+  "name": "上海南站",
+  "type": "transport_hub",
+  "district": "徐汇区",
+  "weight": 0.9,
+  "lng": 121.429,
+  "lat": 31.154,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0029",
+  "name": "虹桥火车站",
+  "type": "transport_hub",
+  "district": "闵行区",
+  "weight": 0.9,
+  "lng": 121.327,
+  "lat": 31.2,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0030",
+  "name": "人民广场",
+  "type": "transport_hub",
+  "district": "黄浦区",
+  "weight": 0.9,
+  "lng": 121.475,
+  "lat": 31.232,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0031",
+  "name": "陆家嘴",
+  "type": "transport_hub",
+  "district": "浦东新区",
+  "weight": 0.9,
+  "lng": 121.506,
+  "lat": 31.239,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0032",
+  "name": "徐家汇",
+  "type": "transport_hub",
+  "district": "徐汇区",
+  "weight": 0.9,
+  "lng": 121.437,
+  "lat": 31.195,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0033",
+  "name": "静安寺",
+  "type": "transport_hub",
+  "district": "静安区",
+  "weight": 0.9,
+  "lng": 121.445,
+  "lat": 31.223,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0034",
+  "name": "上海动物园",
+  "type": "attraction",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.364,
+  "lat": 31.195,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0035",
+  "name": "上海植物园",
+  "type": "attraction",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.45,
+  "lat": 31.15,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0036",
+  "name": "共青森林公园",
+  "type": "attraction",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.55,
+  "lat": 31.32,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0037",
+  "name": "世纪公园",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.55,
+  "lat": 31.22,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0038",
+  "name": "顾村公园",
+  "type": "attraction",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.39,
+  "lat": 31.34,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0039",
+  "name": "召稼楼古镇",
+  "type": "attraction",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.55,
+  "lat": 31.05,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0040",
+  "name": "新场古镇",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.65,
+  "lat": 31.03,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0041",
+  "name": "七宝老街",
+  "type": "attraction",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.35,
+  "lat": 31.15,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0042",
+  "name": "南翔古镇",
+  "type": "attraction",
+  "district": "嘉定区",
+  "weight": 1.0,
+  "lng": 121.31,
+  "lat": 31.3,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0043",
+  "name": "朱家角古镇",
+  "type": "attraction",
+  "district": "青浦区",
+  "weight": 1.0,
+  "lng": 121.05,
+  "lat": 31.1,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0044",
+  "name": "上海影视乐园",
+  "type": "attraction",
+  "district": "松江区",
+  "weight": 1.0,
+  "lng": 121.29,
+  "lat": 31.0,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0045",
+  "name": "辰山植物园",
+  "type": "attraction",
+  "district": "松江区",
+  "weight": 1.0,
+  "lng": 121.18,
+  "lat": 31.08,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0046",
+  "name": "广富林文化遗址",
+  "type": "museum",
+  "district": "松江区",
+  "weight": 0.9,
+  "lng": 121.2,
+  "lat": 31.05,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0047",
+  "name": "上海玻璃博物馆",
+  "type": "museum",
+  "district": "宝山区",
+  "weight": 0.9,
+  "lng": 121.49,
+  "lat": 31.33,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0048",
+  "name": "上海汽车博物馆",
+  "type": "museum",
+  "district": "嘉定区",
+  "weight": 0.9,
+  "lng": 121.17,
+  "lat": 31.32,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0049",
+  "name": "上海儿童博物馆",
+  "type": "museum",
+  "district": "长宁区",
+  "weight": 0.9,
+  "lng": 121.42,
+  "lat": 31.2,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0050",
+  "name": "上海马戏城",
+  "type": "attraction",
+  "district": "静安区",
+  "weight": 1.0,
+  "lng": 121.46,
+  "lat": 31.28,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0051",
+  "name": "梅赛德斯奔驰文化中心",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.49,
+  "lat": 31.19,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0052",
+  "name": "东方体育中心",
+  "type": "attraction",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.48,
+  "lat": 31.16,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0053",
+  "name": "复旦大学附属儿科医院",
+  "type": "children_hospital_maternity",
+  "district": "闵行区",
+  "weight": 0.7,
+  "lng": 121.399,
+  "lat": 31.162,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0054",
+  "name": "上海儿童医学中心",
+  "type": "children_hospital_maternity",
+  "district": "浦东新区",
+  "weight": 0.7,
+  "lng": 121.527,
+  "lat": 31.207,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0055",
+  "name": "上海市儿童医院",
+  "type": "children_hospital_maternity",
+  "district": "静安区",
+  "weight": 0.7,
+  "lng": 121.443,
+  "lat": 31.23,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0056",
+  "name": "国际和平妇幼保健院",
+  "type": "children_hospital_maternity",
+  "district": "徐汇区",
+  "weight": 0.7,
+  "lng": 121.443,
+  "lat": 31.19,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0057",
+  "name": "中福会少年宫",
+  "type": "youth_palace",
+  "district": "静安区",
+  "weight": 0.8,
+  "lng": 121.455,
+  "lat": 31.23,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0058",
+  "name": "上海市青少年活动中心",
+  "type": "youth_palace",
+  "district": "静安区",
+  "weight": 0.8,
+  "lng": 121.455,
+  "lat": 31.24,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0059",
+  "name": "七宝万科广场",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.349294,
+  "lat": 31.155161,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0060",
+  "name": "中房金谊广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.511664,
+  "lat": 31.143151,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0061",
+  "name": "三林公园",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.523036,
+  "lat": 31.14642,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0062",
+  "name": "益田假日广场",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.508349,
+  "lat": 31.313225,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0063",
+  "name": "大三林家具城",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.506256,
+  "lat": 31.149033,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0064",
+  "name": "上大商业中心",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.408667,
+  "lat": 31.314934,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0065",
+  "name": "上海体育场",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.443514,
+  "lat": 31.18557,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0066",
+  "name": "上海体育馆",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.43742,
+  "lat": 31.182853,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0067",
+  "name": "上海儿童医学中心、交通大学附属医学院(仁济)",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.523466,
+  "lat": 31.203228,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0068",
+  "name": "上海南站",
+  "type": "transport_hub",
+  "district": "徐汇区",
+  "weight": 0.9,
+  "lng": 121.431047,
+  "lat": 31.153256,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0069",
+  "name": "上海大学",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.388926,
+  "lat": 31.320507,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0070",
+  "name": "上海体育场",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.441368,
+  "lat": 31.179177,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0071",
+  "name": "世纪公园",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.550899,
+  "lat": 31.209426,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0072",
+  "name": "复旦大学附属肿瘤医院、上海中医大学附属龙华医院",
+  "type": "large_residential",
+  "district": "徐汇区",
+  "weight": 0.6,
+  "lng": 121.45493,
+  "lat": 31.190857,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0073",
+  "name": "上海海事大学(东明)",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.510934,
+  "lat": 31.172609,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0074",
+  "name": "陆行中学北校、东沟中学",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.579084,
+  "lat": 31.282532,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0075",
+  "name": "市北中学",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.469113,
+  "lat": 31.252948,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0076",
+  "name": "世博商圈、世博源、上海世博展览馆、梅赛德斯奔驰文化中心",
+  "type": "museum",
+  "district": "浦东新区",
+  "weight": 0.9,
+  "lng": 121.493489,
+  "lat": 31.185051,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0077",
+  "name": "同济大学",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.459211,
+  "lat": 31.258784,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0078",
+  "name": "万科·七宝国际",
+  "type": "large_residential",
+  "district": "闵行区",
+  "weight": 0.6,
+  "lng": 121.337749,
+  "lat": 31.149395,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0079",
+  "name": "瑞虹生活广场",
+  "type": "parent_child_mall",
+  "district": "虹口区",
+  "weight": 1.0,
+  "lng": 121.500677,
+  "lat": 31.260913,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0080",
+  "name": "育辛高级中学",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.516728,
+  "lat": 31.193243,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0081",
+  "name": "上海海昌海洋公园",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.910905,
+  "lat": 30.923397,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0082",
+  "name": "九亭生活中心",
+  "type": "parent_child_mall",
+  "district": "松江区",
+  "weight": 1.0,
+  "lng": 121.319467,
+  "lat": 31.137091,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0083",
+  "name": "上海市社会保险事业管理中心",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.50042,
+  "lat": 31.182192,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0084",
+  "name": "金桥购物中心、百安居(金桥)",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.572732,
+  "lat": 31.250384,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0085",
+  "name": "龙耀商业中心",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.458492,
+  "lat": 31.166435,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0086",
+  "name": "交通大学",
+  "type": "large_residential",
+  "district": "徐汇区",
+  "weight": 0.6,
+  "lng": 121.435274,
+  "lat": 31.202195,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0087",
+  "name": "新虹桥商圈、上海国际展览中心",
+  "type": "museum",
+  "district": "长宁区",
+  "weight": 0.9,
+  "lng": 121.403946,
+  "lat": 31.198754,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0088",
+  "name": "明通文化创意产业园",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.489713,
+  "lat": 31.141278,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0089",
+  "name": "上海开放大学",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.723784,
+  "lat": 31.192844,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0090",
+  "name": "龙湖北城天街",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.36249,
+  "lat": 31.357454,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0091",
+  "name": "唐镇文化体育中心",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.673744,
+  "lat": 31.213895,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0092",
+  "name": "LCM置汇旭辉广场",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.552348,
+  "lat": 31.23912,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0093",
+  "name": "旺族商业广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.681083,
+  "lat": 31.196551,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0094",
+  "name": "上海市东方医院(南院)",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.514453,
+  "lat": 31.149841,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0095",
+  "name": "南京东路商圈、上海外滩美术馆",
+  "type": "museum",
+  "district": "黄浦区",
+  "weight": 0.9,
+  "lng": 121.484831,
+  "lat": 31.23762,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0096",
+  "name": "南浦大桥长途旅行客运站",
+  "type": "transport_hub",
+  "district": "黄浦区",
+  "weight": 0.9,
+  "lng": 121.499733,
+  "lat": 31.20844,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0097",
+  "name": "上海大学",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.398968,
+  "lat": 31.321387,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0098",
+  "name": "沪东商业购物中心",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.58668,
+  "lat": 31.263518,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0099",
+  "name": "虹桥国际商务广场",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.384827,
+  "lat": 31.166435,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0100",
+  "name": "同济大学站",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.506321,
+  "lat": 31.282101,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0101",
+  "name": "卢湾体育中心",
+  "type": "large_residential",
+  "district": "徐汇区",
+  "weight": 0.6,
+  "lng": 121.460788,
+  "lat": 31.202709,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0102",
+  "name": "上海外国语大学附属外国语学校东校",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.501536,
+  "lat": 31.274839,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0103",
+  "name": "复旦大学、百安居(杨浦)",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.510033,
+  "lat": 31.289253,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0104",
+  "name": "上海白玉兰广场、金光新外滩、海员医院",
+  "type": "parent_child_mall",
+  "district": "虹口区",
+  "weight": 1.0,
+  "lng": 121.498188,
+  "lat": 31.250086,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0105",
+  "name": "大场镇小学",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.413645,
+  "lat": 31.303568,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0106",
+  "name": "大世界、音乐广场",
+  "type": "parent_child_mall",
+  "district": "黄浦区",
+  "weight": 1.0,
+  "lng": 121.479327,
+  "lat": 31.226969,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0107",
+  "name": "美隆生活广场",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.423087,
+  "lat": 31.274009,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0108",
+  "name": "宜家、红星美凯龙、百安居(沪太)、场南建材市场、彭浦科技园",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.416563,
+  "lat": 31.293154,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0109",
+  "name": "日晖新村小学、西南位育中学",
+  "type": "large_residential",
+  "district": "徐汇区",
+  "weight": 0.6,
+  "lng": 121.463212,
+  "lat": 31.19405,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0110",
+  "name": "国歌展示馆、上海市中西医结合医院",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.513037,
+  "lat": 31.257979,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0111",
+  "name": "上海服饰城",
+  "type": "parent_child_mall",
+  "district": "虹口区",
+  "weight": 1.0,
+  "lng": 121.482739,
+  "lat": 31.243748,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0112",
+  "name": "缤谷广场",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.387241,
+  "lat": 31.214868,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0113",
+  "name": "虹桥艺术中心",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.404064,
+  "lat": 31.211142,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0114",
+  "name": "上海体育学院",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.531877,
+  "lat": 31.314751,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0115",
+  "name": "欧尚购物中心",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.532349,
+  "lat": 31.268557,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0116",
+  "name": "上海儿童博物馆、上海爱尔眼科医院",
+  "type": "large_residential",
+  "district": "长宁区",
+  "weight": 0.6,
+  "lng": 121.412272,
+  "lat": 31.196111,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0117",
+  "name": "徐汇宜山路商业中心",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.427206,
+  "lat": 31.186671,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0118",
+  "name": "上海市中华路第三小学",
+  "type": "parent_child_mall",
+  "district": "黄浦区",
+  "weight": 1.0,
+  "lng": 121.498339,
+  "lat": 31.216767,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0119",
+  "name": "品尊国际中心、沪西工人文化宫体育中心",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.421885,
+  "lat": 31.256108,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0120",
+  "name": "川沙商业中心",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.698206,
+  "lat": 31.186749,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0121",
+  "name": "0",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.588354,
+  "lat": 31.280721,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0122",
+  "name": "上海市国和中学",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.531877,
+  "lat": 31.322633,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0123",
+  "name": "淮海路、上海音乐学院",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.450886,
+  "lat": 31.213283,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0124",
+  "name": "张江高科技园区",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.621055,
+  "lat": 31.21106,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0125",
+  "name": "百安居(杨浦)",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.535053,
+  "lat": 31.288533,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0126",
+  "name": "张江科技园区、传奇商业广场",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.587678,
+  "lat": 31.201837,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0127",
+  "name": "红星美凯龙(浦东)",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.57093,
+  "lat": 31.158099,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0128",
+  "name": "房地产交易中心、名人苑、永达",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.564235,
+  "lat": 31.245395,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0129",
+  "name": "浦东鑫天地商业广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.761689,
+  "lat": 31.053744,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0130",
+  "name": "林家花园休闲生活广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.496407,
+  "lat": 31.170511,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0131",
+  "name": "新天地",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.475357,
+  "lat": 31.216226,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0132",
+  "name": "上海工程技术大学(新村)",
+  "type": "large_residential",
+  "district": "普陀区",
+  "weight": 0.6,
+  "lng": 121.422657,
+  "lat": 31.263958,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0133",
+  "name": "嘉誉国际广场",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.506814,
+  "lat": 31.328531,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0134",
+  "name": "诺宝中心",
+  "type": "large_residential",
+  "district": "闵行区",
+  "weight": 0.6,
+  "lng": 121.36912,
+  "lat": 31.158026,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0135",
+  "name": "大悦城",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.471538,
+  "lat": 31.242271,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0136",
+  "name": "曲阳医院",
+  "type": "large_residential",
+  "district": "虹口区",
+  "weight": 0.6,
+  "lng": 121.491107,
+  "lat": 31.276503,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0137",
+  "name": "曹杨办公商业中心",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.41755,
+  "lat": 31.237831,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0138",
+  "name": "同济大学",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.389956,
+  "lat": 31.268979,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0139",
+  "name": "恒大长青商城",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.493661,
+  "lat": 31.16089,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0140",
+  "name": "浦江游船",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.517157,
+  "lat": 31.251925,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0141",
+  "name": "进才中学、丁香国际商业中心",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.548764,
+  "lat": 31.227447,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0142",
+  "name": "高桥-东陆学校证大校区、金桥市民体育休闲公园",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.602988,
+  "lat": 31.280038,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0143",
+  "name": "上海申东医院",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.525139,
+  "lat": 31.187552,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0144",
+  "name": "松江体育中心",
+  "type": "parent_child_mall",
+  "district": "松江区",
+  "weight": 1.0,
+  "lng": 121.230547,
+  "lat": 31.015575,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0145",
+  "name": "曹杨商城",
+  "type": "large_residential",
+  "district": "普陀区",
+  "weight": 0.6,
+  "lng": 121.411371,
+  "lat": 31.241757,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0146",
+  "name": "普天信息产业园",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.418087,
+  "lat": 31.174697,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0147",
+  "name": "恒达休闲广场、白丽生活广场",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.349658,
+  "lat": 31.281633,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0148",
+  "name": "中鑫企业广场",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.364593,
+  "lat": 31.276682,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0149",
+  "name": "智慧广场",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.43064,
+  "lat": 31.234272,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0150",
+  "name": "上海民办福山正达外国语小学",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.54355,
+  "lat": 31.235854,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0151",
+  "name": "洛城广场、上海国际舞蹈中心",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.392531,
+  "lat": 31.199194,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0152",
+  "name": "江浦公园",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.523744,
+  "lat": 31.264485,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0153",
+  "name": "上海浦江郊野公园",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.512265,
+  "lat": 31.061391,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0154",
+  "name": "长青企业广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.539044,
+  "lat": 31.150864,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0155",
+  "name": "东昌东校",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.519346,
+  "lat": 31.240038,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0156",
+  "name": "浦电路商业办公中心",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.529087,
+  "lat": 31.220148,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0157",
+  "name": "金融街海伦中心",
+  "type": "large_residential",
+  "district": "虹口区",
+  "weight": 0.6,
+  "lng": 121.489734,
+  "lat": 31.259006,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0158",
+  "name": "虹桥科技园区",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.359583,
+  "lat": 31.218207,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0159",
+  "name": "源深体育中心",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.534624,
+  "lat": 31.232956,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0160",
+  "name": "滴水湖",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.929616,
+  "lat": 30.907124,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0161",
+  "name": "徐汇日月光中心、光大会展中心",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.435007,
+  "lat": 31.168054,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0162",
+  "name": "龙湖北城天街",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.355881,
+  "lat": 31.364124,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0163",
+  "name": "森宏购物广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.495227,
+  "lat": 31.148629,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0164",
+  "name": "上海海洋大学",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.552669,
+  "lat": 31.279763,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0165",
+  "name": "高尚领域国际购物城",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.407251,
+  "lat": 31.250673,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0166",
+  "name": "上海大学",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.373391,
+  "lat": 31.32234,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0167",
+  "name": "上海康建商务广场",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.376051,
+  "lat": 31.271583,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0168",
+  "name": "万象城",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.364378,
+  "lat": 31.169548,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0169",
+  "name": "上海体育学院",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.532091,
+  "lat": 31.304888,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0170",
+  "name": "世博商圈、世博源、上海世博展览馆",
+  "type": "museum",
+  "district": "浦东新区",
+  "weight": 0.9,
+  "lng": 121.494691,
+  "lat": 31.178443,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0171",
+  "name": "黄浦中心",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.48394,
+  "lat": 31.218648,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0172",
+  "name": "复旦大学(枫林)、复旦大学附属医院",
+  "type": "large_residential",
+  "district": "徐汇区",
+  "weight": 0.6,
+  "lng": 121.450209,
+  "lat": 31.199153,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0173",
+  "name": "闵行文化公园",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.355452,
+  "lat": 31.165068,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0174",
+  "name": "浦东棒垒球/高尔夫体育公园",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.497781,
+  "lat": 31.118869,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0175",
+  "name": "新国际博览中心",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.562733,
+  "lat": 31.211193,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0176",
+  "name": "上海市第一妇婴保健院",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.550202,
+  "lat": 31.192986,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0177",
+  "name": "富都广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.527757,
+  "lat": 31.211633,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0178",
+  "name": "虹口体育中心、虹口龙之梦",
+  "type": "parent_child_mall",
+  "district": "虹口区",
+  "weight": 1.0,
+  "lng": 121.479225,
+  "lat": 31.27135,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0179",
+  "name": "上海虹桥国际机场",
+  "type": "transport_hub",
+  "district": "长宁区",
+  "weight": 0.9,
+  "lng": 121.347384,
+  "lat": 31.191265,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0180",
+  "name": "宜家、百安居(沪太)、红星美凯龙、众汇旺建材市场",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.42137,
+  "lat": 31.284865,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0181",
+  "name": "上海市第六十中学",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.468706,
+  "lat": 31.263481,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0182",
+  "name": "上海外国语大学附属大境中学",
+  "type": "large_residential",
+  "district": "黄浦区",
+  "weight": 0.6,
+  "lng": 121.489519,
+  "lat": 31.201906,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0183",
+  "name": "国际设计中心",
+  "type": "large_residential",
+  "district": "虹口区",
+  "weight": 0.6,
+  "lng": 121.494326,
+  "lat": 31.26842,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0184",
+  "name": "松江火车站",
+  "type": "transport_hub",
+  "district": "松江区",
+  "weight": 0.9,
+  "lng": 121.229302,
+  "lat": 31.001083,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0185",
+  "name": "新紫茂商业中心",
+  "type": "large_residential",
+  "district": "宝山区",
+  "weight": 0.6,
+  "lng": 121.61554,
+  "lat": 31.279744,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0186",
+  "name": "月星环球港、华东师范大学",
+  "type": "parent_child_mall",
+  "district": "普陀区",
+  "weight": 1.0,
+  "lng": 121.411843,
+  "lat": 31.23108,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0187",
+  "name": "张江科技园区、长泰、汇智",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.601979,
+  "lat": 31.204205,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0188",
+  "name": "万达广场",
+  "type": "parent_child_mall",
+  "district": "嘉定区",
+  "weight": 1.0,
+  "lng": 121.319446,
+  "lat": 31.240767,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0189",
+  "name": "山姆会员店(北蔡)、浦东图书馆",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.54016,
+  "lat": 31.187479,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0190",
+  "name": "普陀公园",
+  "type": "large_residential",
+  "district": "普陀区",
+  "weight": 0.6,
+  "lng": 121.43167,
+  "lat": 31.246642,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0191",
+  "name": "同济创园",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.491451,
+  "lat": 31.331931,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0192",
+  "name": "上海市第一妇婴保健院浦东分院",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.486086,
+  "lat": 31.174555,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0193",
+  "name": "新邻生活广场、复旦大学附属妇产科医院",
+  "type": "parent_child_mall",
+  "district": "黄浦区",
+  "weight": 1.0,
+  "lng": 121.486108,
+  "lat": 31.211739,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0194",
+  "name": "复旦软件园",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.544752,
+  "lat": 31.275141,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0195",
+  "name": "静安寺、上海展览中心",
+  "type": "parent_child_mall",
+  "district": "静安区",
+  "weight": 1.0,
+  "lng": 121.447945,
+  "lat": 31.224135,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0196",
+  "name": "控江旭辉MALL",
+  "type": "large_residential",
+  "district": "杨浦区",
+  "weight": 0.6,
+  "lng": 121.509647,
+  "lat": 31.273129,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0197",
+  "name": "顾村公园、复旦大学华山医院(北院)",
+  "type": "parent_child_mall",
+  "district": "宝山区",
+  "weight": 1.0,
+  "lng": 121.372704,
+  "lat": 31.344774,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0198",
+  "name": "新天地",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.477267,
+  "lat": 31.209463,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0199",
+  "name": "中建广场",
+  "type": "large_residential",
+  "district": "浦东新区",
+  "weight": 0.6,
+  "lng": 121.509861,
+  "lat": 31.18579,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0200",
+  "name": "汇暻生活广场",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.475186,
+  "lat": 31.19919,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0201",
+  "name": "市东医院、百安居(杨浦)",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.533164,
+  "lat": 31.295684,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0202",
+  "name": "百安居(杨浦)",
+  "type": "parent_child_mall",
+  "district": "杨浦区",
+  "weight": 1.0,
+  "lng": 121.528487,
+  "lat": 31.27874,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0203",
+  "name": "龙华旅游商业办公区",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.457505,
+  "lat": 31.185129,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0204",
+  "name": "新华红星国际广场、红星美凯龙(吴中)",
+  "type": "parent_child_mall",
+  "district": "闵行区",
+  "weight": 1.0,
+  "lng": 121.370644,
+  "lat": 31.176671,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0205",
+  "name": "新虹桥中学",
+  "type": "parent_child_mall",
+  "district": "长宁区",
+  "weight": 1.0,
+  "lng": 121.380085,
+  "lat": 31.194275,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0206",
+  "name": "上海远大心胸医院",
+  "type": "large_residential",
+  "district": "徐汇区",
+  "weight": 0.6,
+  "lng": 121.444415,
+  "lat": 31.169451,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0207",
+  "name": "龙耀商业中心",
+  "type": "parent_child_mall",
+  "district": "徐汇区",
+  "weight": 1.0,
+  "lng": 121.459693,
+  "lat": 31.159715,
+  "source": "fallback"
+ },
+ {
+  "id": "poi:0208",
+  "name": "龙阳商业广场、新国际博览中心、百安居(龙阳)、麦德龙(浦东)",
+  "type": "parent_child_mall",
+  "district": "浦东新区",
+  "weight": 1.0,
+  "lng": 121.557369,
+  "lat": 31.202994,
+  "source": "fallback"
+ }
+]

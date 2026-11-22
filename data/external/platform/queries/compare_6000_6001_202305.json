@@ -1,0 +1,347 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "platform": "https://flairmedia.com.cn:38880",
+    "queryPath": "/comparePage",
+    "date": "202305",
+    "media": "公交",
+    "requestedTags": [
+      "1001",
+      "1002"
+    ],
+    "labels": [
+      {
+        "id": 6000,
+        "firstLabel": "公交",
+        "secondLabel": "A+",
+        "thirdLabel": "1001",
+        "ext1": "1001路",
+        "ext4": "车身三侧"
+      },
+      {
+        "id": 6001,
+        "firstLabel": "公交",
+        "secondLabel": "A+",
+        "thirdLabel": "1002",
+        "ext1": "1002路",
+        "ext4": "车身三侧"
+      }
+    ],
+    "fetchedAt": "2026-11-21T15:09:31.566Z",
+    "note": "平台仅提供 2023-05 数据；标签/数据来自比赛测试账号，仅用于本项目。"
+  },
+  "summary": {
+    "under20_pct": 1.1,
+    "age_20_30_pct": 12.06,
+    "age_30_40_pct": 29.78,
+    "age_40_50_pct": 24.67,
+    "age_50plus_pct": 32.38,
+    "male_pct": 68.28,
+    "female_pct": 31.72,
+    "house": {
+      "zero": 0.23,
+      "more": 0.04,
+      "one": 0.65,
+      "two": 0.09
+    },
+    "house_pct": {
+      "zero": 23,
+      "one": 65,
+      "two": 9,
+      "more": 4
+    },
+    "top_phones": [
+      {
+        "num": 3,
+        "phone_name": "OPPO"
+      },
+      {
+        "num": 3,
+        "phone_name": "小米"
+      },
+      {
+        "num": 3,
+        "phone_name": "苹果"
+      },
+      {
+        "num": 2,
+        "phone_name": "三星"
+      },
+      {
+        "num": 2,
+        "phone_name": "华为"
+      }
+    ],
+    "flow_points": 20,
+    "flow_nonzero_points": 7,
+    "flow_max": 250334
+  },
+  "indicators": {
+    "visitorsFlowrateAndcrowdSpeed": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "crowdSpeed"
+        },
+        {
+          "time1": 2020,
+          "time2": 2892,
+          "time3": 2344,
+          "time4": 1640,
+          "type": "visitorsFlowrate"
+        },
+        {
+          "time1": 250334,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "coverPeoplesPV"
+        },
+        {
+          "time1": 143318,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "coverPeoplesUV"
+        },
+        {
+          "time1": 51293,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "coverPeoplesPVAccurate"
+        },
+        {
+          "time1": 0,
+          "time2": 0,
+          "time3": 0,
+          "time4": 0,
+          "type": "--"
+        }
+      ]
+    },
+    "circleCross": {
+      "status": 200,
+      "code": "0000",
+      "data": []
+    },
+    "regionAttribute": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "num": 0,
+          "type": "0"
+        },
+        {
+          "num": 15,
+          "type": "1"
+        },
+        {
+          "num": 5,
+          "type": "2"
+        },
+        {
+          "num": 60,
+          "type": "3"
+        },
+        {
+          "num": 705,
+          "type": "5"
+        },
+        {
+          "num": 2,
+          "type": "9"
+        }
+      ]
+    },
+    "crowdAge": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "age4": 24.67,
+          "age3": 29.78,
+          "age5": 32.38,
+          "age2": 12.06,
+          "age1": 1.1
+        }
+      ]
+    },
+    "crowdGender": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "female": 31.72,
+          "male": 68.28
+        }
+      ]
+    },
+    "crowdHouse": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "zero": 0.23,
+          "more": 0.04,
+          "one": 0.65,
+          "two": 0.09
+        }
+      ]
+    },
+    "crowdConsumption": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "ilow3": 17.04,
+          "ihigh": 1.89,
+          "fhigh": 0.65,
+          "fmiddle": 0.65,
+          "imiddle": 34.84,
+          "ilow1": 16.76,
+          "ilow2": 29.48,
+          "flow": 0.02
+        }
+      ]
+    },
+    "crowdPhoneNew": {
+      "status": 200,
+      "code": "0000",
+      "data": [
+        {
+          "num": 3,
+          "phone_name": "OPPO"
+        },
+        {
+          "num": 1,
+          "phone_name": "VIVO"
+        },
+        {
+          "num": 2,
+          "phone_name": "三星"
+        },
+        {
+          "num": 2,
+          "phone_name": "华为"
+        },
+        {
+          "num": 3,
+          "phone_name": "小米"
+        },
+        {
+          "num": 3,
+          "phone_name": "苹果"
+        },
+        {
+          "num": 1,
+          "phone_name": "荣耀"
+        }
+      ]
+    }
+  }
+}

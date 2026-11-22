@@ -1,5 +1,5 @@
-# 前端（本仓库不含 web/，前端另行管理）
-/web/
+# 前端源码 / 本地构建产物
+
 
 # 密钥与凭证
 .env
@@ -9,10 +9,17 @@ scripts/.token
 scripts/.credentials
 scripts/.oauth_cache.json
 
-# 业务数据快照与派生数据集（不公开）
+# 团队复现数据：选择性包含快照/结果/新云线路缓存；凭证与平台会话永不提交
 /data/*
 !/data/config/
 !/data/geo/
+!/data/snapshots/
+!/data/runs/
+!/data/external/
+/data/external/*
+!/data/external/platform/
+/data/external/platform/*
+!/data/external/platform/queries/
 
 # 本地运行状态 / 缓存
 .run/
@@ -35,3 +42,17 @@ web/dist-export/
 web/.vite/
 web/playwright-report/
 web/test-results/
+
+# 团队分支：本地/生成物与外部技能链接
+/web/.taste-skill/
+/web/shots/
+/web/.astro/
+.claude/settings.json
+.claude/skills/figma-designer
+.claude/skills/landing-page-design
+.agents/skills/
+**/node_modules/
+**/scripts/.credentials
+**/scripts/.token
+**/.oauth_cache.json
+**/platform_storage.json

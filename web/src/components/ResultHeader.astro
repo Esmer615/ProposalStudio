@@ -1,0 +1,46 @@
+---
+// Shared result-page header: status bar + four tabs (preserve ?run=) + a "修改输入" link.
+interface Props { active: 'overview' | 'media' | 'economics' | 'effects'; title?: string }
+const { active, title = '方案结果' } = Astro.props;
+const tabs: { key: string; label: string }[] = [
+  { key: 'overview', label: '概览' },
+  { key: 'media', label: '媒体' },
+  { key: 'economics', label: '经济' },
+  { key: 'effects', label: '效果' },
+];
+---
+<header class="app-section" style="padding-top:calc(var(--nav) + var(--s-5));padding-bottom:var(--s-4)" aria-label="结果页头">
+  <div class="wrap">
+    <div style="display:flex;align-items:baseline;gap:var(--s-4);flex-wrap:wrap">
+      <h1 style="font-size:var(--t-h2)" data-result-title>{title}</h1>
+      <span class="mono muted" style="font-size:12px">run <span data-run-id>—</span></span>
+      <a class="link" href="/input.html" style="margin-left:auto;font-size:13px">修改输入</a>
+    </div>
+
+    <div class="statusbar" data-result-status-bar style="margin-top:var(--s-4)">
+      <span>状态 <b data-run-status>—</b></span>
+      <span>求解器 <b data-solver class="mono">—</b></span>
+      <span>数据版本 <b data-data-version class="mono">—</b></span>
+      <span>库存快照 <b data-inventory-ts class="mono">—</b></span>
+      <span class="chip chip--quiet mono" data-src-inventory>红豆快照 · —</span>
+      <span class="chip chip--quiet mono" data-src-bigdata>新云补充 · —</span>
+      <span class="chip chip--warn" data-degraded-flag hidden>降级 · 补充数据不可用</span>
+    </div>
+
+    <nav class="result-tabs" style="margin-top:var(--s-4)" aria-label="结果页导航">
+      {tabs.map((t) => (
+        <a href={`/result/${t.key}.html`} data-tab={t.key} aria-current={active === t.key ? 'page' : undefined}>{t.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+<script>
+  const p = new URLSearchParams(location.search).get('run');
+  if (p) {
+    document.querySelectorAll<HTMLAnchorElement>('[data-tab]').forEach((a) => {
+      const u = new URL(a.href, location.origin);
+      u.searchParams.set('run', p);
+      a.href = u.toString();
+    });
+  }
+</script>

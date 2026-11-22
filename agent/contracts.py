@@ -108,12 +108,19 @@ def normalize_options(raw: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     include_elasticity = raw.get("include_elasticity")
     if include_elasticity is None:
         include_elasticity = True
+    try:
+        routes_max_lines = int(raw.get("routes_max_lines", 40))
+    except (TypeError, ValueError):
+        routes_max_lines = 40
     return {
         "allow_defaults": bool(allow_defaults),
         "mode": mode,
         "max_scenarios": max_scenarios,
         "include_elasticity": bool(include_elasticity),
         "include_plan_artifacts": bool(raw.get("include_plan_artifacts", False)),
+        "include_routes": bool(raw.get("include_routes", True)),
+        "routes_force": bool(raw.get("routes_force", False)),
+        "routes_max_lines": max(1, min(60, routes_max_lines)),
         "llm": str(raw.get("llm") or "auto").lower(),
         "max_questions": max(0, min(8, int(raw.get("max_questions", 5) or 5))),
     }

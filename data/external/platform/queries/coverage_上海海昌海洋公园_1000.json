@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "api": "/baseInfoLine/matchCoverLines",
+    "platform": "https://flairmedia.com.cn:38880",
+    "center": {
+      "name": "上海海昌海洋公园",
+      "address": "上海海昌海洋公园",
+      "lng": 121.91210710514656,
+      "lat": 30.919319501138986
+    },
+    "radius": 1000,
+    "mediaTypes": [
+      "bus",
+      "metro"
+    ],
+    "fetchedAt": "2026-11-22T02:06:02.766Z",
+    "note": "覆盖分析按中心点半径与系统线路轨迹计算；平台接口无 2023-05 日期参数，属当前轨迹快照。"
+  },
+  "summary": {
+    "total": 8,
+    "bus": 8,
+    "metro": 0,
+    "bus_lines": [
+      "临港4路",
+      "1135路",
+      "临港定制16线",
+      "自贸试验区洋山1线",
+      "1077路",
+      "申港3路",
+      "临港5路",
+      "申港1路"
+    ],
+    "metro_stations": []
+  },
+  "items": [
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 10708,
+      "lineName": "临港4路",
+      "mediaType": "bus",
+      "nearestLat": 30.921174232766507,
+      "nearestLng": 121.90990903880939,
+      "linePath": "D:\\SOP\\media-res\\JSON\\临港4路.json",
+      "colorin": null,
+      "minDistance": 294.4388680994511,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 9977,
+      "lineName": "1135路",
+      "mediaType": "bus",
+      "nearestLat": 30.921172538591033,
+      "nearestLng": 121.90990547185437,
+      "linePath": "D:\\SOP\\media-res\\JSON\\1135路.json",
+      "colorin": null,
+      "minDistance": 294.5497154252389,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 10741,
+      "lineName": "临港定制16线",
+      "mediaType": "bus",
+      "nearestLat": 30.921208096658784,
+      "nearestLng": 121.91431429765994,
+      "linePath": "D:\\SOP\\media-res\\JSON\\临港定制16线.json",
+      "colorin": null,
+      "minDistance": 297.7109114276215,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 11235,
+      "lineName": "自贸试验区洋山1线",
+      "mediaType": "bus",
+      "nearestLat": 30.918468074016808,
+      "nearestLng": 121.91591906457815,
+      "linePath": "D:\\SOP\\media-res\\JSON\\自贸试验区洋山1线.json",
+      "colorin": null,
+      "minDistance": 376.17996340884076,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 9935,
+      "lineName": "1077路",
+      "mediaType": "bus",
+      "nearestLat": 30.921394951761254,
+      "nearestLng": 121.90707492980802,
+      "linePath": "D:\\SOP\\media-res\\JSON\\1077路.json",
+      "colorin": null,
+      "minDistance": 533.2276193759424,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 10984,
+      "lineName": "申港3路",
+      "mediaType": "bus",
+      "nearestLat": 30.92264156599267,
+      "nearestLng": 121.92010732418788,
+      "linePath": "D:\\SOP\\media-res\\JSON\\申港3路.json",
+      "colorin": null,
+      "minDistance": 848.8040789318595,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "nearestStaDistance": 916.1810846545121,
+      "nearestStaLng": 121.92132147391517,
+      "lineId": 10709,
+      "lineName": "临港5路",
+      "mediaType": "bus",
+      "nearestLat": 30.92258231819045,
+      "nearestLng": 121.920186914056,
+      "linePath": "D:\\SOP\\media-res\\JSON\\临港5路",
+      "colorin": null,
+      "minDistance": 852.8223046097522,
+      "nearestStaName": "夏栎路铃兰路",
+      "nearestStaLat": 30.921610718340105,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    },
+    {
+      "centerLng": 121.91210710514656,
+      "mediaTypeName": "公交线路",
+      "lineId": 10982,
+      "lineName": "申港1路",
+      "mediaType": "bus",
+      "nearestLat": 30.922632659393106,
+      "nearestLng": 121.92024692086413,
+      "linePath": "D:\\SOP\\media-res\\JSON\\申港1路.json",
+      "colorin": null,
+      "minDistance": 860.3976942030569,
+      "centerLat": 30.919319501138986,
+      "radius": 1000,
+      "centerName": "上海海昌海洋公园"
+    }
+  ]
+}

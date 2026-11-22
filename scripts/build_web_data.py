@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -168,6 +169,7 @@ def build_map() -> None:
     (PUBLIC_DATA / "shanghai_districts.geojson").write_text(
         districts_src.read_text(encoding="utf-8"), encoding="utf-8"
     )
+    shutil.copyfile(districts_src, MAP / "districts.json")
     print(f"wrote {PUBLIC_DATA.relative_to(ROOT)}/shanghai_districts.geojson")
 
     manifest_path = ROOT / "data" / "processed" / "manifest.json"
@@ -183,6 +185,17 @@ def build_map() -> None:
         "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "coord_note": "地铁、POI、场馆为 WGS84，前端转换为 GCJ-02；区县边界沿用 DataV 口径。",
     })
+
+    # Keep the public copies the browser fetches at runtime in step with src/data.
+    public_fixtures = PUBLIC_DATA / "fixtures"
+    public_map = PUBLIC_DATA / "map"
+    public_fixtures.mkdir(parents=True, exist_ok=True)
+    public_map.mkdir(parents=True, exist_ok=True)
+    for f in FIXTURES.glob("*.json"):
+        shutil.copyfile(f, public_fixtures / f.name)
+    for f in MAP.glob("*.json"):
+        shutil.copyfile(f, public_map / f.name)
+    print("synced public/data/fixtures and public/data/map")
 
 
 if __name__ == "__main__":

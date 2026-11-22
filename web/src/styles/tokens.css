@@ -1,0 +1,63 @@
+/* Design tokens — clay-pine palette (kept from the dealt set) mapped onto the taste system's
+   --p-* variables. Type: the platform's CJK + UI stacks (no external font files, no 3rd-party CDN). */
+:root {
+  /* palette (hex only; fx.js reads --bg --surface --ink --muted --accent --accent-ink) */
+  --p-bg: #efe9e0;
+  --p-surface: #e2d9cb;
+  --p-ink: #22261f;
+  --p-muted: #5a5c53;
+  --p-accent: #2e5b44;
+  --p-accent-ink: #ffffff;
+  --p-action: #2e5b44;
+  --p-action-ink: #ffffff;
+  --p-inv-bg: #22261f;
+  --p-inv-surface: #2e322a;
+  --p-inv-ink: #efe9e0;
+  --p-inv-muted: #a19e96;
+  --p-inv-accent: #efe9e0;
+  --p-inv-accent-ink: #22261f;
+  --p-inv-action: #efe9e0;
+  --p-inv-action-ink: #22261f;
+  --ground-bg: #d9ccb7; --ground-surface: #e9e0d2; --ground-ink: #2a2622; --ground-muted: #5a534a; --ground-accent: #a8794a;
+
+  /* fonts */
+  --font-display: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+  --font-text: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, Consolas, "Liberation Mono", monospace;
+  --display-weight: 500;    /* 500 on a tech page (software) */
+  --display-tracking: -0.02em;
+
+  --nav: 72px;
+  --padt: 120px;
+  --padb: 72px;
+  --hgap: 48px;
+  --hpadb: 64px;
+  --bar: 0px;
+
+  --container: 1280px;
+  --gut: 80px;
+  --pad: var(--gut);
+  --gutter: 24px;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+  --section: 40px;
+  --section-band: 56px;
+  --head-gap: 48px;
+  --card-pad: 16px;
+  --card-gap: 16px;
+
+  --t-label: 13px;
+  --t-small: 14px;
+  --t-body: 16px;
+  --t-lead: 18px;
+  --t-card: 18px;
+  --t-h3: 24px;
+  --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
+  --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
+  --t-stat: clamp(28px, .952vw + 24.29px, 38px);
+
+  --radius: 16px;
+}
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }

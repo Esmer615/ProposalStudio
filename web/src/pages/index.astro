@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Minimal product home: name + one real capability + one hard fact, one primary action,
+// three steps (each with a light UI-fragment visual), one data-scope line, one close+footer screen.
+// No photographs, no scroll effects. Four screens: hero, steps(+scope), a closing screen.
+---
+<Base
+  title="新云媒介提案台：户外媒体的 AI 提案工作台"
+  description="输入场馆、预算、媒介与档期，Agent 自动取红豆库存、跑确定性引擎，生成可解释可复算的四页方案。"
+  active="index"
+  hideFooter
+>
+<main id="top">
+  <section class="hero hero--split" data-enter aria-labelledby="hero-h">
+    <div class="wrap">
+      <div class="hero-text grid hero-split">
+        <div class="hero-copy span-6">
+          <p class="hero-notice">户外媒体 AI 提案 · 确定性引擎</p>
+          <h1 id="hero-h">户外媒体的 AI 提案工作台</h1>
+          <p class="t-lead">输入场馆、预算、媒介与档期，Agent 取红豆库存、跑 CP-SAT 引擎，2 秒算出一份可解释、可复算的四页方案。</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="/input.html">生成投放方案</a>
+          </div>
+          <dl class="hero-facts grid" data-moment="counter-rolls">
+            <div class="span-4"><dt>默认场景</dt><dd><span class="t-stat" data-count>44</span> <span class="t-unit">个付费点位</span></dd></div>
+            <div class="span-4"><dt>有效曝光</dt><dd><span class="t-stat">7,463.8</span> <span class="t-unit">万人次</span></dd></div>
+            <div class="span-4"><dt>确定性引擎</dt><dd><span class="t-stat" data-count>2</span> <span class="t-unit">秒出方案</span></dd></div>
+          </dl>
+        </div>
+        <div class="hero-visual frame frame--photo span-6 start-7" role="img" aria-label="示例方案摘要：乐高 500 万，44 个付费点位，有效曝光 7,463.8 万人次">
+          <div class="card hero-card">
+            <div class="card-head"><span>示例方案 · 乐高 2027 暑期</span><span class="chip chip--quiet mono">44 / 44 可售</span></div>
+            <div class="stats hero-stats">
+              <div><dt class="muted">公交车身</dt><dd class="t-stat">32 条 · 39 辆</dd></div>
+              <div><dt class="muted">地铁出入口</dt><dd class="t-stat">5 站 · 5 口</dd></div>
+              <div><dt class="muted">有效曝光</dt><dd class="t-stat">7,463.8 万</dd></div>
+              <div><dt class="muted">Reach</dt><dd class="t-stat">82.0%</dd></div>
+              <div><dt class="muted">Frequency</dt><dd class="t-stat">36.4</dd></div>
+              <div><dt class="muted">CPM</dt><dd class="t-stat">63.05 元</dd></div>
+            </div>
+            <div class="kv hero-kv">
+              <div><span>折后媒体费</span><b>470.56 万</b></div>
+              <div><span>制作费</span><b>29.40 万</b></div>
+              <div class="total"><span>应付总价</span><b>499.96 万</b></div>
+            </div>
+            <p class="muted hero-card__note">CP-SAT · 示例快照 2026-11-21 · 实际以 run 数据为准</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="steps" aria-labelledby="steps-h">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div>
+          <h2 id="steps-h">三步，从 brief 到四页方案</h2>
+          <p class="t-lead" style="max-width:52ch">输入需求，Agent 补全缺口并取数，确定性引擎生成可溯源的四页方案——当天交付。</p>
+        </div>
+      </div>
+      <div class="grid steps" style="margin-top:var(--s-5)">
+        <article class="card span-4">
+          <div class="step-visual" role="img" aria-label="输入表单示意">
+            <div class="step-visual__fld"><span class="step-visual__label">场馆</span><b>上海乐高乐园度假区</b></div>
+            <div class="step-visual__fld"><span class="step-visual__label">预算</span><b>500 万</b></div>
+            <div class="step-visual__fld"><span class="step-visual__label">媒介</span><b class="chip chip--accent">公交 + 地铁</b></div>
+            <div class="step-visual__fld"><span class="step-visual__label">档期</span><b>2027-07-01 · 8 周</b></div>
+          </div>
+          <h3>输入</h3>
+          <p>场馆、预算、媒介、档期，加一句 brief。Agent 帮你补全缺口，缺月份不静默换月。</p>
+        </article>
+        <article class="card span-4">
+          <div class="step-visual step-visual--flow" role="img" aria-label="取数流程示意">
+            <span class="step-visual__node">红豆库存</span>
+            <span class="step-visual__arrow" aria-hidden="true">→</span>
+            <span class="step-visual__node">逐条核验</span>
+            <span class="step-visual__arrow" aria-hidden="true">→</span>
+            <span class="step-visual__node step-visual__node--accent">可售快照</span>
+          </div>
+          <h3>Agent 取数</h3>
+          <p>红豆库存跨月取最小可售，逐条核验；新云补充图层需人工登录时显式提示，不阻塞求解。</p>
+        </article>
+        <article class="card span-4">
+          <div class="step-visual step-visual--tabs" role="img" aria-label="四页方案标签示意">
+            <span class="step-visual__tab is-on">概览</span>
+            <span class="step-visual__tab">媒体</span>
+            <span class="step-visual__tab">经济</span>
+            <span class="step-visual__tab">效果</span>
+          </div>
+          <h3>四页方案</h3>
+          <p>概览、媒体、经济、效果。选点理由、报价瀑布、排期与曝光，每个数字可溯源。</p>
+        </article>
+      </div>
+
+      <div class="scope-note" id="scope">
+        <h3>数据口径</h3>
+        <p style="margin-top:var(--s-2);max-width:78ch">媒体库存来自红豆广告媒体管理系统 2027 年可售快照，跨月取最小可售；曝光、Reach、Frequency、CPM 为模型估算，目标人群为策划假设。每条选点带理由与证据，报价逐行分摊加总等于总价。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing" id="footer" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">今天就出一份方案</h2>
+        <p>输入四项，Agent 取数、引擎求解，四页方案当天交付。</p>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="/input.html">生成投放方案<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="footer__legal">
+        <span>
+          <b style="color:var(--ink);font-weight:500">数据来源</b> 红豆广告媒体管理系统 2027 月度可售库存快照 · 公开 POI/地图近似数据
+          <span style="margin-left:var(--s-5)"><b style="color:var(--ink);font-weight:500">估算声明</b> 曝光 / Reach / Frequency / CPM 为模型估算，非实测触达；不承诺入园、销量或回报</span>
+        </span>
+        <span>
+          <span>数据版本 <span class="mono" data-meta-version>—</span></span>
+          <span style="margin-left:var(--s-5)">库存快照 <span class="mono" data-meta-ts>—</span></span>
+          <span style="margin-left:var(--s-5)">© 2026 新云媒介提案台</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  // The footer is a data line, not a run result: show the current snapshot manifest.
+  fetch('/api/meta').then((r) => r.json()).then((meta) => {
+    const m = meta.manifest || {};
+    document.querySelectorAll<HTMLElement>('[data-meta-version]').forEach((el) => { el.textContent = m.data_version || '—'; });
+    document.querySelectorAll<HTMLElement>('[data-meta-ts]').forEach((el) => { el.textContent = String(m.inventory_ts || '—').replace('T', ' ').slice(0, 16); });
+  }).catch(() => {});
+</script>
+</Base>

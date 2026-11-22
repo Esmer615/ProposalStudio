@@ -1,0 +1,6140 @@
+{
+ "meta": {
+  "version": "1.0.0",
+  "generated_at": "2026-11-22T01:15:55+08:00",
+  "request_id": "9378e5848ec4",
+  "solve_ms": 601,
+  "total_ms": 1734,
+  "data_version": "eff175f9f518",
+  "inventory_ts": "2026-11-21T20:47:15+08:00",
+  "inventory_periods": [
+   "2027-07-01..2027-07-31",
+   "2027-08-01..2027-08-31"
+  ],
+  "solver": "CP-SAT",
+  "fallback_chain": [],
+  "status": "FEASIBLE",
+  "cache_hit": false
+ },
+ "inputs": {
+  "industry": "乐园",
+  "venue": "haichang_shanghai",
+  "venue_name": "上海海昌海洋公园",
+  "budget_wan": 500.0,
+  "media": [
+   "bus",
+   "metro"
+  ],
+  "start_date": "2027-07-01",
+  "end_date": "2027-08-25",
+  "weeks": 8,
+  "months": 2,
+  "customer_type": "direct",
+  "customer_type_label": "直客",
+  "locks": {
+   "include": [],
+   "exclude": []
+  }
+ },
+ "hypothesis": {
+  "fields": [
+   {
+    "id": "H1",
+    "label": "客户与品牌",
+    "value": "上海海昌海洋公园（主题乐园，浦东新区，2027 暑期亲子出游头部目的地）。"
+   },
+   {
+    "id": "H2",
+    "label": "生意目标",
+    "value": "把“知道该乐园”转化为“排进暑期一日游计划”，提升暑期入园与家庭客群到访。"
+   },
+   {
+    "id": "H3",
+    "label": "Campaign 目标",
+    "value": "以家庭亲子认知 + 暑期出游考虑为核心，兼顾年轻客群打卡；不以直接销售转化为主 KPI。"
+   },
+   {
+    "id": "H4",
+    "label": "目标人群",
+    "value": "上海及周边 4–12 岁孩子的家庭（决策人 30–45 岁）；补充 18–30 岁年轻打卡客群。"
+   },
+   {
+    "id": "H5",
+    "label": "时间与预算",
+    "value": "2027-07-01 至 2027-08-25（8 周，暑期档），媒体预算 500 万元（含制作）。"
+   },
+   {
+    "id": "H6",
+    "label": "媒体范围",
+    "value": "公交车身 + 地铁出入口组合：公交做家庭社区广度，地铁做交通枢纽与亲子商圈拦截。"
+   },
+   {
+    "id": "H7",
+    "label": "成功衡量",
+    "value": "目标人群有效曝光、Reach/Frequency、CPM、POI 覆盖数、红豆可售核验率；以监测照片与月度报告为准。"
+   }
+  ],
+  "one_liner": "用公交车身把上海海昌海洋公园带进全城家庭的暑期清单，用地铁出入口在交通枢纽与亲子商圈做定点拦截；预算优先买“家庭浓度”，不买单纯低价点位。",
+  "assumptions": [
+   "上海海昌海洋公园 有地铁直达，自驾占比为策划假设，用于媒介角色分工。",
+   "目标人群 3,000,000 为上海及周边亲子家庭策划口径，不是实测去重人群。",
+   "曝光、Reach、Frequency、CPM 均为模型估算，不承诺入园人数或销售转化。"
+  ]
+ },
+ "strategy": {
+  "one_liner": "公交做广度、地铁做枢纽、POI 做家庭浓度加权；用可解释的选点理由支撑组合。",
+  "audience": {
+   "primary": "4–12 岁孩子的上海家庭，30–45 岁决策人",
+   "secondary": "18–30 岁年轻打卡客群、长三角高铁亲子游客",
+   "persona": "周末/暑期带孩子出游的家长，关注交通便利、排队时间与性价比",
+   "activity_area": "大型居住区、亲子商场、科技馆/博物馆、交通枢纽、儿童医院周边"
+  },
+  "transport": {
+   "self_drive_share": 0.45,
+   "rail_share": 0.4,
+   "metro_access": "地铁直达，公共交通便利",
+   "note": "地铁点位重点买“家庭出发枢纽”和“亲子商圈”。"
+  },
+  "media_roles": [
+   {
+    "media": "bus",
+    "role": "城市广度与家庭社区渗透",
+    "share_target": 0.5
+   },
+   {
+    "media": "metro",
+    "role": "交通枢纽/亲子商圈定点拦截",
+    "share_target": 0.5
+   }
+  ],
+  "mix_rationale": "公交车身承担“把目的地带进社区”的广度任务；地铁出入口单价高，换来交通枢纽的家庭出发拦截，是“广度 vs 枢纽”的主动取舍。",
+  "compliance": {
+   "forbidden": [
+    "保证入园人数",
+    "承诺销售转化",
+    "投资收益承诺",
+    "校内广告"
+   ],
+   "notes": [
+    "不投校内，统一口径为“学校周边 300–500 米”。",
+    "所有曝光数字标注估算口径。"
+   ]
+  },
+  "creative": [
+   "暑期亲子一日游场景：从家出发到乐园的一天",
+   "主题角色 + 城市地标",
+   "强调“提前规划、错峰入园、交通接驳”"
+  ],
+  "avoid": [
+   "只按价格排序选点位",
+   "把地铁 reach 与公交 reach 相加",
+   "用静态台账 free 冒充暑期库存"
+  ]
+ },
+ "venue": {
+  "id": "haichang_shanghai",
+  "name": "上海海昌海洋公园",
+  "district": "浦东新区",
+  "coords": {
+   "lng": 121.903,
+   "lat": 30.894
+  },
+  "confidence": "approx",
+  "rings_km": [
+   6,
+   20,
+   50
+  ],
+  "access": {
+   "self_drive_share": 0.45,
+   "rail_share": 0.4,
+   "metro_access": "地铁直达",
+   "note": "公交/地铁用于城市家庭客源拦截与接驳。"
+  },
+  "target_population": 3000000,
+  "reach_k": 245.0,
+  "source": "公开信息 + 赛题资料，坐标近似"
+ },
+ "plan": {
+  "bus": [
+   {
+    "id": "bus:136:大三侧",
+    "kind": "bus",
+    "name": "136路 · 大三侧",
+    "line": "136",
+    "company": "巴士三公司",
+    "station": null,
+    "exit": null,
+    "district": "长宁-普陀",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 6,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 长宁-普陀",
+     "周边命中 11 个亲子/家庭 POI（上海儿童博物馆、上海消防博物馆、上海纺织博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=6",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 11 个 POI：上海儿童博物馆、上海消防博物馆、上海纺织博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:141:大三侧",
+      "name": "141路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:157:大三侧",
+      "name": "157路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "长宁-普陀",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_003",
+      "name": "上海儿童博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.408483,
+      "lat": 31.195953,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_007",
+      "name": "上海消防博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_018",
+      "name": "上海纺织博物馆",
+      "type": "museum",
+      "lng": 121.441527,
+      "lat": 31.248646,
+      "district": "普陀区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 11,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:141:大三侧",
+    "kind": "bus",
+    "name": "141路 · 大三侧",
+    "line": "141",
+    "company": "巴士三公司",
+    "station": null,
+    "exit": null,
+    "district": "长宁-普陀",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 9,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 长宁-普陀",
+     "周边命中 11 个亲子/家庭 POI（上海儿童博物馆、上海消防博物馆、上海纺织博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=9",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 11 个 POI：上海儿童博物馆、上海消防博物馆、上海纺织博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:157:大三侧",
+      "name": "157路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:171:大三侧",
+      "name": "171路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "长宁-普陀",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_003",
+      "name": "上海儿童博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.408483,
+      "lat": 31.195953,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_007",
+      "name": "上海消防博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_018",
+      "name": "上海纺织博物馆",
+      "type": "museum",
+      "lng": 121.441527,
+      "lat": 31.248646,
+      "district": "普陀区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 11,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:157:大三侧",
+    "kind": "bus",
+    "name": "157路 · 大三侧",
+    "line": "157",
+    "company": "巴士二公司",
+    "station": null,
+    "exit": null,
+    "district": "黄浦-静安",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 2,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 黄浦-静安",
+     "周边命中 15 个亲子/家庭 POI（上海自然博物馆、上海铁路博物馆、上海博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=2",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 15 个 POI：上海自然博物馆、上海铁路博物馆、上海博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:171:大三侧",
+      "name": "171路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:17:大三侧",
+      "name": "17路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "黄浦-静安",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_001",
+      "name": "上海自然博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.4577,
+      "lat": 31.236866,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_004",
+      "name": "上海铁路博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.47179,
+      "lat": 31.251986,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_008",
+      "name": "上海博物馆",
+      "type": "museum",
+      "lng": 121.471,
+      "lat": 31.230158,
+      "district": "黄浦区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 15,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:17:大三侧",
+    "kind": "bus",
+    "name": "17路 · 大三侧",
+    "line": "17",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 5,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=5",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:18:大三侧",
+      "name": "18路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:190:大三侧",
+      "name": "190路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:18:大三侧",
+    "kind": "bus",
+    "name": "18路 · 大三侧",
+    "line": "18",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 8,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=8",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:190:大三侧",
+      "name": "190路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:198:大三侧",
+      "name": "198路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:190:大三侧",
+    "kind": "bus",
+    "name": "190路 · 大三侧",
+    "line": "190",
+    "company": "巴士三公司",
+    "station": null,
+    "exit": null,
+    "district": "长宁-普陀",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 3,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 长宁-普陀",
+     "周边命中 11 个亲子/家庭 POI（上海儿童博物馆、上海消防博物馆、上海纺织博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=3",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 11 个 POI：上海儿童博物馆、上海消防博物馆、上海纺织博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:198:大三侧",
+      "name": "198路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:218:大三侧",
+      "name": "218路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "长宁-普陀",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_003",
+      "name": "上海儿童博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.408483,
+      "lat": 31.195953,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_007",
+      "name": "上海消防博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_018",
+      "name": "上海纺织博物馆",
+      "type": "museum",
+      "lng": 121.441527,
+      "lat": 31.248646,
+      "district": "普陀区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 11,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:198:大三侧",
+    "kind": "bus",
+    "name": "198路 · 大三侧",
+    "line": "198",
+    "company": "巴士二公司",
+    "station": null,
+    "exit": null,
+    "district": "黄浦-静安",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 4,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 黄浦-静安",
+     "周边命中 15 个亲子/家庭 POI（上海自然博物馆、上海铁路博物馆、上海博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=4",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 15 个 POI：上海自然博物馆、上海铁路博物馆、上海博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:218:大三侧",
+      "name": "218路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:224:大三侧",
+      "name": "224路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "黄浦-静安",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_001",
+      "name": "上海自然博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.4577,
+      "lat": 31.236866,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_004",
+      "name": "上海铁路博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.47179,
+      "lat": 31.251986,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_008",
+      "name": "上海博物馆",
+      "type": "museum",
+      "lng": 121.471,
+      "lat": 31.230158,
+      "district": "黄浦区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 15,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:218:大三侧",
+    "kind": "bus",
+    "name": "218路 · 大三侧",
+    "line": "218",
+    "company": "巴士二公司",
+    "station": null,
+    "exit": null,
+    "district": "黄浦-静安",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 13,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 黄浦-静安",
+     "周边命中 15 个亲子/家庭 POI（上海自然博物馆、上海铁路博物馆、上海博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=13",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 15 个 POI：上海自然博物馆、上海铁路博物馆、上海博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:224:大三侧",
+      "name": "224路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:43:大三侧",
+      "name": "43路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "黄浦-静安",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_001",
+      "name": "上海自然博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.4577,
+      "lat": 31.236866,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_004",
+      "name": "上海铁路博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.47179,
+      "lat": 31.251986,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_008",
+      "name": "上海博物馆",
+      "type": "museum",
+      "lng": 121.471,
+      "lat": 31.230158,
+      "district": "黄浦区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 15,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:43:大三侧",
+    "kind": "bus",
+    "name": "43路 · 大三侧",
+    "line": "43",
+    "company": "巴士二公司",
+    "station": null,
+    "exit": null,
+    "district": "黄浦-静安",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 9,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 黄浦-静安",
+     "周边命中 15 个亲子/家庭 POI（上海自然博物馆、上海铁路博物馆、上海博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=9",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 15 个 POI：上海自然博物馆、上海铁路博物馆、上海博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:451:车身三侧",
+      "name": "451路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:454:车身三侧",
+      "name": "454路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "黄浦-静安",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_001",
+      "name": "上海自然博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.4577,
+      "lat": 31.236866,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_004",
+      "name": "上海铁路博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.47179,
+      "lat": 31.251986,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_008",
+      "name": "上海博物馆",
+      "type": "museum",
+      "lng": 121.471,
+      "lat": 31.230158,
+      "district": "黄浦区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 15,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:451:车身三侧",
+    "kind": "bus",
+    "name": "451路 · 车身三侧",
+    "line": "451",
+    "company": "杨高公交",
+    "station": null,
+    "exit": null,
+    "district": "杨浦-浦东",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 10,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 杨浦-浦东",
+     "周边命中 35 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=10",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 35 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:454:车身三侧",
+      "name": "454路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:548:大三侧",
+      "name": "548路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "杨浦-浦东",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 35,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:454:车身三侧",
+    "kind": "bus",
+    "name": "454路 · 车身三侧",
+    "line": "454",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 8,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=8",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:548:大三侧",
+      "name": "548路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:572:车身三侧",
+      "name": "572路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:548:大三侧",
+    "kind": "bus",
+    "name": "548路 · 大三侧",
+    "line": "548",
+    "company": "巴士三公司",
+    "station": null,
+    "exit": null,
+    "district": "长宁-普陀",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 6,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 长宁-普陀",
+     "周边命中 11 个亲子/家庭 POI（上海儿童博物馆、上海消防博物馆、上海纺织博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=6",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 11 个 POI：上海儿童博物馆、上海消防博物馆、上海纺织博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:572:车身三侧",
+      "name": "572路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:576:车身三侧",
+      "name": "576路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "长宁-普陀",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_003",
+      "name": "上海儿童博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.408483,
+      "lat": 31.195953,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_007",
+      "name": "上海消防博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_018",
+      "name": "上海纺织博物馆",
+      "type": "museum",
+      "lng": 121.441527,
+      "lat": 31.248646,
+      "district": "普陀区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 11,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:572:车身三侧",
+    "kind": "bus",
+    "name": "572路 · 车身三侧",
+    "line": "572",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 12,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=12",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:576:车身三侧",
+      "name": "576路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:583:车身三侧",
+      "name": "583路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:576:车身三侧",
+    "kind": "bus",
+    "name": "576路 · 车身三侧",
+    "line": "576",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 15,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=15",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:583:车身三侧",
+      "name": "583路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:69:大三侧",
+      "name": "69路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:583:车身三侧",
+    "kind": "bus",
+    "name": "583路 · 车身三侧",
+    "line": "583",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 5,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=5",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:69:大三侧",
+      "name": "69路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:732:大三侧",
+      "name": "732路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:69:大三侧",
+    "kind": "bus",
+    "name": "69路 · 大三侧",
+    "line": "69",
+    "company": "巴士三公司",
+    "station": null,
+    "exit": null,
+    "district": "长宁-普陀",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 8,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 长宁-普陀",
+     "周边命中 11 个亲子/家庭 POI（上海儿童博物馆、上海消防博物馆、上海纺织博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=8",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 11 个 POI：上海儿童博物馆、上海消防博物馆、上海纺织博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:732:大三侧",
+      "name": "732路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:736:大三侧",
+      "name": "736路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "长宁-普陀",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_003",
+      "name": "上海儿童博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.408483,
+      "lat": 31.195953,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_007",
+      "name": "上海消防博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "长宁区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_018",
+      "name": "上海纺织博物馆",
+      "type": "museum",
+      "lng": 121.441527,
+      "lat": 31.248646,
+      "district": "普陀区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 11,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:732:大三侧",
+    "kind": "bus",
+    "name": "732路 · 大三侧",
+    "line": "732",
+    "company": "巴士二公司",
+    "station": null,
+    "exit": null,
+    "district": "黄浦-静安",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 2,
+    "free_count": 6,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 24.0,
+    "discount": 0.68,
+    "net_wan": 16.32,
+    "production_wan": 1.5,
+    "agency_fee_wan": 0.0,
+    "total_wan": 17.82,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 黄浦-静安",
+     "周边命中 15 个亲子/家庭 POI（上海自然博物馆、上海铁路博物馆、上海博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=6",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 15 个 POI：上海自然博物馆、上海铁路博物馆、上海博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:736:大三侧",
+      "name": "736路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:775:车身三侧",
+      "name": "775路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "黄浦-静安",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_001",
+      "name": "上海自然博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.4577,
+      "lat": 31.236866,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_004",
+      "name": "上海铁路博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.47179,
+      "lat": 31.251986,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_008",
+      "name": "上海博物馆",
+      "type": "museum",
+      "lng": 121.471,
+      "lat": 31.230158,
+      "district": "黄浦区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 15,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:736:大三侧",
+    "kind": "bus",
+    "name": "736路 · 大三侧",
+    "line": "736",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 5,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=5",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:775:车身三侧",
+      "name": "775路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:780:车身三侧",
+      "name": "780路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:780:车身三侧",
+    "kind": "bus",
+    "name": "780路 · 车身三侧",
+    "line": "780",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 7,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=7",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:782:车身三侧",
+      "name": "782路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:783:车身三侧",
+      "name": "783路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:787:车身三侧",
+    "kind": "bus",
+    "name": "787路 · 车身三侧",
+    "line": "787",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 3,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=3",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:789:车身三侧",
+      "name": "789路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:824:大三侧",
+      "name": "824路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:789:车身三侧",
+    "kind": "bus",
+    "name": "789路 · 车身三侧",
+    "line": "789",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 6,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=6",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:824:大三侧",
+      "name": "824路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:89:大三侧",
+      "name": "89路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:824:大三侧",
+    "kind": "bus",
+    "name": "824路 · 大三侧",
+    "line": "824",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 5,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=5",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:89:大三侧",
+      "name": "89路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:926:大三侧",
+      "name": "926路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:89:大三侧",
+    "kind": "bus",
+    "name": "89路 · 大三侧",
+    "line": "89",
+    "company": "巴士二公司",
+    "station": null,
+    "exit": null,
+    "district": "黄浦-静安",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 7,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 黄浦-静安",
+     "周边命中 15 个亲子/家庭 POI（上海自然博物馆、上海铁路博物馆、上海博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=7",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 15 个 POI：上海自然博物馆、上海铁路博物馆、上海博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:926:大三侧",
+      "name": "926路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:927:大三侧",
+      "name": "927路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "黄浦-静安",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_001",
+      "name": "上海自然博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.4577,
+      "lat": 31.236866,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_004",
+      "name": "上海铁路博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.47179,
+      "lat": 31.251986,
+      "district": "静安区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_008",
+      "name": "上海博物馆",
+      "type": "museum",
+      "lng": 121.471,
+      "lat": 31.230158,
+      "district": "黄浦区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 15,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:926:大三侧",
+    "kind": "bus",
+    "name": "926路 · 大三侧",
+    "line": "926",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 9,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=9",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:927:大三侧",
+      "name": "927路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:932:大三侧",
+      "name": "932路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:927:大三侧",
+    "kind": "bus",
+    "name": "927路 · 大三侧",
+    "line": "927",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 8,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=8",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:932:大三侧",
+      "name": "932路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:955:大三侧",
+      "name": "955路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:932:大三侧",
+    "kind": "bus",
+    "name": "932路 · 大三侧",
+    "line": "932",
+    "company": "巴士四公司",
+    "station": null,
+    "exit": null,
+    "district": "徐汇-闵行",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 8,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 徐汇-闵行",
+     "周边命中 22 个亲子/家庭 POI（上海昆虫博物馆、上海电影博物馆、虹桥天地）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=8",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 22 个 POI：上海昆虫博物馆、上海电影博物馆、虹桥天地",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:955:大三侧",
+      "name": "955路 · 大三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:980:车身三侧",
+      "name": "980路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "徐汇-闵行",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_006",
+      "name": "上海昆虫博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "徐汇区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "district": "徐汇区",
+      "weight": 0.9,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_025",
+      "name": "虹桥天地",
+      "type": "parent_child_mall",
+      "lng": 121.31102,
+      "lat": 31.19464,
+      "district": "闵行区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 22,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:955:大三侧",
+    "kind": "bus",
+    "name": "955路 · 大三侧",
+    "line": "955",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "大三侧",
+    "units": 1,
+    "free_count": 3,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=3",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:980:车身三侧",
+      "name": "980路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:980:车身三侧",
+    "kind": "bus",
+    "name": "980路 · 车身三侧",
+    "line": "980",
+    "company": "上南公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-上南",
+    "level": "S",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 8,
+    "unit_price_wan": 6.0,
+    "months": 2,
+    "gross_wan": 12.0,
+    "discount": 0.68,
+    "net_wan": 8.16,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 8.91,
+    "gift": false,
+    "score": 52.6,
+    "score_breakdown": {
+     "exposure": 0.64,
+     "audience_fit": 0.92,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+     "覆盖 浦东-上南",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=8",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-上南",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1055:车身三侧",
+    "kind": "bus",
+    "name": "1055路 · 车身三侧",
+    "line": "1055",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 8.0,
+    "discount": 0.68,
+    "net_wan": 5.44,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 6.19,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1057:车身三侧",
+      "name": "1057路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1066:车身三侧",
+      "name": "1066路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1068:车身三侧",
+    "kind": "bus",
+    "name": "1068路 · 车身三侧",
+    "line": "1068",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 8.0,
+    "discount": 0.68,
+    "net_wan": 5.44,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 6.19,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1070:车身三侧",
+      "name": "1070路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1071:车身三侧",
+      "name": "1071路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1074:车身三侧",
+    "kind": "bus",
+    "name": "1074路 · 车身三侧",
+    "line": "1074",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 8.0,
+    "discount": 0.68,
+    "net_wan": 5.44,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 6.19,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1080:车身三侧",
+      "name": "1080路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1082:车身三侧",
+      "name": "1082路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1082:车身三侧",
+    "kind": "bus",
+    "name": "1082路 · 车身三侧",
+    "line": "1082",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 8.0,
+    "discount": 0.68,
+    "net_wan": 5.44,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 6.19,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1088:车身三侧",
+      "name": "1088路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1089:车身三侧",
+      "name": "1089路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1088:车身三侧",
+    "kind": "bus",
+    "name": "1088路 · 车身三侧",
+    "line": "1088",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 8.0,
+    "discount": 0.68,
+    "net_wan": 5.44,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 6.19,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1089:车身三侧",
+      "name": "1089路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1091:车身三侧",
+      "name": "1091路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1108:车身三侧",
+    "kind": "bus",
+    "name": "1108路 · 车身三侧",
+    "line": "1108",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 2,
+    "free_count": 3,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 16.0,
+    "discount": 0.68,
+    "net_wan": 10.88,
+    "production_wan": 1.5,
+    "agency_fee_wan": 0.0,
+    "total_wan": 12.38,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=3",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1109:车身三侧",
+      "name": "1109路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1110:车身三侧",
+      "name": "1110路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "bus:1121:车身三侧",
+    "kind": "bus",
+    "name": "1121路 · 车身三侧",
+    "line": "1121",
+    "company": "南汇公交",
+    "station": null,
+    "exit": null,
+    "district": "浦东-南汇",
+    "level": "A+",
+    "media_type": "车身三侧",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 4.0,
+    "months": 2,
+    "gross_wan": 8.0,
+    "discount": 0.68,
+    "net_wan": 5.44,
+    "production_wan": 0.75,
+    "agency_fee_wan": 0.0,
+    "total_wan": 6.19,
+    "gift": false,
+    "score": 45.7,
+    "score_breakdown": {
+     "exposure": 0.42,
+     "audience_fit": 0.23,
+     "poi": 0.65,
+     "zone": 0.45,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 38,000 人次估算，曝光效率中",
+     "覆盖 浦东-南汇",
+     "周边命中 30 个亲子/家庭 POI（上海科技馆、上海天文馆、上海航运博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 30 个 POI：上海科技馆、上海天文馆、上海航运博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "bus:1122:车身三侧",
+      "name": "1122路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "bus:1126:车身三侧",
+      "name": "1126路 · 车身三侧",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "schematic",
+     "district": "浦东-南汇",
+     "confidence": "low"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_000",
+      "name": "上海科技馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.536733,
+      "lat": 31.220602,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_002",
+      "name": "上海天文馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.922585,
+      "lat": 30.91513,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     },
+     {
+      "id": "poi_005",
+      "name": "上海航运博物馆",
+      "type": "science_museum_planetarium",
+      "lng": 121.165775,
+      "lat": 31.280532,
+      "district": "浦东新区",
+      "weight": 1.0,
+      "source": "OSM Photon geocode (approx)",
+      "confidence": "approx"
+     }
+    ],
+    "poi_count": 30,
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ],
+    "locked": false,
+    "status": "paid"
+   }
+  ],
+  "metro": [
+   {
+    "id": "metro:德平路:2号口",
+    "kind": "metro",
+    "name": "德平路站 · 2号口",
+    "line": null,
+    "company": null,
+    "station": "德平路",
+    "exit": "2号口",
+    "district": "浦东新区",
+    "level": "A++",
+    "media_type": "地铁出入口",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 30.0,
+    "months": 2,
+    "gross_wan": 60.0,
+    "discount": 0.68,
+    "net_wan": 40.8,
+    "production_wan": 0.03,
+    "agency_fee_wan": 0.0,
+    "total_wan": 40.83,
+    "gift": false,
+    "score": 70.3,
+    "score_breakdown": {
+     "exposure": 1.0,
+     "audience_fit": 0.54,
+     "poi": 1.0,
+     "zone": 0.95,
+     "corridor": 0.7,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A++ 级，日均曝光按 90,000 人次估算，曝光效率高",
+     "覆盖 浦东新区（场馆同区，亲和度高）",
+     "L06 换乘，家庭出行拦截强",
+     "周边命中 3 个亲子/家庭 POI（周浦万达广场、世纪公园商业区、上海水族馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "transfer",
+      "text": "L06",
+      "source": "红豆 stationAttr"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 3 个 POI：周浦万达广场、世纪公园商业区、上海水族馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "metro:德平路:3号口",
+      "name": "德平路站 · 3号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "metro:德平路:4号口",
+      "name": "德平路站 · 4号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "point",
+     "coords": {
+      "lng": 121.564235,
+      "lat": 31.245395
+     },
+     "confidence": "medium",
+     "source": "SHMetro/YutingHan (OSM, WGS84)"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_034",
+      "name": "周浦万达广场",
+      "type": "parent_child_mall",
+      "lng": 121.567706,
+      "lat": 31.245944,
+      "weight": 1.0,
+      "distance_m": 336,
+      "source": "district centroid fallback"
+     },
+     {
+      "id": "poi_041",
+      "name": "世纪公园商业区",
+      "type": "parent_child_mall",
+      "lng": 121.567706,
+      "lat": 31.245944,
+      "weight": 1.0,
+      "distance_m": 336,
+      "source": "district centroid fallback"
+     },
+     {
+      "id": "poi_084",
+      "name": "上海水族馆",
+      "type": "aquarium_indoor_play",
+      "lng": 121.567706,
+      "lat": 31.245944,
+      "weight": 1.0,
+      "distance_m": 336,
+      "source": "district centroid fallback"
+     }
+    ],
+    "poi_count": 3,
+    "hypothesis_refs": [
+     "H4",
+     "H6",
+     "H7"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "metro:徐家汇:1号口",
+    "kind": "metro",
+    "name": "徐家汇站 · 1号口",
+    "line": null,
+    "company": null,
+    "station": "徐家汇",
+    "exit": "1号口",
+    "district": "徐汇区",
+    "level": "A++",
+    "media_type": "地铁出入口",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 30.0,
+    "months": 2,
+    "gross_wan": 60.0,
+    "discount": 0.68,
+    "net_wan": 40.8,
+    "production_wan": 0.03,
+    "agency_fee_wan": 0.0,
+    "total_wan": 40.83,
+    "gift": false,
+    "score": 65.2,
+    "score_breakdown": {
+     "exposure": 1.0,
+     "audience_fit": 0.54,
+     "poi": 0.83,
+     "zone": 0.7,
+     "corridor": 0.9,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A++ 级，日均曝光按 90,000 人次估算，曝光效率高",
+     "覆盖 徐汇区",
+     "L01/L09/L11换乘 换乘，家庭出行拦截强",
+     "周边命中 3 个亲子/家庭 POI（徐家汇站、国际和平妇幼保健院、上海电影博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "transfer",
+      "text": "L01/L09/L11换乘",
+      "source": "红豆 stationAttr"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 3 个 POI：徐家汇站、国际和平妇幼保健院、上海电影博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "metro:徐家汇:2号口",
+      "name": "徐家汇站 · 2号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "metro:徐家汇:9号口",
+      "name": "徐家汇站 · 9号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "point",
+     "coords": {
+      "lng": 121.436304,
+      "lat": 31.193752
+     },
+     "confidence": "medium",
+     "source": "SHMetro/YutingHan (OSM, WGS84)"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_050",
+      "name": "徐家汇站",
+      "type": "transport_hub",
+      "lng": 121.434382,
+      "lat": 31.19554,
+      "weight": 0.9,
+      "distance_m": 270,
+      "source": "OSM Photon geocode (approx)"
+     },
+     {
+      "id": "poi_061",
+      "name": "国际和平妇幼保健院",
+      "type": "children_hospital_maternity",
+      "lng": 121.433967,
+      "lat": 31.198095,
+      "weight": 0.7,
+      "distance_m": 532,
+      "source": "OSM Photon geocode (approx)"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "weight": 0.9,
+      "distance_m": 678,
+      "source": "OSM Photon geocode (approx)"
+     }
+    ],
+    "poi_count": 3,
+    "hypothesis_refs": [
+     "H4",
+     "H6",
+     "H7"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "metro:徐家汇:2号口",
+    "kind": "metro",
+    "name": "徐家汇站 · 2号口",
+    "line": null,
+    "company": null,
+    "station": "徐家汇",
+    "exit": "2号口",
+    "district": "徐汇区",
+    "level": "A++",
+    "media_type": "地铁出入口",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 30.0,
+    "months": 2,
+    "gross_wan": 60.0,
+    "discount": 0.68,
+    "net_wan": 40.8,
+    "production_wan": 0.03,
+    "agency_fee_wan": 0.0,
+    "total_wan": 40.83,
+    "gift": false,
+    "score": 65.2,
+    "score_breakdown": {
+     "exposure": 1.0,
+     "audience_fit": 0.54,
+     "poi": 0.83,
+     "zone": 0.7,
+     "corridor": 0.9,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A++ 级，日均曝光按 90,000 人次估算，曝光效率高",
+     "覆盖 徐汇区",
+     "L01/L09/L11换乘 换乘，家庭出行拦截强",
+     "周边命中 3 个亲子/家庭 POI（徐家汇站、国际和平妇幼保健院、上海电影博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "transfer",
+      "text": "L01/L09/L11换乘",
+      "source": "红豆 stationAttr"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 3 个 POI：徐家汇站、国际和平妇幼保健院、上海电影博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "metro:徐家汇:9号口",
+      "name": "徐家汇站 · 9号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "metro:向城路(原浦电路):1号口(4号线)",
+      "name": "向城路(原浦电路)站 · 1号口(4号线)",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "point",
+     "coords": {
+      "lng": 121.436304,
+      "lat": 31.193752
+     },
+     "confidence": "medium",
+     "source": "SHMetro/YutingHan (OSM, WGS84)"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_050",
+      "name": "徐家汇站",
+      "type": "transport_hub",
+      "lng": 121.434382,
+      "lat": 31.19554,
+      "weight": 0.9,
+      "distance_m": 270,
+      "source": "OSM Photon geocode (approx)"
+     },
+     {
+      "id": "poi_061",
+      "name": "国际和平妇幼保健院",
+      "type": "children_hospital_maternity",
+      "lng": 121.433967,
+      "lat": 31.198095,
+      "weight": 0.7,
+      "distance_m": 532,
+      "source": "OSM Photon geocode (approx)"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "weight": 0.9,
+      "distance_m": 678,
+      "source": "OSM Photon geocode (approx)"
+     }
+    ],
+    "poi_count": 3,
+    "hypothesis_refs": [
+     "H4",
+     "H6",
+     "H7"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "metro:徐家汇:9号口",
+    "kind": "metro",
+    "name": "徐家汇站 · 9号口",
+    "line": null,
+    "company": null,
+    "station": "徐家汇",
+    "exit": "9号口",
+    "district": "徐汇区",
+    "level": "A++",
+    "media_type": "地铁出入口",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 30.0,
+    "months": 2,
+    "gross_wan": 60.0,
+    "discount": 0.68,
+    "net_wan": 40.8,
+    "production_wan": 0.03,
+    "agency_fee_wan": 0.0,
+    "total_wan": 40.83,
+    "gift": false,
+    "score": 65.2,
+    "score_breakdown": {
+     "exposure": 1.0,
+     "audience_fit": 0.54,
+     "poi": 0.83,
+     "zone": 0.7,
+     "corridor": 0.9,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A++ 级，日均曝光按 90,000 人次估算，曝光效率高",
+     "覆盖 徐汇区",
+     "L01/L09/L11换乘 换乘，家庭出行拦截强",
+     "周边命中 3 个亲子/家庭 POI（徐家汇站、国际和平妇幼保健院、上海电影博物馆）"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "transfer",
+      "text": "L01/L09/L11换乘",
+      "source": "红豆 stationAttr"
+     },
+     {
+      "type": "poi",
+      "text": "周边 800m/区县代理命中 3 个 POI：徐家汇站、国际和平妇幼保健院、上海电影博物馆",
+      "source": "POI 近似库（构建期缓存）"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "metro:向城路(原浦电路):1号口(4号线)",
+      "name": "向城路(原浦电路)站 · 1号口(4号线)",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "metro:向城路(原浦电路):3号口(4号线)",
+      "name": "向城路(原浦电路)站 · 3号口(4号线)",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "point",
+     "coords": {
+      "lng": 121.436304,
+      "lat": 31.193752
+     },
+     "confidence": "medium",
+     "source": "SHMetro/YutingHan (OSM, WGS84)"
+    },
+    "poi_hits": [
+     {
+      "id": "poi_050",
+      "name": "徐家汇站",
+      "type": "transport_hub",
+      "lng": 121.434382,
+      "lat": 31.19554,
+      "weight": 0.9,
+      "distance_m": 270,
+      "source": "OSM Photon geocode (approx)"
+     },
+     {
+      "id": "poi_061",
+      "name": "国际和平妇幼保健院",
+      "type": "children_hospital_maternity",
+      "lng": 121.433967,
+      "lat": 31.198095,
+      "weight": 0.7,
+      "distance_m": 532,
+      "source": "OSM Photon geocode (approx)"
+     },
+     {
+      "id": "poi_012",
+      "name": "上海电影博物馆",
+      "type": "museum",
+      "lng": 121.433655,
+      "lat": 31.188091,
+      "weight": 0.9,
+      "distance_m": 678,
+      "source": "OSM Photon geocode (approx)"
+     }
+    ],
+    "poi_count": 3,
+    "hypothesis_refs": [
+     "H4",
+     "H6",
+     "H7"
+    ],
+    "locked": false,
+    "status": "paid"
+   },
+   {
+    "id": "metro:御桥:7号口",
+    "kind": "metro",
+    "name": "御桥站 · 7号口",
+    "line": null,
+    "company": null,
+    "station": "御桥",
+    "exit": "7号口",
+    "district": "浦东新区",
+    "level": "A+",
+    "media_type": "地铁出入口",
+    "units": 1,
+    "free_count": 1,
+    "unit_price_wan": 20.0,
+    "months": 2,
+    "gross_wan": 40.0,
+    "discount": 0.68,
+    "net_wan": 27.2,
+    "production_wan": 0.03,
+    "agency_fee_wan": 0.0,
+    "total_wan": 27.23,
+    "gift": false,
+    "score": 57.0,
+    "score_breakdown": {
+     "exposure": 0.61,
+     "audience_fit": 0.23,
+     "poi": 0.0,
+     "zone": 0.95,
+     "corridor": 0.8,
+     "cost_efficiency": 0.0
+    },
+    "reasons": [
+     "A+ 级，日均曝光按 55,000 人次估算，曝光效率高",
+     "覆盖 浦东新区（场馆同区，亲和度高）",
+     "L11/L18换乘 换乘，家庭出行拦截强"
+    ],
+    "evidence": [
+     {
+      "type": "inventory",
+      "text": "红豆 min_free=1",
+      "source": "红豆 API"
+     },
+     {
+      "type": "transfer",
+      "text": "L11/L18换乘",
+      "source": "红豆 stationAttr"
+     }
+    ],
+    "alternatives": [
+     {
+      "id": "metro:三林:1号口",
+      "name": "三林站 · 1号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     },
+     {
+      "id": "metro:三林:2号口",
+      "name": "三林站 · 2号口",
+      "reason": "同等级/相近评分，库存被占或锁定冲突时的替代"
+     }
+    ],
+    "geo": {
+     "type": "point",
+     "coords": {
+      "lng": 121.57093,
+      "lat": 31.158099
+     },
+     "confidence": "medium",
+     "source": "SHMetro/YutingHan (OSM, WGS84)"
+    },
+    "poi_hits": [],
+    "poi_count": 0,
+    "hypothesis_refs": [
+     "H4",
+     "H6",
+     "H7"
+    ],
+    "locked": false,
+    "status": "paid"
+   }
+  ],
+  "summary": {
+   "bus_units": 37,
+   "metro_units": 5,
+   "bus_lines": 35,
+   "metro_stations": 5,
+   "media_mix": {
+    "bus_pct": 0.595,
+    "metro_pct": 0.405
+   },
+   "unit_mix": {
+    "bus_pct": 0.881,
+    "metro_pct": 0.119
+   },
+   "level_mix": {
+    "S": 29,
+    "A+": 9,
+    "A++": 4
+   },
+   "district_mix": {
+    "长宁-普陀": 5,
+    "黄浦-静安": 7,
+    "徐汇-闵行": 7,
+    "杨浦-浦东": 1,
+    "浦东-上南": 9,
+    "浦东-南汇": 8,
+    "浦东新区": 2,
+    "徐汇区": 3
+   },
+   "gross_wan": 692.0,
+   "net_wan": 470.56,
+   "total_paid_wan": 498.46,
+   "budget_utilization": 0.997,
+   "poi_hits": 17,
+   "free_verified": 42
+  }
+ },
+ "effects": {
+  "impressions": 77446432,
+  "grp": 2581.5,
+  "reach": 0.8199,
+  "reach_pct": "82.0%",
+  "frequency": 31.48,
+  "cpm_yuan": 60.76,
+  "target_population": 3000000,
+  "parameters": {
+   "reach_cap": 0.82,
+   "k": 245.0,
+   "k_eff": 269.5,
+   "view_rate_bus": 0.6,
+   "view_rate_metro": 0.5,
+   "days": 56
+  },
+  "by_media": [
+   {
+    "media": "bus",
+    "impressions": 65826432,
+    "share": 0.85,
+    "cpm_yuan": 42.56
+   },
+   {
+    "media": "metro",
+    "impressions": 11620000,
+    "share": 0.15,
+    "cpm_yuan": 163.86
+   }
+  ],
+  "by_line": [
+   {
+    "id": "bus:136:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:141:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:157:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:17:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:18:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:190:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:198:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:218:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:43:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:451:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:454:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:548:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:572:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:576:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:583:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:69:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:732:大三侧",
+    "impressions": 3351936
+   },
+   {
+    "id": "bus:736:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:780:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:787:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:789:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:824:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:89:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:926:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:927:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:932:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:955:大三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:980:车身三侧",
+    "impressions": 1948800
+   },
+   {
+    "id": "bus:1055:车身三侧",
+    "impressions": 1276800
+   },
+   {
+    "id": "bus:1068:车身三侧",
+    "impressions": 1276800
+   },
+   {
+    "id": "bus:1074:车身三侧",
+    "impressions": 1276800
+   },
+   {
+    "id": "bus:1082:车身三侧",
+    "impressions": 1276800
+   },
+   {
+    "id": "bus:1088:车身三侧",
+    "impressions": 1276800
+   },
+   {
+    "id": "bus:1108:车身三侧",
+    "impressions": 2196096
+   },
+   {
+    "id": "bus:1121:车身三侧",
+    "impressions": 1276800
+   },
+   {
+    "id": "metro:德平路:2号口",
+    "impressions": 2520000
+   },
+   {
+    "id": "metro:徐家汇:1号口",
+    "impressions": 2520000
+   },
+   {
+    "id": "metro:徐家汇:2号口",
+    "impressions": 2520000
+   },
+   {
+    "id": "metro:徐家汇:9号口",
+    "impressions": 2520000
+   },
+   {
+    "id": "metro:御桥:7号口",
+    "impressions": 1540000
+   }
+  ],
+  "formula": "Reach = reach_cap × (1 − exp(−GRP/k_eff)); Frequency = (GRP/100)/Reach; CPM = 折后媒体费/曝光×1000",
+  "disclaimer": "曝光估算，不是到园人数/销量/财务 ROI；目标人群为策划假设。"
+ },
+ "elasticity": {
+  "unit": "万元",
+  "points": [],
+  "knee_budget_wan": null,
+  "note": "按需计算：POST /api/elasticity（同一引擎九档重解，带缓存）"
+ },
+ "quote": {
+  "rate_card_total_wan": 692.0,
+  "discount_tier": {
+   "label": "68%",
+   "min_gross_wan": 400.0,
+   "max_gross_wan": null,
+   "rate": 0.68
+  },
+  "discount": 0.68,
+  "discount_converged": true,
+  "media_net_wan": 470.56,
+  "production_wan": 27.9,
+  "agency_fee_wan": 0.0,
+  "gift_wan": 23.53,
+  "gift_items": [
+   {
+    "id": "metro:德平路:1号口",
+    "name": "德平路站 · 1号口",
+    "gross_wan": 60.0
+   }
+  ],
+  "total_paid_wan": 498.46,
+  "budget_wan": 500.0,
+  "budget_slack_wan": 1.54,
+  "customer_type": "direct",
+  "allocation_check": {
+   "sum_lines": 498.46,
+   "total": 498.46,
+   "diff": 0.0,
+   "passed": true
+  },
+  "tiers": [
+   {
+    "label": "88%",
+    "min_gross_wan": 0.0,
+    "max_gross_wan": 99.99,
+    "rate": 0.88
+   },
+   {
+    "label": "83%",
+    "min_gross_wan": 100.0,
+    "max_gross_wan": 199.99,
+    "rate": 0.83
+   },
+   {
+    "label": "78%",
+    "min_gross_wan": 200.0,
+    "max_gross_wan": 299.99,
+    "rate": 0.78
+   },
+   {
+    "label": "73%",
+    "min_gross_wan": 300.0,
+    "max_gross_wan": 399.99,
+    "rate": 0.73
+   },
+   {
+    "label": "68%",
+    "min_gross_wan": 400.0,
+    "max_gross_wan": null,
+    "rate": 0.68
+   }
+  ],
+  "notes": [
+   "折扣口径来自赛前培训/PRD，待赞助方确认",
+   "制作费公交 0.75 万/辆、地铁 0.03 万/口为区间估算"
+  ]
+ },
+ "schedule": {
+  "go_live": "2027-07-01",
+  "take_down": "2027-08-25",
+  "total_days": 56,
+  "phases": [
+   {
+    "id": "P1",
+    "name": "设计定稿",
+    "start": "2027-06-12",
+    "end": "2027-06-17",
+    "owner": "创意/客户"
+   },
+   {
+    "id": "P2",
+    "name": "内容审批",
+    "start": "2027-06-18",
+    "end": "2027-06-20",
+    "owner": "客户/法务"
+   },
+   {
+    "id": "P3",
+    "name": "制作",
+    "start": "2027-06-21",
+    "end": "2027-06-26",
+    "owner": "制作组"
+   },
+   {
+    "id": "P4",
+    "name": "夜间安装",
+    "start": "2027-06-27",
+    "end": "2027-06-28",
+    "owner": "运营"
+   },
+   {
+    "id": "P5",
+    "name": "上刊",
+    "start": "2027-07-01",
+    "end": "2027-07-01",
+    "owner": "运营"
+   },
+   {
+    "id": "P6",
+    "name": "监测",
+    "start": "2027-07-01",
+    "end": "2027-08-25",
+    "owner": "运营"
+   },
+   {
+    "id": "P7",
+    "name": "下刊",
+    "start": "2027-08-26",
+    "end": "2027-08-27",
+    "owner": "运营"
+   }
+  ],
+  "batches": [
+   {
+    "id": "B1",
+    "date": "2027-06-27",
+    "window": "23:00-05:00",
+    "media": "bus",
+    "units": 20,
+    "crew": "公交班组",
+    "items": [
+     "bus:136:大三侧",
+     "bus:141:大三侧",
+     "bus:157:大三侧",
+     "bus:17:大三侧",
+     "bus:18:大三侧",
+     "bus:190:大三侧",
+     "bus:198:大三侧",
+     "bus:218:大三侧",
+     "bus:43:大三侧",
+     "bus:451:车身三侧",
+     "bus:454:车身三侧",
+     "bus:548:大三侧",
+     "bus:572:车身三侧",
+     "bus:576:车身三侧",
+     "bus:583:车身三侧",
+     "bus:69:大三侧",
+     "bus:732:大三侧",
+     "bus:736:大三侧",
+     "bus:780:车身三侧"
+    ],
+    "rain_backup": "2027-06-30"
+   },
+   {
+    "id": "B2",
+    "date": "2027-06-27",
+    "window": "23:00-05:00",
+    "media": "metro",
+    "units": 5,
+    "crew": "地铁班组",
+    "items": [
+     "metro:德平路:2号口",
+     "metro:徐家汇:1号口",
+     "metro:徐家汇:2号口",
+     "metro:徐家汇:9号口",
+     "metro:御桥:7号口"
+    ],
+    "rain_backup": "2027-06-30"
+   },
+   {
+    "id": "B3",
+    "date": "2027-06-28",
+    "window": "23:00-05:00",
+    "media": "bus",
+    "units": 17,
+    "crew": "公交班组",
+    "items": [
+     "bus:787:车身三侧",
+     "bus:789:车身三侧",
+     "bus:824:大三侧",
+     "bus:89:大三侧",
+     "bus:926:大三侧",
+     "bus:927:大三侧",
+     "bus:932:大三侧",
+     "bus:955:大三侧",
+     "bus:980:车身三侧",
+     "bus:1055:车身三侧",
+     "bus:1068:车身三侧",
+     "bus:1074:车身三侧",
+     "bus:1082:车身三侧",
+     "bus:1088:车身三侧",
+     "bus:1108:车身三侧",
+     "bus:1121:车身三侧"
+    ],
+    "rain_backup": "2027-07-01"
+   }
+  ],
+  "night_capacity": {
+   "bus_per_night": 20,
+   "metro_per_night": 10,
+   "nights": 2,
+   "rain_buffer_nights": 2
+  },
+  "monitoring": [
+   {
+    "name": "上刊证明",
+    "due": "上刊当日/次日",
+    "sla": "带报头日期照片",
+    "owner": "运营"
+   },
+   {
+    "name": "上刊监测报告",
+    "due": "上刊后 5 个工作日",
+    "sla": "近/远/多角度照片",
+    "owner": "运营"
+   },
+   {
+    "name": "下刊监测报告",
+    "due": "下刊后 5 个工作日",
+    "sla": "下刊照片",
+    "owner": "运营"
+   },
+   {
+    "name": "月度报告",
+    "due": "每月结束后",
+    "sla": "播放/展示证明",
+    "owner": "运营"
+   }
+  ],
+  "compensation": {
+   "rule": "误一补二",
+   "note": "延迟按损失天数×广告价值双倍补偿；合同口径"
+  },
+  "risks": [
+   "雨天停工顺延",
+   "夜间施工上限",
+   "库存被占自动替换"
+  ]
+ },
+ "coverage": {
+  "venue": {
+   "name": "上海海昌海洋公园",
+   "coords": {
+    "lng": 121.903,
+    "lat": 30.894
+   },
+   "rings_km": [
+    6,
+    20,
+    50
+   ]
+  },
+  "districts": [
+   {
+    "name": "浦东-上南",
+    "selected_units": 9,
+    "poi_demand": 0.9,
+    "weight": 0.9
+   },
+   {
+    "name": "浦东-南汇",
+    "selected_units": 8,
+    "poi_demand": 0.7,
+    "weight": 0.9
+   },
+   {
+    "name": "黄浦-静安",
+    "selected_units": 7,
+    "poi_demand": 0.6,
+    "weight": 0.9
+   },
+   {
+    "name": "徐汇-闵行",
+    "selected_units": 7,
+    "poi_demand": 0.7,
+    "weight": 0.9
+   },
+   {
+    "name": "长宁-普陀",
+    "selected_units": 5,
+    "poi_demand": 0.5,
+    "weight": 0.9
+   },
+   {
+    "name": "徐汇区",
+    "selected_units": 3,
+    "poi_demand": 0.45,
+    "weight": 0.9
+   },
+   {
+    "name": "浦东新区",
+    "selected_units": 2,
+    "poi_demand": 0.3,
+    "weight": 0.9
+   },
+   {
+    "name": "杨浦-浦东",
+    "selected_units": 1,
+    "poi_demand": 0.1,
+    "weight": 0.9
+   }
+  ],
+  "poi_hits": [
+   {
+    "id": "poi_000",
+    "name": "上海科技馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.536733,
+     "lat": 31.220602
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:451:车身三侧",
+     "bus:454:车身三侧",
+     "bus:572:车身三侧",
+     "bus:576:车身三侧",
+     "bus:583:车身三侧",
+     "bus:780:车身三侧",
+     "bus:787:车身三侧",
+     "bus:789:车身三侧",
+     "bus:955:大三侧",
+     "bus:980:车身三侧",
+     "bus:1055:车身三侧",
+     "bus:1068:车身三侧",
+     "bus:1074:车身三侧",
+     "bus:1082:车身三侧",
+     "bus:1088:车身三侧",
+     "bus:1108:车身三侧",
+     "bus:1121:车身三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_001",
+    "name": "上海自然博物馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.4577,
+     "lat": 31.236866
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:157:大三侧",
+     "bus:198:大三侧",
+     "bus:218:大三侧",
+     "bus:43:大三侧",
+     "bus:732:大三侧",
+     "bus:89:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_002",
+    "name": "上海天文馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.922585,
+     "lat": 30.91513
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:451:车身三侧",
+     "bus:454:车身三侧",
+     "bus:572:车身三侧",
+     "bus:576:车身三侧",
+     "bus:583:车身三侧",
+     "bus:780:车身三侧",
+     "bus:787:车身三侧",
+     "bus:789:车身三侧",
+     "bus:955:大三侧",
+     "bus:980:车身三侧",
+     "bus:1055:车身三侧",
+     "bus:1068:车身三侧",
+     "bus:1074:车身三侧",
+     "bus:1082:车身三侧",
+     "bus:1088:车身三侧",
+     "bus:1108:车身三侧",
+     "bus:1121:车身三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_003",
+    "name": "上海儿童博物馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.408483,
+     "lat": 31.195953
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:136:大三侧",
+     "bus:141:大三侧",
+     "bus:190:大三侧",
+     "bus:548:大三侧",
+     "bus:69:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_004",
+    "name": "上海铁路博物馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.47179,
+     "lat": 31.251986
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:157:大三侧",
+     "bus:198:大三侧",
+     "bus:218:大三侧",
+     "bus:43:大三侧",
+     "bus:732:大三侧",
+     "bus:89:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_005",
+    "name": "上海航运博物馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.165775,
+     "lat": 31.280532
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:451:车身三侧",
+     "bus:454:车身三侧",
+     "bus:572:车身三侧",
+     "bus:576:车身三侧",
+     "bus:583:车身三侧",
+     "bus:780:车身三侧",
+     "bus:787:车身三侧",
+     "bus:789:车身三侧",
+     "bus:955:大三侧",
+     "bus:980:车身三侧",
+     "bus:1055:车身三侧",
+     "bus:1068:车身三侧",
+     "bus:1074:车身三侧",
+     "bus:1082:车身三侧",
+     "bus:1088:车身三侧",
+     "bus:1108:车身三侧",
+     "bus:1121:车身三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_006",
+    "name": "上海昆虫博物馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.165775,
+     "lat": 31.280532
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:17:大三侧",
+     "bus:18:大三侧",
+     "bus:736:大三侧",
+     "bus:824:大三侧",
+     "bus:926:大三侧",
+     "bus:927:大三侧",
+     "bus:932:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_007",
+    "name": "上海消防博物馆",
+    "type": "science_museum_planetarium",
+    "coords": {
+     "lng": 121.165775,
+     "lat": 31.280532
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:136:大三侧",
+     "bus:141:大三侧",
+     "bus:190:大三侧",
+     "bus:548:大三侧",
+     "bus:69:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_025",
+    "name": "虹桥天地",
+    "type": "parent_child_mall",
+    "coords": {
+     "lng": 121.31102,
+     "lat": 31.19464
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "bus:17:大三侧",
+     "bus:18:大三侧",
+     "bus:736:大三侧",
+     "bus:824:大三侧",
+     "bus:926:大三侧",
+     "bus:927:大三侧",
+     "bus:932:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_034",
+    "name": "周浦万达广场",
+    "type": "parent_child_mall",
+    "coords": {
+     "lng": 121.567706,
+     "lat": 31.245944
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "metro:德平路:2号口"
+    ],
+    "source": "district centroid fallback"
+   },
+   {
+    "id": "poi_041",
+    "name": "世纪公园商业区",
+    "type": "parent_child_mall",
+    "coords": {
+     "lng": 121.567706,
+     "lat": 31.245944
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "metro:德平路:2号口"
+    ],
+    "source": "district centroid fallback"
+   },
+   {
+    "id": "poi_084",
+    "name": "上海水族馆",
+    "type": "aquarium_indoor_play",
+    "coords": {
+     "lng": 121.567706,
+     "lat": 31.245944
+    },
+    "weight": 1.0,
+    "hit_by": [
+     "metro:德平路:2号口"
+    ],
+    "source": "district centroid fallback"
+   },
+   {
+    "id": "poi_008",
+    "name": "上海博物馆",
+    "type": "museum",
+    "coords": {
+     "lng": 121.471,
+     "lat": 31.230158
+    },
+    "weight": 0.9,
+    "hit_by": [
+     "bus:157:大三侧",
+     "bus:198:大三侧",
+     "bus:218:大三侧",
+     "bus:43:大三侧",
+     "bus:732:大三侧",
+     "bus:89:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_012",
+    "name": "上海电影博物馆",
+    "type": "museum",
+    "coords": {
+     "lng": 121.433655,
+     "lat": 31.188091
+    },
+    "weight": 0.9,
+    "hit_by": [
+     "bus:17:大三侧",
+     "bus:18:大三侧",
+     "bus:736:大三侧",
+     "bus:824:大三侧",
+     "bus:926:大三侧",
+     "bus:927:大三侧",
+     "bus:932:大三侧",
+     "metro:徐家汇:1号口",
+     "metro:徐家汇:2号口",
+     "metro:徐家汇:9号口"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_018",
+    "name": "上海纺织博物馆",
+    "type": "museum",
+    "coords": {
+     "lng": 121.441527,
+     "lat": 31.248646
+    },
+    "weight": 0.9,
+    "hit_by": [
+     "bus:136:大三侧",
+     "bus:141:大三侧",
+     "bus:190:大三侧",
+     "bus:548:大三侧",
+     "bus:69:大三侧"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_050",
+    "name": "徐家汇站",
+    "type": "transport_hub",
+    "coords": {
+     "lng": 121.434382,
+     "lat": 31.19554
+    },
+    "weight": 0.9,
+    "hit_by": [
+     "metro:徐家汇:1号口",
+     "metro:徐家汇:2号口",
+     "metro:徐家汇:9号口"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   },
+   {
+    "id": "poi_061",
+    "name": "国际和平妇幼保健院",
+    "type": "children_hospital_maternity",
+    "coords": {
+     "lng": 121.433967,
+     "lat": 31.198095
+    },
+    "weight": 0.7,
+    "hit_by": [
+     "metro:徐家汇:1号口",
+     "metro:徐家汇:2号口",
+     "metro:徐家汇:9号口"
+    ],
+    "source": "OSM Photon geocode (approx)"
+   }
+  ],
+  "map_layers": {
+   "districts": {
+    "type": "choropleth",
+    "data": [
+     {
+      "name": "浦东-上南",
+      "value": 9
+     },
+     {
+      "name": "浦东-南汇",
+      "value": 8
+     },
+     {
+      "name": "黄浦-静安",
+      "value": 7
+     },
+     {
+      "name": "徐汇-闵行",
+      "value": 7
+     },
+     {
+      "name": "长宁-普陀",
+      "value": 5
+     },
+     {
+      "name": "徐汇区",
+      "value": 3
+     },
+     {
+      "name": "浦东新区",
+      "value": 2
+     },
+     {
+      "name": "杨浦-浦东",
+      "value": 1
+     }
+    ]
+   },
+   "venue": {
+    "type": "effectScatter",
+    "coords": {
+     "lng": 121.903,
+     "lat": 30.894
+    }
+   },
+   "metro": [
+    {
+     "id": "metro:德平路:2号口",
+     "coords": {
+      "lng": 121.564235,
+      "lat": 31.245395
+     },
+     "selected": true,
+     "level": "A++",
+     "confidence": "medium"
+    },
+    {
+     "id": "metro:徐家汇:1号口",
+     "coords": {
+      "lng": 121.436304,
+      "lat": 31.193752
+     },
+     "selected": true,
+     "level": "A++",
+     "confidence": "medium"
+    },
+    {
+     "id": "metro:徐家汇:2号口",
+     "coords": {
+      "lng": 121.436304,
+      "lat": 31.193752
+     },
+     "selected": true,
+     "level": "A++",
+     "confidence": "medium"
+    },
+    {
+     "id": "metro:徐家汇:9号口",
+     "coords": {
+      "lng": 121.436304,
+      "lat": 31.193752
+     },
+     "selected": true,
+     "level": "A++",
+     "confidence": "medium"
+    },
+    {
+     "id": "metro:御桥:7号口",
+     "coords": {
+      "lng": 121.57093,
+      "lat": 31.158099
+     },
+     "selected": true,
+     "level": "A+",
+     "confidence": "medium"
+    }
+   ],
+   "bus": [
+    {
+     "id": "bus:136:大三侧",
+     "geometry": null,
+     "schematic_district": "长宁-普陀",
+     "selected": true
+    },
+    {
+     "id": "bus:141:大三侧",
+     "geometry": null,
+     "schematic_district": "长宁-普陀",
+     "selected": true
+    },
+    {
+     "id": "bus:157:大三侧",
+     "geometry": null,
+     "schematic_district": "黄浦-静安",
+     "selected": true
+    },
+    {
+     "id": "bus:17:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:18:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:190:大三侧",
+     "geometry": null,
+     "schematic_district": "长宁-普陀",
+     "selected": true
+    },
+    {
+     "id": "bus:198:大三侧",
+     "geometry": null,
+     "schematic_district": "黄浦-静安",
+     "selected": true
+    },
+    {
+     "id": "bus:218:大三侧",
+     "geometry": null,
+     "schematic_district": "黄浦-静安",
+     "selected": true
+    },
+    {
+     "id": "bus:43:大三侧",
+     "geometry": null,
+     "schematic_district": "黄浦-静安",
+     "selected": true
+    },
+    {
+     "id": "bus:451:车身三侧",
+     "geometry": null,
+     "schematic_district": "杨浦-浦东",
+     "selected": true
+    },
+    {
+     "id": "bus:454:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:548:大三侧",
+     "geometry": null,
+     "schematic_district": "长宁-普陀",
+     "selected": true
+    },
+    {
+     "id": "bus:572:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:576:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:583:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:69:大三侧",
+     "geometry": null,
+     "schematic_district": "长宁-普陀",
+     "selected": true
+    },
+    {
+     "id": "bus:732:大三侧",
+     "geometry": null,
+     "schematic_district": "黄浦-静安",
+     "selected": true
+    },
+    {
+     "id": "bus:736:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:780:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:787:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:789:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:824:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:89:大三侧",
+     "geometry": null,
+     "schematic_district": "黄浦-静安",
+     "selected": true
+    },
+    {
+     "id": "bus:926:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:927:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:932:大三侧",
+     "geometry": null,
+     "schematic_district": "徐汇-闵行",
+     "selected": true
+    },
+    {
+     "id": "bus:955:大三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:980:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-上南",
+     "selected": true
+    },
+    {
+     "id": "bus:1055:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    },
+    {
+     "id": "bus:1068:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    },
+    {
+     "id": "bus:1074:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    },
+    {
+     "id": "bus:1082:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    },
+    {
+     "id": "bus:1088:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    },
+    {
+     "id": "bus:1108:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    },
+    {
+     "id": "bus:1121:车身三侧",
+     "geometry": null,
+     "schematic_district": "浦东-南汇",
+     "selected": true
+    }
+   ],
+   "poi": [
+    {
+     "id": "poi_000",
+     "coords": {
+      "lng": 121.536733,
+      "lat": 31.220602
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_001",
+     "coords": {
+      "lng": 121.4577,
+      "lat": 31.236866
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_002",
+     "coords": {
+      "lng": 121.922585,
+      "lat": 30.91513
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_003",
+     "coords": {
+      "lng": 121.408483,
+      "lat": 31.195953
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_004",
+     "coords": {
+      "lng": 121.47179,
+      "lat": 31.251986
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_005",
+     "coords": {
+      "lng": 121.165775,
+      "lat": 31.280532
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_006",
+     "coords": {
+      "lng": 121.165775,
+      "lat": 31.280532
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_007",
+     "coords": {
+      "lng": 121.165775,
+      "lat": 31.280532
+     },
+     "type": "science_museum_planetarium",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_025",
+     "coords": {
+      "lng": 121.31102,
+      "lat": 31.19464
+     },
+     "type": "parent_child_mall",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_034",
+     "coords": {
+      "lng": 121.567706,
+      "lat": 31.245944
+     },
+     "type": "parent_child_mall",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_041",
+     "coords": {
+      "lng": 121.567706,
+      "lat": 31.245944
+     },
+     "type": "parent_child_mall",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_084",
+     "coords": {
+      "lng": 121.567706,
+      "lat": 31.245944
+     },
+     "type": "aquarium_indoor_play",
+     "weight": 1.0
+    },
+    {
+     "id": "poi_008",
+     "coords": {
+      "lng": 121.471,
+      "lat": 31.230158
+     },
+     "type": "museum",
+     "weight": 0.9
+    },
+    {
+     "id": "poi_012",
+     "coords": {
+      "lng": 121.433655,
+      "lat": 31.188091
+     },
+     "type": "museum",
+     "weight": 0.9
+    },
+    {
+     "id": "poi_018",
+     "coords": {
+      "lng": 121.441527,
+      "lat": 31.248646
+     },
+     "type": "museum",
+     "weight": 0.9
+    },
+    {
+     "id": "poi_050",
+     "coords": {
+      "lng": 121.434382,
+      "lat": 31.19554
+     },
+     "type": "transport_hub",
+     "weight": 0.9
+    },
+    {
+     "id": "poi_061",
+     "coords": {
+      "lng": 121.433967,
+      "lat": 31.198095
+     },
+     "type": "children_hospital_maternity",
+     "weight": 0.7
+    }
+   ]
+  },
+  "sources": [
+   "红豆广告媒体管理系统 2027 月度快照",
+   "公开 POI/站点近似数据（构建期缓存）"
+  ],
+  "disclaimer": "POI/站点坐标为公开近似，不用于测量级结论；公交几何缺失时为区县示意；地铁 POI 半径 800m，公交为区县代理。"
+ },
+ "validation": {
+  "passed": true,
+  "checks": [
+   {
+    "id": "V1",
+    "name": "预算",
+    "level": "blocker",
+    "passed": true,
+    "detail": "498.46 ≤ 500.0"
+   },
+   {
+    "id": "V2",
+    "name": "库存",
+    "level": "blocker",
+    "passed": true,
+    "detail": "40/40 units ≤ min_free"
+   },
+   {
+    "id": "V3",
+    "name": "特殊状态",
+    "level": "blocker",
+    "passed": true,
+    "detail": "无封闭/改造出入口"
+   },
+   {
+    "id": "V4",
+    "name": "媒介配比",
+    "level": "warning",
+    "passed": true,
+    "detail": "按花费公交 60% / 地铁 40%"
+   },
+   {
+    "id": "V5",
+    "name": "线路/站点数",
+    "level": "warning",
+    "passed": true,
+    "detail": "公交 35 条 / 地铁 5 站"
+   },
+   {
+    "id": "V6",
+    "name": "施工产能",
+    "level": "blocker",
+    "passed": true,
+    "detail": "37 辆 ≤ 40；5 口 ≤ 20"
+   },
+   {
+    "id": "V7",
+    "name": "报价分摊",
+    "level": "blocker",
+    "passed": true,
+    "detail": "逐行加总 498.46 = 总价 498.46"
+   },
+   {
+    "id": "V8",
+    "name": "折扣档位",
+    "level": "blocker",
+    "passed": true,
+    "detail": "刊例 692.0 万落 68% 档"
+   },
+   {
+    "id": "V9",
+    "name": "效果口径",
+    "level": "warning",
+    "passed": true,
+    "detail": "Reach 81.99% ≤ cap 82%；无 NaN"
+   },
+   {
+    "id": "V10",
+    "name": "假设书回链",
+    "level": "blocker",
+    "passed": true,
+    "detail": "H1–H7 全部非空且有模块引用"
+   }
+  ],
+  "inventory_check": {
+   "period": "2027-07-01..2027-07-31..2027-08-01..2027-08-31",
+   "timestamp": "2026-11-21T20:47:15+08:00",
+   "free_verified": true
+  },
+  "self_check_10": [
+   {
+    "id": "C1",
+    "text": "一句话说明客户是谁、campaign 解决什么",
+    "passed": true
+   },
+   {
+    "id": "C2",
+    "text": "四项输入在方案中出现",
+    "passed": true
+   },
+   {
+    "id": "C3",
+    "text": "选点逻辑完整：场地→覆盖→线路→红豆核验",
+    "passed": true
+   },
+   {
+    "id": "C4",
+    "text": "媒介组合有主次与取舍",
+    "passed": true
+   },
+   {
+    "id": "C5",
+    "text": "预算拆分清楚：媒体/折扣/制作",
+    "passed": true
+   },
+   {
+    "id": "C6",
+    "text": "排期与红豆可售档期匹配",
+    "passed": true
+   },
+   {
+    "id": "C7",
+    "text": "效果预测有依据、监测方式明确",
+    "passed": true
+   },
+   {
+    "id": "C8",
+    "text": "风险与承诺：误一补二/天气/替换",
+    "passed": true
+   },
+   {
+    "id": "C9",
+    "text": "100↔200↔500 可增减复用",
+    "passed": true
+   },
+   {
+    "id": "C10",
+    "text": "HTML 现场可交互、改输入即出结果",
+    "passed": true
+   }
+  ],
+  "limitations": [
+   "触达为估算",
+   "折扣口径待确认",
+   "地铁等级映射为假设",
+   "POI/公交几何为近似/示意"
+  ]
+ },
+ "explanations": {
+  "why_selected": [
+   {
+    "item_id": "bus:136:大三侧",
+    "reason": "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ]
+   },
+   {
+    "item_id": "bus:141:大三侧",
+    "reason": "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ]
+   },
+   {
+    "item_id": "bus:157:大三侧",
+    "reason": "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ]
+   },
+   {
+    "item_id": "bus:17:大三侧",
+    "reason": "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ]
+   },
+   {
+    "item_id": "bus:18:大三侧",
+    "reason": "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ]
+   },
+   {
+    "item_id": "bus:190:大三侧",
+    "reason": "S 级，日均曝光按 58,000 人次估算，曝光效率高",
+    "hypothesis_refs": [
+     "H4",
+     "H6"
+    ]
+   }
+  ],
+  "why_not": [
+   {
+    "item": "竞品目的地站点",
+    "reason": "家庭客群重叠但意图冲突；不买竞品门口。"
+   },
+   {
+    "item": "远郊低等级公交线路",
+    "reason": "单价低但家庭 POI 浓度低，曝光价值不足以抵消制作与执行成本。"
+   },
+   {
+    "item": "纯高价地铁口全铺",
+    "reason": "地铁单价远高于公交，全铺会牺牲公交广度与预算弹性。"
+   }
+  ],
+  "trim_priority": [
+   {
+    "item_id": "metro:徐家汇:1号口",
+    "reason": "边际曝光/万元较低，砍预算先砍它",
+    "cost_wan": 40.83
+   },
+   {
+    "item_id": "metro:徐家汇:2号口",
+    "reason": "边际曝光/万元较低，砍预算先砍它",
+    "cost_wan": 40.83
+   },
+   {
+    "item_id": "metro:徐家汇:9号口",
+    "reason": "边际曝光/万元较低，砍预算先砍它",
+    "cost_wan": 40.83
+   }
+  ],
+  "counterfactuals": {
+   "budget_100": "砍预算时保留高分公交 + 少量高价枢纽，放弃铺底线路与低效地铁口。",
+   "venue_switch": "换场地后地铁直达权重上升，公交占比相应下调。",
+   "inventory_conflict": "目标点位被占时按“同站其他口→相邻枢纽→同区县替代”顺序替换，保持预算与配比不变。"
+  },
+  "hypothesis_links": {
+   "H1": [
+    "venue",
+    "strategy.audience"
+   ],
+   "H2": [
+    "effects",
+    "plan.summary"
+   ],
+   "H3": [
+    "strategy.media_roles",
+    "effects"
+   ],
+   "H4": [
+    "coverage.poi_hits",
+    "plan.bus",
+    "plan.metro"
+   ],
+   "H5": [
+    "inputs",
+    "quote",
+    "schedule"
+   ],
+   "H6": [
+    "plan.summary.media_mix",
+    "coverage"
+   ],
+   "H7": [
+    "validation.inventory_check",
+    "schedule.monitoring",
+    "effects"
+   ]
+  }
+ },
+ "workflow": {
+  "mode": "offline-rules",
+  "llm_used": false,
+  "stages": [
+   {
+    "id": "brief",
+    "name": "Brief 解析",
+    "status": "done",
+    "model": "rules",
+    "latency_ms": 2,
+    "summary": "无 brief，使用默认参数"
+   },
+   {
+    "id": "retrieval",
+    "name": "策略检索",
+    "status": "done",
+    "model": "tfidf-rules",
+    "latency_ms": 5,
+    "summary": "检索乐园人群/交通/合规知识"
+   },
+   {
+    "id": "candidates",
+    "name": "候选富化",
+    "status": "done",
+    "model": "deterministic",
+    "latency_ms": 15,
+    "summary": "红豆库存过滤 + POI/场馆评分"
+   },
+   {
+    "id": "solve",
+    "name": "求解",
+    "status": "done",
+    "model": "ortools-cp-sat",
+    "latency_ms": 601,
+    "summary": "CP-SAT 求解，FEASIBLE"
+   },
+   {
+    "id": "validate",
+    "name": "独立校验",
+    "status": "done",
+    "model": "rules",
+    "latency_ms": 3,
+    "summary": "10 项 blocker/warning 自检"
+   },
+   {
+    "id": "narrate",
+    "name": "解释生成",
+    "status": "done",
+    "model": "templates",
+    "latency_ms": 4,
+    "summary": "选点理由/反事实/H 回链"
+   }
+  ],
+  "guardrails": [
+   "LLM 不产出数字",
+   "无 Key 自动离线",
+   "求解器确定性",
+   "validator 独立于 solver"
+  ]
+ }
+}

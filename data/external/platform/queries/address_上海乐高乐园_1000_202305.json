@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "api": "/label/queryLabelByBorder",
+    "platform": "https://flairmedia.com.cn:38880",
+    "fetchedAt": "2026-11-21T15:58:19.979Z",
+    "note": "地址查询使用圆形边界（36 点）与平台 2023-05 数据；默认只保存摘要，--raw 保存完整响应。"
+  },
+  "summary": {
+    "center": {
+      "name": "上海乐高乐园",
+      "address": "上海乐高乐园",
+      "lng": 121.10782876001737,
+      "lat": 30.89309082539151
+    },
+    "radius": 1000,
+    "date": "202305",
+    "grid_count": 5,
+    "label_count": 1,
+    "labels": [
+      {
+        "id": 6526,
+        "firstLabel": "公交",
+        "secondLabel": "其他",
+        "thirdLabel": "1675路",
+        "ext1": "1675路"
+      }
+    ],
+    "sop_rows": 5,
+    "regions": [
+      "金山区"
+    ],
+    "rings": [
+      "外环外"
+    ],
+    "business_areas": [],
+    "poi_counts": {}
+  }
+}

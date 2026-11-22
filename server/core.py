@@ -17,7 +17,6 @@ DATA_DIR = ROOT / "data"
 CONFIG_DIR = DATA_DIR / "config"
 PROCESSED_DIR = DATA_DIR / "processed"
 WEB_DIST = ROOT / "web" / "dist"
-WEB_EXPORT = ROOT / "web" / "dist-export"
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -429,36 +428,202 @@ def agent_skills() -> Dict[str, Any]:
         }
 
 
-def export_html(body: Optional[Dict[str, Any]]) -> Tuple[int, str, str]:
-    """单文件提案导出。需要 web/dist-export/index.html 存在（vite.export 构建）。
+def proposal_submit(body: Optional[Dict[str, Any]]) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """POST /api/proposals：创建运行并后台执行。
 
-    载荷 = 当前方案 + 100–500 万预算档位（默认步长 50），前端静态模式可切换。
+    返回 202 {run_id, status, events_url}；结果用 GET /api/proposals/{run_id} 轮询。
     """
-    index = WEB_EXPORT / "index.html"
-    if not index.exists():
-        index = WEB_EXPORT / "export.html"
-    if not index.exists():
-        return 501, "", ""
     try:
-        from server.export_payload import build_export_payload
+        from agent.orchestration import execute_run, submit_run  # type: ignore
+    except Exception as exc:
+        return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": ["检查 agent/orchestration.py"], "recoverable": True}}, {}
 
-        payload = build_export_payload(body, step=50)
-    except Exception:
-        return 500, "", ""
-    html = index.read_text(encoding="utf-8", errors="replace")
-    safe = json.dumps(payload, ensure_ascii=False).replace("</", "<\\/")
-    if "__PLAN_PAYLOAD__" in html:
-        html = html.replace("__PLAN_PAYLOAD__", safe)
-    else:
-        # 兜底：不碰属性名，在 head 里注入（新模板应使用 __PLAN_PAYLOAD__）
-        html = html.replace(
-            "</head>",
-            f"<script>window.__PLAN_DATA__ = {safe};</script></head>",
+    payload = dict(body or {})
+    run_id = submit_run(payload)
+
+    import threading
+    threading.Thread(target=execute_run, args=(run_id, payload), name=f"proposal-{run_id}", daemon=True).start()
+
+    return 202, {
+        "run_id": run_id,
+        "status": "queued",
+        "events_url": f"/api/proposals/{run_id}/events",
+    }, {}
+
+
+def proposal_get(run_id: str) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """GET /api/proposals/{run_id}：返回运行结果；未知 404。"""
+    try:
+        from agent.orchestration import get_run  # type: ignore
+    except Exception as exc:
+        return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+
+    result = get_run(run_id)
+    if result is None:
+        return 404, {"error": {"code": "RUN_NOT_FOUND", "message": f"未知 run_id：{run_id}", "suggestions": ["检查 run_id 是否正确"], "recoverable": False}}, {}
+    return 200, result, {}
+
+
+def _route_feature(route: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """把 run/map_layers.bus_routes|metro_routes 或 bigdata_routes.lines 统一转成 GeoJSON Feature。"""
+    geometry = route.get("geometry") if isinstance(route.get("geometry"), dict) else None
+    path = (geometry or {}).get("path") if geometry else route.get("path")
+    if not isinstance(path, list) or len(path) < 2:
+        return None
+    line = route.get("line") or route.get("lineName") or ""
+    media = route.get("media") or ("metro" if str(line).startswith("地铁") else "bus")
+    props = {
+        "line": route.get("line"),
+        "lineName": route.get("lineName"),
+        "lineId": route.get("lineId"),
+        "media": media,
+        "items": route.get("items") or [],
+        "points": route.get("points") or (geometry or {}).get("points") or len(path),
+        "simplified": bool(route.get("simplified") or (geometry or {}).get("simplified")),
+        "source": route.get("source"),
+        "data_month": route.get("data_month") or "202305",
+        "confidence": route.get("confidence") or "approx",
+        "fetched_at": route.get("fetched_at"),
+    }
+    return {
+        "type": "Feature",
+        "properties": props,
+        "geometry": {"type": "LineString", "coordinates": path},
+    }
+
+
+def proposal_routes(run_id: str) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """GET /api/proposals/{run_id}/routes.geojson：方案公交/地铁线路真实几何。
+
+    数据来自 run.plan.coverage.map_layers.bus_routes + metro_routes（Agent 调用 xinyun AI线路）。
+    仅用于可视化；不参与报价/库存/评分。
+    """
+    try:
+        from agent.orchestration import get_run  # type: ignore
+    except Exception as exc:
+        return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+
+    result = get_run(run_id)
+    if result is None:
+        return 404, {"error": {"code": "RUN_NOT_FOUND", "message": f"未知 run_id：{run_id}", "suggestions": ["检查 run_id 是否正确"], "recoverable": False}}, {}
+
+    plan = result.get("plan") or {}
+    coverage = plan.get("coverage") or {}
+    layers = coverage.get("map_layers") or {}
+    routes = [
+        *(layers.get("bus_routes") or []),
+        *(layers.get("metro_routes") or []),
+    ]
+    route_data = (result.get("data") or {}).get("routes") or {}
+    features = [f for f in (_route_feature(r) for r in routes if isinstance(r, dict)) if f]
+    payload = {
+        "type": "FeatureCollection",
+        "features": features,
+        "meta": {
+            "run_id": run_id,
+            "status": route_data.get("status") or ("ready" if features else "skipped"),
+            "reason": route_data.get("reason"),
+            "source": route_data.get("source") or "新云传媒大数据可视化平台 · AI线路",
+            "data_month": route_data.get("data_month") or "202305",
+            "fetched_at": route_data.get("fetched_at"),
+            "venue": (result.get("inputs") or {}).get("request", {}).get("venue") if isinstance((result.get("inputs") or {}).get("request"), dict) else None,
+            "disclaimer": "平台只有 2023-05 轨迹快照，线路几何为近似；仅用于可视化，不参与报价/库存/评分。",
+            "missing": route_data.get("missing") or [],
+        },
+    }
+    return 200, payload, {"X-Data-Version": str((plan.get("meta") or {}).get("data_version") or _data_version())}
+
+
+def routes_lookup(body: Optional[Dict[str, Any]]) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """POST /api/routes：按线路名实时/缓存取几何（给 /api/plan 的即时地图用）。
+
+    body: {"lines":["136","157"], "force":false, "max_lines":40}
+    只读；无会话且无缓存时返回 status=skipped / MANUAL_LOGIN_REQUIRED，不阻塞。
+    """
+    body = dict(body or {})
+    lines = body.get("lines") or body.get("line") or []
+    if isinstance(lines, str):
+        lines = [x.strip() for x in lines.split(",") if x.strip()]
+    if not isinstance(lines, list) or not lines:
+        return 422, {"error": {"code": "VALIDATION_ERROR", "message": "lines 必须是非空线路名数组", "suggestions": ["例：{\"lines\":[\"136\",\"157\"]}"], "recoverable": True}}, {}
+    if len(lines) > 60:
+        return 422, {"error": {"code": "VALIDATION_ERROR", "message": "一次最多 60 条线路", "suggestions": [], "recoverable": True}}, {}
+    try:
+        from agent.data_skills import default_data_runtime  # type: ignore
+    except Exception as exc:
+        return 503, {"error": {"code": "DATA_SKILL_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+    try:
+        max_lines = int(body.get("max_lines") or len(lines))
+    except (TypeError, ValueError):
+        max_lines = len(lines)
+    try:
+        runtime = default_data_runtime()
+        result = runtime.bigdata_routes(
+            [str(x) for x in lines],
+            force=bool(body.get("force")),
+            max_lines=min(60, max(1, max_lines)),
         )
-    return 200, html, "export.html"
+    except Exception as exc:
+        return 500, {"error": {"code": "ROUTES_ERROR", "message": f"{type(exc).__name__}: {exc}", "suggestions": ["检查 xinyun-bigdata 会话与 Playwright"], "recoverable": True}}, {}
+    features = [f for f in (_route_feature(r) for r in result.get("lines") or []) if f]
+    payload = dict(result)
+    payload["features"] = features
+    payload["type"] = "FeatureCollection"
+    payload["note"] = "仅用于可视化；平台数据只有 2023-05，线路为近似轨迹。"
+    return 200, payload, {"X-Data-Version": _data_version()}
+
+
+def proposal_events(run_id: str) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """GET /api/proposals/{run_id}/events：返回一次运行的全部阶段事件。
+
+    前端可 500ms 轮询 GET /api/proposals/{run_id} 代替 SSE；这里也补一个
+    非流式 events 视图，便于简单接入。
+    """
+    try:
+        from agent.orchestration import get_run  # type: ignore
+    except Exception as exc:
+        return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+
+    result = get_run(run_id)
+    if result is None:
+        return 404, {"error": {"code": "RUN_NOT_FOUND", "message": f"未知 run_id：{run_id}", "suggestions": [], "recoverable": False}}, {}
+    stages = (result.get("agent") or {}).get("stages") or []
+    events = [
+        {
+            "seq": i,
+            "stage": s.get("stage"),
+            "status": s.get("status"),
+            "summary": s.get("summary"),
+            "ms": s.get("ms"),
+            "data_version": (result.get("data") or {}).get("inventory", {}).get("data_version") if (result.get("data") or {}).get("inventory") else None,
+            "warnings": result.get("warnings") or [],
+        }
+        for i, s in enumerate(stages)
+    ]
+    return 200, {"run_id": run_id, "status": result.get("status"), "events": events}, {}
+
+
+def proposal_pdf(run_id: str) -> Tuple[int, Any, Dict[str, str]]:
+    """生成本地提案 PDF（模板化 HTML → Chrome 打印），返回缓存文件路径。"""
+    try:
+        from agent.orchestration import get_run  # type: ignore
+    except Exception as exc:
+        return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+
+    result = get_run(run_id)
+    if result is None:
+        return 404, {"error": {"code": "RUN_NOT_FOUND", "message": f"未知 run_id：{run_id}", "suggestions": [], "recoverable": False}}, {}
+    try:
+        from server.proposal_pdf import generate_proposal_pdf  # type: ignore
+        path = generate_proposal_pdf(result)
+    except Exception as exc:
+        return 500, {"error": {"code": "PDF_GENERATION_FAILED", "message": f"{type(exc).__name__}: {exc}", "suggestions": ["确认本机 Chrome/Edge 可用后重试"], "recoverable": True}}, {}
+    return 200, str(path), {"X-Data-Version": str((result.get("plan") or {}).get("meta", {}).get("data_version") or _data_version())}
 
 
 __all__ = [
     "health", "meta", "plan", "batch", "elasticity", "manifest",
-    "agent_analyze", "agent_skills", "export_html", "ROOT", "WEB_DIST",
+    "agent_analyze", "agent_skills", "proposal_submit", "proposal_get", "proposal_events",
+    "proposal_routes", "routes_lookup", "proposal_pdf",
+    "ROOT", "WEB_DIST",
 ]

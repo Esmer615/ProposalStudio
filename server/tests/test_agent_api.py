@@ -15,10 +15,13 @@ def test_agent_skills():
     assert r.status_code == 200
     body = r.json()
     assert body["load_order"] == [
-        "brief-intake", "audience-strategy", "plan-analysis", "proposal-narrative",
+        "brief-intake", "data-inventory", "data-bigdata",
+        "audience-strategy", "plan-analysis", "proposal-narrative",
     ]
     assert body["validation_errors"] == []
-    assert {s["stage"] for s in body["skills"]} == {"intake", "strategy", "analysis", "narrative"}
+    assert {s["stage"] for s in body["skills"]} == {
+        "intake", "data_inventory", "data_bigdata", "strategy", "analysis", "narrative",
+    }
 
 
 def test_agent_analyze_quick():

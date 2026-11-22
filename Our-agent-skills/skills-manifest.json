@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated_at": "2026-11-22",
   "loader": "agent.skills.SkillRegistry",
-  "load_order": ["brief-intake", "audience-strategy", "plan-analysis", "proposal-narrative"],
+  "load_order": ["brief-intake", "audience-strategy", "plan-analysis", "proposal-narrative", "data-inventory", "data-bigdata"],
   "skills": [
     {
       "name": "brief-intake",
@@ -54,6 +54,24 @@
         "proposal-narrative/references/number-format.md"
       ],
       "outputs": ["headline", "markdown", "disclosures", "guardrails"]
+    },
+    {
+      "name": "data-inventory",
+      "stage": "data_inventory",
+      "order": 15,
+      "path": "data-inventory/SKILL.md",
+      "policy": "data-inventory/policy.json",
+      "tools": ["inventory.status", "inventory.snapshot", "inventory.analyze"],
+      "outputs": ["inventory-summary", "data-version", "warnings"]
+    },
+    {
+      "name": "data-bigdata",
+      "stage": "data_bigdata",
+      "order": 16,
+      "path": "data-bigdata/SKILL.md",
+      "policy": "data-bigdata/policy.json",
+      "tools": ["bigdata.coverage", "bigdata.poi", "bigdata.routes"],
+      "outputs": ["coverage-context", "poi-context", "route-geometry", "warnings"]
     }
   ]
 }

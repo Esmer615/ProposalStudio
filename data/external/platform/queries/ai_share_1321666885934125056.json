@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "platform": "https://flairmedia.com.cn:38880",
+    "savedAt": "2026-11-21T15:52:39.836Z",
+    "note": "保存+授权外部访问（默认一个月）；分享链接为平台官方百度地图 HTML。"
+  },
+  "line": {
+    "lineId": 9871,
+    "lineName": "1001路",
+    "linePath": "D:\\SOP\\media-res\\JSON\\1001路"
+  },
+  "name": "skill_1001路_2026-11-21",
+  "remark": "skill share test",
+  "webId": "1321666885934125056",
+  "shareUrl": "https://flairmedia.com.cn:38880/busLineShow?webId=1321666885934125056",
+  "exportFile": "D:\\Cacimodo\\Projects\\AIPlusWork\\data\\external\\platform\\queries\\ai_line_detail_1321666885934125056.xls"
+}

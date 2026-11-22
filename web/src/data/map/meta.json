@@ -1,0 +1,11 @@
+{
+ "data_version": "f786985a2947",
+ "inventory_ts": "2026-11-21T13:09:48Z",
+ "inventory_periods": null,
+ "metro_points": 838,
+ "metro_dropped": 7,
+ "poi_points": 292,
+ "districts": 16,
+ "built_at": "2026-11-21T17:15:55+00:00",
+ "coord_note": "地铁、POI、场馆为 WGS84，前端转换为 GCJ-02；区县边界沿用 DataV 口径。"
+}

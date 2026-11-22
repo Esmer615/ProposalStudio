@@ -1,0 +1,24 @@
+---
+// Footer.closing — data-source / estimate / version line only (no CTA, no link columns).
+// .closing expects two children (.closing__cta and .closing__links); here we render a single
+// data line block. Result pages update the version/timestamp via data-meta-* hooks.
+interface Props { dataVersion?: string; inventoryTs?: string }
+const { dataVersion = '—', inventoryTs = '—' } = Astro.props;
+---
+<div class="footer app-footer" role="contentinfo">
+  <div class="wrap" style="display:grid;gap:var(--s-3)">
+    <p style="color:var(--muted)">
+      <b style="color:var(--ink);font-weight:500">数据来源</b>
+      红豆广告媒体管理系统 2027 月度可售库存快照 · 公开 POI/地图近似数据
+    </p>
+    <p style="color:var(--muted)">
+      <b style="color:var(--ink);font-weight:500">估算声明</b>
+      曝光 / Reach / Frequency / CPM 为模型估算，非实测触达；不承诺入园人数、销量或财务回报。
+    </p>
+    <p style="color:var(--muted);font-size:13px">
+      <span>数据版本 <span class="mono" data-meta-version>{dataVersion}</span></span>
+      <span style="margin-left:var(--s-5)">库存快照 <span class="mono" data-meta-ts>{inventoryTs}</span></span>
+      <span style="margin-left:var(--s-5)">© 2026 新云媒介提案台</span>
+    </p>
+  </div>
+</div>

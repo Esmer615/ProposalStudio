@@ -2,8 +2,9 @@
 """红豆真实库存加载：快照 CSV → 候选清单。
 
 职责：
-- 优先读 data/processed/candidates_enriched.json / candidates.json / manifest.json；
-  缺失则直接读 data/snapshots/*.csv 与 data/*_2027-01*.csv。
+- 运行时只读 data/snapshots/*.csv（ProposalRunner 每次用 hongdou-inventory
+  snapshot.py --overwrite 实时刷新后再 reload_data）；不再扫描 data/ 根目录，
+  也不读 data/processed/*.json（那是审计/前端构建产物）。
 - 公交按 (lineName, mediaName) 去重；地铁按 (lineName, exitName) 去重。
 - 等级映射（bus 1=S/2=A++/3=A+/5=AA/6=unknown；metro 2=A++/3=A+）。
 - 过滤 freeCount<=0、specialSituation 非空、未知等级；跨月取 min free（绝不求和）。
@@ -95,23 +96,22 @@ def _month_of(snapshot_filename: str) -> Optional[str]:
 
 
 def _list_month_snapshots() -> Dict[str, Dict[str, str]]:
-    """返回 {month: {"bus": path, "metro": path}} 扫描所有快照与根目录。"""
+    """返回 {month: {"bus": path, "metro": path}}，只扫描 data/snapshots。"""
     out: Dict[str, Dict[str, str]] = {}
-    dirs = [config.SNAPSHOT_DIR, config.DATA_DIR]
-    for d in dirs:
-        if not os.path.isdir(d):
+    d = config.SNAPSHOT_DIR
+    if not os.path.isdir(d):
+        return out
+    for fn in sorted(os.listdir(d)):
+        if not fn.endswith(".csv"):
             continue
-        for fn in sorted(os.listdir(d)):
-            if not fn.endswith(".csv"):
-                continue
-            m = _month_of(fn)
-            if not m:
-                continue
-            full = os.path.join(d, fn)
-            if fn.startswith("bus_"):
-                out.setdefault(m, {})["bus"] = full
-            elif fn.startswith("metro_"):
-                out.setdefault(m, {})["metro"] = full
+        m = _month_of(fn)
+        if not m:
+            continue
+        full = os.path.join(d, fn)
+        if fn.startswith("bus_"):
+            out.setdefault(m, {})["bus"] = full
+        elif fn.startswith("metro_"):
+            out.setdefault(m, {})["metro"] = full
     return out
 
 

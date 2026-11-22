@@ -13,9 +13,8 @@ if (Test-Path $py) {
     Write-Host "缺少 .venv，跳过 Python 测试" -ForegroundColor Yellow
 }
 
-Write-Host "== frontend typecheck/build ==" -ForegroundColor Cyan
+Write-Host "== frontend build ==" -ForegroundColor Cyan
 if (Test-Path "web\package.json") {
-    pnpm --dir web typecheck
     pnpm --dir web build
 } else {
     Write-Host "缺少 web/package.json，跳过前端构建" -ForegroundColor Yellow

@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "api": "/nearby/count",
+    "platform": "https://flairmedia.com.cn:38880",
+    "center": {
+      "name": "上海乐高乐园",
+      "address": "上海乐高乐园",
+      "lng": 121.10782876001737,
+      "lat": 30.89309082539151
+    },
+    "radius": 1000,
+    "types": [
+      "商场",
+      "幼儿园"
+    ],
+    "mode": "count",
+    "fetchedAt": "2026-11-21T15:25:52.689Z",
+    "note": "周边点位查询是 Baidu POI 检索口径，不是 2023-05 人群数据；detail 最多返回前 maxPage 页。"
+  },
+  "result": [
+    {
+      "centerLng": 121.10782876001737,
+      "total": 1,
+      "searchMode": "circle",
+      "centerLat": 30.89309082539151,
+      "radius": 1000,
+      "keyword": "商场",
+      "baiduMessage": "ok",
+      "baiduStatus": 0,
+      "centerName": "上海乐高乐园"
+    },
+    {
+      "centerLng": 121.10782876001737,
+      "total": 0,
+      "searchMode": "circle",
+      "centerLat": 30.89309082539151,
+      "radius": 1000,
+      "keyword": "幼儿园",
+      "baiduMessage": "ok",
+      "baiduStatus": 0,
+      "centerName": "上海乐高乐园"
+    }
+  ]
+}

@@ -33,7 +33,7 @@ node .claude\skills\xinyun-bigdata\scripts\login.mjs
 | 媒体覆盖分析 `/nearbyPoiLineQuery` | 媒体覆盖查询 | [modules/coverage.md](modules/coverage.md) | `scripts/coverage_options.mjs` | `scripts/coverage.mjs`（覆盖媒体）<br>`scripts/coverage_poi.mjs`（周边点位） | 中心+半径→周边公交线路/地铁站；或 POI 数量/明细 CSV（平台导出格式） |
 | 条件查询 `/conditionQuery` | 条件查询 | [modules/condition.md](modules/condition.md) | `scripts/condition_options.mjs` | `scripts/condition.mjs` | 2023-05 人群/区域筛选→命中媒体→平台导出 Excel（建议小范围） |
 | 定制查询 `/looseMultiQuery` | 地址查询 | [modules/address.md](modules/address.md) | `scripts/address_options.mjs` | `scripts/address.mjs` | 地址/坐标+半径→命中媒体→导出 Excel |
-| AI线路 `/busLineShowSolution`、AI线路-站点 `/busLineShowSolutionStation` | AI线路 | [modules/ai-route.md](modules/ai-route.md) | `scripts/ai_route_options.mjs` | `scripts/ai_route.mjs`（只读）<br>`scripts/ai_share.mjs`（分享/导出） | 线路树/线路几何 GeoJSON；分享百度地图 HTML + 导出 xls |
+| AI线路 `/busLineShowSolution`、AI线路-站点 `/busLineShowSolutionStation` | AI线路 | [modules/ai-route.md](modules/ai-route.md) | `scripts/ai_route_options.mjs` | `scripts/ai_route.mjs`（单条只读）<br>`scripts/ai_route_batch.mjs`（批量/缓存/会话探测）<br>`scripts/ai_share.mjs`（分享/导出） | 线路树/线路几何 GeoJSON；批量取方案线路 + 30 天缓存；分享百度地图 HTML + 导出 xls |
 
 > `scripts/query.mjs` 是组合查询的兼容别名，实际执行 `compare.mjs`。
 
@@ -60,8 +60,11 @@ node .claude\skills\xinyun-bigdata\scripts\login.mjs
 | 条件查询 | `大数据洞察_条件查询_<condition>_<date>.xls`（命中媒体的汇总指标） | 脚本内建导出：`/exportIndicatorData`→`/downloadExcel`（与组合查询同一链路） | 直接打开 Excel；平台页面可看网格图；不导出截图 |
 | 地址查询 | `大数据洞察_地址查询_<中心>_<半径>_<日期>.xls`（命中媒体的汇总指标） | 脚本内建导出：`/exportIndicatorData`→`/downloadExcel`（与组合查询同一链路） | 直接打开 Excel；平台页面可看地图/属性，不导出截图 |
 | AI线路 | `ai_line_<id>.geojson` | **`ai_share.mjs`：保存→授权→分享链接 + 导出 xls** | 官方百度地图 HTML，**外部无登录可看** |
+| AI线路（批量） | 复用 `ai_line_<id>.geojson` + 单行 JSON（stdout） | 无写操作 | 方案公交线路真实几何；全部缓存命中时不启动浏览器 |
 
 > AI线路分享是唯一官方“可分享可视化”链路，已实现并验证；其他模块平台没有分享按钮，用 CSV/JSON/平台导出，**不做截图导出**（避免把平台界面信息带到本地）。
+>
+> 提案项目的 Agent 走 `ai_route_batch.mjs`：`--check` 探测会话（不开浏览器）、`--lines "136,157"` 批量取几何、`--cached-only` 强制离线缓存；只读，不调用 `saveWeb`/`ai_share`。契约见项目 `docs/route-geometry-api.md`。
 
 ---
 
@@ -145,6 +148,25 @@ node .claude\skills\xinyun-bigdata\scripts\ai_share.mjs --line 1001 --remark "sk
 ```
 
 已实测：匹配 `1001路`（lineId=9871），输出 GeoJSON 线形；`--station 人民广场` 可读站点坐标。
+
+### 2.6 AI线路批量：方案线路 + 缓存 + 会话探测
+
+```powershell
+# 只探测会话（apiRequest，不启动浏览器；302→/login 时返回 MANUAL_LOGIN_REQUIRED）
+node .claude\skills\xinyun-bigdata\scripts\ai_route_batch.mjs --check
+
+# 批量取线路（一次会话；纯 JSON stdout；缺失线路写入 missing[]）
+node .claude\skills\xinyun-bigdata\scripts\ai_route_batch.mjs --lines "136,157,17" --out data\external\platform\queries
+
+# 强制忽略缓存 / 只用缓存（无会话演示兜底）
+node .claude\skills\xinyun-bigdata\scripts\ai_route_batch.mjs --lines "136,157" --force
+node .claude\skills\xinyun-bigdata\scripts\ai_route_batch.mjs --lines "136,157" --cached-only
+```
+
+- 缓存 `ai_line_<lineId>.geojson` 默认 30 天 TTL；**全部命中时不开浏览器**，会话过期也能用。
+- 输出：`{ok,status,reason,lines:[{line,lineName,lineId,points,path,bbox,status}],missing:[...],summary}`；`path` 已是 `[lng,lat]`。
+- 会话过期时 `status=skipped, reason=MANUAL_LOGIN_REQUIRED`，由 Agent 显式降级，不阻塞方案。
+
 详见 [modules/ai-route.md](modules/ai-route.md)。
 
 ---
@@ -191,8 +213,9 @@ node .claude\skills\xinyun-bigdata\scripts\ai_share.mjs --line 1001 --remark "sk
 
 | 现象 | 处理 |
 |---|---|
-| 400 “plain HTTP request sent to HTTPS port” | nginx 误跳 http；脚本已自动改回 https |
-| 401/跳登录 | 会话过期，重跑 `login.mjs` |
+| 400 “plain HTTP request sent to HTTPS port” | nginx 误跳 http；`lib.mjs` 已重写导航 302 Location + 代理子资源，旧的 `route.continue({url})` 写法在 Playwright ≥1.65 会报 “New URL must have same protocol” |
+| 401/302→`/login` | 会话过期，重跑 `login.mjs`；可先 `ai_route_batch.mjs --check` 快速确认 |
+| `--check` 返回 `PROBE_FAILED` | 平台暂时不可达或 Node/Playwright 未安装；验证 `node -v` 与 `scripts/node_modules/playwright` |
 | 标签找不到 | 用完整 `thirdLabel`/`ext1`（如 `01路`、`1001`）；脚本会列候选 |
 | 导出失败（405/网络错误） | 先加载 `/infoPage`；`lib.mjs::exportIndicators` 已处理；条件查询请用小范围，避免超大 gridIds |
 | 条件查询全量太慢/失败 | 用商圈/行政区 + 人群条件缩小范围（例：`--condition "17,53"`） |
@@ -226,6 +249,7 @@ node .claude\skills\xinyun-bigdata\scripts\ai_share.mjs --line 1001 --remark "sk
    ├─ address_options.mjs     # 地址查询选项（范围/isHD/POI类型）
    ├─ address.mjs             # 地址查询（命中媒体→导出 Excel）
    ├─ ai_route_options.mjs    # 线路/站点树发现
-   ├─ ai_route.mjs            # AI线路/AI线路-站点（只读几何）
+   ├─ ai_route.mjs            # AI线路/AI线路-站点（单条只读几何）
+   ├─ ai_route_batch.mjs      # AI线路批量：缓存/会话探测/纯 JSON（只读）
    └─ ai_share.mjs            # AI线路：保存→授权→分享链接+导出（写操作）
 ```

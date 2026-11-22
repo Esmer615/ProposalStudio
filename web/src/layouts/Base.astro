@@ -1,0 +1,56 @@
+---
+import '../styles/tokens.css';
+import '../styles/app.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  active?: string;
+  /** Footer data (server-side rendered when a page knows the version; result pages set it via code). */
+  dataVersion?: string;
+  inventoryTs?: string;
+  /** Hide the standard header/footer chrome (unused for now). */
+  chrome?: boolean;
+  /** Page provides its own footer (e.g. index renders a footer.closing with a closing CTA). */
+  hideFooter?: boolean;
+}
+const { title, description, active = '', dataVersion = '—', inventoryTs = '—', chrome = true, hideFooter = false } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN" data-type="software" data-radius="soft" data-buttons="solid" data-motion>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="page-type" content="software" />
+  <meta name="site-kind" content="software" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="/share.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="/share.jpg" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#efe9e0" />
+  <link rel="stylesheet" href="/assets/system.css" />
+  <link rel="stylesheet" href="/assets/ui/cards.css" />
+  <link rel="stylesheet" href="/assets/motion/motion.css" />
+  <link rel="stylesheet" href="/assets/ui/base.css" />
+  <script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+</head>
+<body>
+  {chrome && <Nav active={active} />}
+  <slot />
+  {chrome && !hideFooter && <Footer dataVersion={dataVersion} inventoryTs={inventoryTs} />}
+  <script type="module" src="/assets/system.js"></script>
+  <script type="module" src="/assets/motion/motion.js"></script>
+</body>
+</html>

@@ -1,6 +1,13 @@
 {
   "version": 2,
   "skills": {
+    "figma-designer": {
+      "source": "elayadesign/ai-design-skills",
+      "commit": "456d9e0d3e2d84c748bb143c6ca3d90c45e16213",
+      "sourceType": "github",
+      "skillPath": "skills/figma-designer/SKILL.md",
+      "computedHash": "7dd0425720ec529650af8fc6840eb7c02ae1721dd895dcfbc68b4c741658f607"
+    },
     "gsap-performance": {
       "source": "greensock/gsap-skills",
       "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
@@ -24,6 +31,13 @@
       "skillPath": "skills/gsap-scrolltrigger/SKILL.md",
       "computedHash": "c29c5a0fb1506a7f577fe68282eafc6df14b8d2b8ecd24f1f05836f5a0957b67",
       "installMode": "copy"
+    },
+    "landing-page-design": {
+      "source": "elayadesign/ai-design-skills",
+      "commit": "456d9e0d3e2d84c748bb143c6ca3d90c45e16213",
+      "sourceType": "github",
+      "skillPath": "skills/landing-page-design/SKILL.md",
+      "computedHash": "98fa8463d5fc56f969d52f24512366d66655271080cb67b43ca0790d8e951bc6"
     }
   }
 }

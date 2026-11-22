@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "source": "新云传媒大数据可视化平台",
+    "api": "/nearby/detail",
+    "platform": "https://flairmedia.com.cn:38880",
+    "center": {
+      "name": "上海乐高乐园",
+      "address": "上海乐高乐园",
+      "lng": 121.10782876001737,
+      "lat": 30.89309082539151
+    },
+    "radius": 1000,
+    "types": [
+      "商场"
+    ],
+    "mode": "detail",
+    "fetchedAt": "2026-11-21T15:57:48.865Z",
+    "note": "周边点位查询是 Baidu POI 检索口径，不是 2023-05 人群数据；detail 最多返回前 maxPage 页。"
+  },
+  "result": [
+    {
+      "area": "金山区",
+      "centerLng": 121.10782876001737,
+      "address": "上海市金山区枫泾镇乐纷路268号",
+      "lng": 121.10207717932865,
+      "distance": 607.9637050460592,
+      "city": "上海市",
+      "searchMode": "circle",
+      "uid": "39b70d4ef640ee12364aae9e",
+      "province": "上海市",
+      "district": null,
+      "name": "爱琴海·缤纷里AEGEAN BINGO",
+      "tag": null,
+      "centerLat": 30.89309082539151,
+      "keyword": "商场",
+      "radius": 1000,
+      "lat": 30.89075274358813,
+      "centerName": "上海乐高乐园"
+    }
+  ]
+}

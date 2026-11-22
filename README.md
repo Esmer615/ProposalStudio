@@ -1,5 +1,7 @@
 # 乐园 AI 提案工作台 · Proposal Studio
 
+> 团队复现：见 [SETUP.md](SETUP.md)（Python / Node / pnpm / Chrome、数据与凭证说明）。
+
 > INTERCITY HACK 湖州场 · AI+办公赛道 · 命题方：上海新云传媒
 > 选题：**乐园（主题公园）** ｜ 主推：**上海乐高乐园**（迪士尼/海昌可切换）
 > 一句话：给户外媒体销售一个「改一个滑杆，当天出提案」的本地工作台——真实红豆库存、可解释选点、可交互地图、可追溯报价。
@@ -48,9 +50,10 @@ AIPlusWork/
 │  └─ cli.py                # 命令行入口
 ├─ Our-agent-skills/        # Agent 技能包（4 个 stage + policy + references）
 ├─ server/                  # 本地 API（FastAPI + 标准库兜底）
-├─ web/                     # React + Vite + Tailwind + ECharts 工作台
-│  ├─ src/fixtures/         # 冻结的 PlanResponse fixture
-│  └─ public/geo/           # 本地上海区县 GeoJSON（无在线瓦片）
+├─ web/                     # Astro 多页前端 + taste-skill kit
+│  ├─ src/pages/            # 首页 / 产品 / 地图 / 案例 / 协作 / 关于 / 法律页
+│  ├─ src/data/             # 引擎 fixture、地铁口/POI/场馆/区县
+│  └─ public/assets/        # taste-skill kit + 授权图片；地图数据
 ├─ data/
 │  ├─ snapshots/            # 红豆 2027 月度库存 CSV（只读快照）
 │  ├─ processed/            # manifest / candidates / candidates.geo
@@ -66,8 +69,8 @@ AIPlusWork/
 ├─ .claude/skills/          # Claude Code 技能（hongdou-inventory 红豆库存、xinyun-bigdata 大数据平台）
 ├─ prototypes/              # 早期原型（保留作对比）
 ├─ start.ps1                # 生产模式：API + web/dist，端口 8010
-├─ start-dev.ps1            # 开发模式：API(8010) + Vite(5173)
-└─ test.ps1                 # 引擎测试 + 前端类型检查/构建 + API smoke
+├─ start-dev.ps1            # 开发模式：API(8010) + Astro(4321)
+└─ test.ps1                 # 引擎/服务测试 + 前端构建 + API smoke
 ```
 
 ---
@@ -87,12 +90,11 @@ AIPlusWork/
 uv venv .venv --python "C:/Users/20614/AppData/Local/Python/pythoncore-3.14-64/python.exe"
 uv pip install --python .venv\Scripts\python.exe -r requirements.txt
 
-# 2) 前端
+# 2) 前端（Astro 多页）
 pnpm --dir web install
-pnpm --dir web build          # 生产模式静态文件 web/dist
-# 可选：pnpm --dir web export  # 单文件提案导出 web/dist-export/index.html（build:export 为别名）
-# 注入真实方案：.venv\Scripts\python.exe scripts\build_export.py
-```
+pnpm --dir web build          # 输出 web/dist，由 FastAPI 静态托管
+# 高德地图：复制 web/.env.example 为 web/.env，填 PUBLIC_AMAP_KEY 与 PUBLIC_AMAP_SECURITY_CODE 后重新 build
+# 未配置 Key 时地图页自动使用本地静态图层（区县 / 地铁口 / POI / 入选点位）
 
 ## 运行
 
@@ -112,7 +114,7 @@ pnpm --dir web build          # 生产模式静态文件 web/dist
 ```
 
 - API：<http://127.0.0.1:8010>
-- 前端：<http://127.0.0.1:5173>（Vite 代理 `/api` → 8010）
+- 前端：<http://127.0.0.1:4321>（Astro dev；`/api` 代理 → 8010）
 
 ### 手动启动
 
@@ -127,43 +129,52 @@ pnpm --dir web build          # 生产模式静态文件 web/dist
 ```powershell
 .\test.ps1
 # 或单独：
-.venv\Scripts\python.exe -m pytest engine/tests server/tests -q
+.venv\Scripts\python.exe -m pytest engine/tests server/tests agent/tests -q
+# 线路几何（含本地 mock 平台集成，不需要真实会话）：
+.venv\Scripts\python.exe -m pytest agent/tests/test_routes.py agent/tests/test_xinyun_routes_script.py -q
 .venv\Scripts\python.exe scripts\check_determinism.py --runs 3
 .venv\Scripts\python.exe scripts\matrix_check.py --budgets 100,200,500 --media bus,metro,both
-pnpm --dir web typecheck
 pnpm --dir web build
-pnpm --dir web exec playwright test
+# taste-skill 门禁（在 web/ 下，可选）：
+node C:/Users/20614/.claude/skills/design-taste-frontend/scripts/gate.mjs dist/index.html
 ```
 
-## 验收状态（2026-11-21）
+## 验收状态（2026-11-22 前端重建）
 
 | 项 | 结果 |
 |---|---|
-| 引擎 + 服务单测 | 37 passed |
-| 三场馆 × 三预算 × 三媒体 | 27/27 组合 OK |
+| 引擎 + 服务单测 | 40 passed（engine + server） |
+| 三场馆 × 三预算 × 三媒体 | 27/27 组合 OK（引擎矩阵，未受前端影响） |
 | 确定性 | 3/3 次完全一致（除 meta 时间） |
-| 前端构建/类型 | 通过（dist ~1.56MB JS / 500KB gzip） |
-| Playwright fixture E2E | 5/5 passed |
-| Live E2E（8010 真实引擎） | 换场馆/滑杆 200/弹性 9 行/地图抽屉/锁定/客户提案，console error 0 |
-| 单文件导出 | 9/9 档 feasible；3.42MB；`file://` 断网可切档；无凭证/外部 CDN |
-| 数据 | manifest `f786985a2947`；6,972 库存记录；1,256 候选；POI 103；地铁坐标 275 |
+| 前端构建 | Astro 9 页构建通过；FastAPI 静态托管正常 |
+| 首页 taste gate | PASS（1440/390；3 个 waiver：中文字数压力测试 ×2、2×2 卡片同构 ×1） |
+| 实时演示 | 乐高 → 迪士尼：/api/plan 1.72s，Reach 82.0% → 81.6%，console error 0 |
+| 地图 | 无 Key 静态图层兜底；换迪士尼后 5 → 6 个地铁口，列表/详情更新，console error 0 |
+| 高德在线地图 | 需填 PUBLIC_AMAP_KEY / SECURITY_CODE 后构建；未配置时不加载 SDK |
+| 单文件离线导出 | 已移除（新站为在线多页；高德底图需要联网） |
+| 数据 | manifest `f786985a2947`；6,972 库存记录；1,256 候选；838 可定位口；292 POI |
 
 > 详细结果与已知问题见 `docs/测试报告.md`；模型口径见 `docs/模型说明书.md`。
 
-## 数据更新（红豆只读快照）
+## 数据更新（红豆实时快照）
+
+`ProposalRunner` 每次生成提案都会自动调 `hongdou-inventory` 强制实时拉取，**不需要手动抓取**：
 
 ```powershell
-# 凭证：scripts/.credentials（已 gitignore）或环境变量 HONGDOU_USER/HONGDOU_PASS
-$env:PYTHONIOENCODING='utf-8'
-.venv\Scripts\python.exe scripts\fetch_hongdou.py --start 2027-07-01 --end 2027-07-31 --out data\snapshots
-.venv\Scripts\python.exe scripts\fetch_hongdou.py --start 2027-08-01 --end 2027-08-31 --out data\snapshots
+# 工作流内部等价命令（凭证来自 scripts/.credentials 或环境变量）
+.venv\Scripts\python.exe .claude\skills\hongdou-inventory\scripts\snapshot.py `
+  --from-month 2027-07 --to-month 2027-08 --overwrite --media all
+
+# 需要重建审计/前端数据时（派生文件，按需生成）：
 .venv\Scripts\python.exe scripts\build_dataset.py
-.venv\Scripts\python.exe scripts\validate_dataset.py
+.venv\Scripts\python.exe scripts\build_web_data.py   # 重新生成前端 fixture/地图数据
 ```
 
-> 库存以红豆 API 快照为准；静态台账 `free=2517` 是 2026-11 快照，不可当作当前库存。页面会显示 `inventory_ts` 与 `inventory_periods`。
+> 库存以每次实时拉取的 `data/snapshots/` 为准；静态台账 `free=2517` 是 2026-11 快照，不可当作当前库存。页面会显示 `inventory_ts` 与 `inventory_periods`。
+>
+> `data/processed/inventory.json`、`candidates.json`、`candidates_enriched.json` 是**可重建的派生审计资产**，默认不保留；`candidates.geo.json` 与 `manifest.json` 保留，因为前端数据构建和 `/api/meta` 依赖它们。
 
-> 也可以直接用 Claude Code 技能包 `.claude/skills/hongdou-inventory/`：`SKILL.md` 记录 OAuth2/库存接口与数据口径，`scripts/auth.py|fetch.py|snapshot.py|analyze.py` 供 agent 调用；`fetch.py` 默认写 `data/hongdou/`，`snapshot.py` 默认写 `data/snapshots/`。
+> 技能包 `.claude/skills/hongdou-inventory/`：`SKILL.md` 记录 OAuth2/库存接口与数据口径，`scripts/auth.py|fetch.py|snapshot.py|analyze.py` 供 agent 调用；`fetch.py` 默认写 `data/hongdou/`，`snapshot.py` 默认写 `data/snapshots/`。
 
 ---
 
@@ -176,12 +187,44 @@ $env:PYTHONIOENCODING='utf-8'
 | `POST /api/plan` | 单方案 PlanResponse |
 | `POST /api/plans/batch` | 100/200/500 对比 |
 | `POST /api/elasticity` | 九档预算弹性 |
-| `POST /api/export` | 单文件 HTML 提案 |
+| `POST /api/proposals` | 提案编排（intake → 数据 → 引擎 → 线路几何 → 话术，异步返回 run_id） |
+| `GET /api/proposals/{run_id}` | 运行结果（含 `PlanResponse`、`data.routes` 摘要） |
+| `GET /api/proposals/{run_id}/events` | 阶段事件（含 `data_routes`） |
+| `GET /api/proposals/{run_id}/routes.geojson` | 方案公交线路真实几何（GeoJSON FeatureCollection） |
+| `POST /api/routes` | 按线路名取几何（缓存/实时；给 `/api/plan` 即时地图用） |
 | `GET /api/data/manifest` | 数据审计 |
 | `POST /api/agent/analyze` | Agent 需求分析（brief → 场景 → 结论 + 话术） |
 | `GET /api/agent/skills` | Agent 技能清单与校验结果 |
 
-详细字段见 `docs/契约-v1.md`。
+详细字段见 `docs/契约-v1.md`；线路几何契约见 `docs/route-geometry-api.md`。
+
+### 数据拉取（强制实时）
+
+每次 `POST /api/proposals`（`ProposalRunner`）都会主动调两个数据 skill，不再依赖预置库存或 `data_mode=cached`：
+
+1. `hongdou-inventory/scripts/snapshot.py --from-month … --to-month … --overwrite --media all`：按请求档期覆盖写 `data/snapshots`，随后 `reload_data()` / `reload_geo()` 清引擎缓存。
+2. `xinyun-bigdata`：场馆周边覆盖/POI 实时查询；引擎选完线路后再用 `ai_route_batch.mjs` 取真实线路几何（仅可视化）。
+
+- `options.data_mode` 保留为兼容字段，但**不再跳过红豆拉取**。
+- 实测 2 个月（公交+地铁各一次 API）约 90 秒，完整提案约 2 分钟；失败/降级按现有返回值显式标注。
+
+### 方案线路真实几何（新增）
+
+引擎选出公交线路后，`ProposalRunner` 在 `engine` 之后插入 `data_routes` 阶段：
+
+```
+plan.bus[].line（如 136）
+  ↓ Agent 调 xinyun-bigdata AI线路（只读批量，带 30 天缓存）
+data/external/platform/queries/ai_line_<lineId>.geojson
+  ↓ 注入 PlanResponse 深拷贝（不污染引擎缓存）
+plan.coverage.map_layers.bus_routes[] + bus[].route_ref/route_status
+  ↓
+GET /api/proposals/{run_id}/routes.geojson → 高德 Polyline（WGS84→GCJ02）
+```
+
+- 平台只有 **2023-05** 轨迹；仅用于地图展示，**不进入报价/库存/Reach/评分**。
+- 无会话/验证码未过：`data_routes.status=skipped`、`reason=MANUAL_LOGIN_REQUIRED`，不阻塞方案；缓存命中仍可出图。
+- 会话探测：`node .claude\skills\xinyun-bigdata\scripts\ai_route_batch.mjs --check`（不开浏览器）。
 
 ---
 
@@ -252,18 +295,22 @@ Agent 架构与技能格式详见 `docs/Agent架构与技能说明.md`；技能�
 - 曝光/Reach/Frequency/CPM 为估算，不是实测；目标人群为策划假设。
 - 折扣门槛、地铁等级语义为待确认假设；页面与说明书标注。
 - POI（103 个）与地铁/公交几何为公开近似/区县示意；不用于测量级结论；POI 目标 112+，已知差 9 个。
+- 方案公交真实线路几何来自新云平台 **2023-05 轨迹快照**，需人工验证码会话；无会话/线路缺失时按区县示意，不画假轨迹，且几何不参与报价/库存/Reach/评分。
 - 九档弹性为同一优化器的 deterministic greedy 扩展估值，主方案为 CP-SAT；两者共享库存/配比/预算规则，数值可能不同。
 - 库存是快照，档期占用会变化；演示前需核对。
 - 不做转化归因；不承诺到园人数/销量/收益。
 - 端口 8000 被本机系统进程占用，项目统一使用 8010。
+- 前端地图需联网与高德 Key；未配置 Key 时显示静态图层，不加载高德 SDK。
+- 页面照片为 Wikimedia Commons 授权素材，作为上海城市与三场馆场景的 stand-in；正式发布前建议替换为客户自有照片。
+- 单文件离线导出已移除；新前端是在线多页站点。
 
 ## 第三方与许可
 
-- UI 模板：shadcn-admin (MIT) — 见 `web/THIRD_PARTY_LICENSES.md`
-- 图表/地图：Apache ECharts (Apache-2.0)
+- 前端：Astro（MIT）；taste-skill kit（tasteskill 2.5.1，随全局 skill 安装）
+- 地图：高德地图 JS API 2.0 + Loca（需 Key；未配置时本地静态图层兜底）
 - 求解器：Google OR-Tools (Apache-2.0)
-- 地图数据：如使用 OSM，遵循 © OpenStreetMap contributors / ODbL；页面标注来源与近似声明。
-- 单文件导出：vite-plugin-singlefile (MIT)
+- 地图数据：DataV 区县边界、SHMetro（MIT）、OSM（ODbL）；公交线路几何：新云传媒大数据可视化平台 AI线路（2023-05 轨迹快照，仅可视化）；页面标注来源与近似声明
+- 图片：Wikimedia Commons（CC0 / CC BY / CC BY-SA），授权列表见 `/credits.html`
 
 ## 文档索引
 

@@ -31,8 +31,8 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:5173",
-        "http://localhost:5173",
+        "http://127.0.0.1:4321",
+        "http://localhost:4321",
         "http://127.0.0.1:8010",
         "http://localhost:8010",
     ],
@@ -96,6 +96,44 @@ def api_agent_skills() -> JSONResponse:
     return _json(core.agent_skills())
 
 
+@app.post("/api/proposals")
+async def api_proposals(request: Request) -> JSONResponse:
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    code, payload, headers = core.proposal_submit(body if isinstance(body, dict) else {})
+    return _json(payload, code, headers)
+
+
+@app.get("/api/proposals/{run_id}")
+def api_proposal_get(run_id: str) -> JSONResponse:
+    code, payload, headers = core.proposal_get(run_id)
+    return _json(payload, code, headers)
+
+
+@app.get("/api/proposals/{run_id}/events")
+def api_proposal_events(run_id: str) -> JSONResponse:
+    code, payload, headers = core.proposal_events(run_id)
+    return _json(payload, code, headers)
+
+
+@app.get("/api/proposals/{run_id}/routes.geojson")
+def api_proposal_routes(run_id: str) -> JSONResponse:
+    code, payload, headers = core.proposal_routes(run_id)
+    return _json(payload, code, headers)
+
+
+@app.post("/api/routes")
+async def api_routes(request: Request) -> JSONResponse:
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    code, payload, headers = core.routes_lookup(body if isinstance(body, dict) else {})
+    return _json(payload, code, headers)
+
+
 @app.post("/api/agent/analyze")
 async def api_agent_analyze(request: Request) -> JSONResponse:
     try:
@@ -106,28 +144,20 @@ async def api_agent_analyze(request: Request) -> JSONResponse:
     return _json(payload, code, headers)
 
 
-@app.post("/api/export")
-async def api_export(request: Request) -> Response:
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-    code, html, filename = core.export_html(body if isinstance(body, dict) else {})
+@app.get("/proposals/{run_id}.pdf")
+def api_proposal_pdf(run_id: str) -> Response:
+    """本地下载：模板化提案 PDF（懒生成并缓存到 data/exports/proposals）。"""
+    code, payload, headers = core.proposal_pdf(run_id)
     if code != 200:
-        return _json(
-            {
-                "error": {
-                    "code": "EXPORT_UNAVAILABLE",
-                    "message": "静态导出尚未构建；请先运行 pnpm --dir web export",
-                    "suggestions": ["pnpm --dir web export", "检查 web/dist-export/index.html"],
-                    "recoverable": True,
-                }
-            },
-            code,
-        )
-    return HTMLResponse(
-        content=html,
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        return _json(payload if isinstance(payload, dict) else {"error": {"code": "PDF_GENERATION_FAILED", "message": str(payload)}}, code, headers)
+    path = Path(payload)
+    if not path.is_file():
+        return _json({"error": {"code": "PDF_NOT_FOUND", "message": "PDF 生成后未找到文件"}}, 500)
+    data = path.read_bytes()
+    return Response(
+        content=data,
+        media_type="application/pdf",
+        headers={**headers, "Content-Disposition": f'attachment; filename="proposal-{run_id}.pdf"', "Content-Length": str(len(data))},
     )
 
 
@@ -159,6 +189,7 @@ def _guess_media(path: Path) -> str:
         ".css": "text/css",
         ".json": "application/json",
         ".geojson": "application/geo+json",
+        ".pdf": "application/pdf",
         ".svg": "image/svg+xml",
         ".png": "image/png",
         ".jpg": "image/jpeg",

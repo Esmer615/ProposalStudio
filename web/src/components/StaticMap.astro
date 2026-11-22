@@ -1,0 +1,160 @@
+---
+import districts from '../data/map/districts.json';
+import metro from '../data/map/metro.json';
+import poi from '../data/map/poi.json';
+import venues from '../data/map/venues.json';
+import gcoord from 'gcoord';
+
+interface Selected { lng: number; lat: number; name?: string; id?: string; level?: string; district?: string; free?: number; price?: number }
+interface Props {
+  selected?: Selected[];
+  selectedByVenue?: Record<string, Selected[]>;
+  defaultVenue?: string;
+  showPois?: boolean;
+  labels?: boolean;
+  class?: string;
+  grid?: boolean;
+}
+const {
+  selected = [],
+  selectedByVenue,
+  defaultVenue = '',
+  showPois = false,
+  labels = true,
+  class: cls = '',
+  grid = false,
+} = Astro.props;
+
+const W = 1000;
+const H = 760;
+const BBOX = { minLng: 120.85, maxLng: 122.25, minLat: 30.68, maxLat: 31.88 };
+const midLat = (BBOX.minLat + BBOX.maxLat) / 2;
+const kmPerLng = 111 * Math.cos((midLat * Math.PI) / 180);
+const xKmMax = (BBOX.maxLng - BBOX.minLng) * kmPerLng;
+const yKmMax = (BBOX.maxLat - BBOX.minLat) * 111;
+const scale = Math.min(W / xKmMax, H / yKmMax) * 0.94;
+const cx = W / 2;
+const cy = H / 2;
+
+const pxPerKm = scale;
+const project = (lng: number, lat: number) => {
+  const x = ((lng - BBOX.minLng) * kmPerLng - xKmMax / 2) * scale + cx;
+  const y = ((BBOX.maxLat - lat) * 111 - yKmMax / 2) * scale + cy;
+  return [x, y] as const;
+};
+
+const gcj = (lng: number, lat: number) => {
+  const [gLng, gLat] = gcoord.transform([lng, lat], gcoord.WGS84, gcoord.GCJ02);
+  return [gLng, gLat] as const;
+};
+
+// District paths: the DataV boundaries are already in the GCJ-02 frame.
+let di = 0;
+const districtPaths: { d: string; name: string; cls: string }[] = [];
+for (const f of (districts as any).features) {
+  const name = f.properties?.name ?? '';
+  const polys: number[][][][] = f.geometry?.type === 'MultiPolygon' ? f.geometry.coordinates : [f.geometry?.coordinates ?? []];
+  let d = '';
+  for (const poly of polys) {
+    for (const ring of poly) {
+      ring.forEach(([lng, lat], idx) => {
+        const [x, y] = project(lng, lat);
+        d += `${idx === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+      });
+      d += 'Z';
+    }
+  }
+  districtPaths.push({ d, name, cls: `ps-map-district-${di++ % 3}` });
+}
+
+const metroPts = (metro as any[]).map((m) => {
+  const [lng, lat] = gcj(m.lng, m.lat);
+  const [x, y] = project(lng, lat);
+  return { x, y, id: m.id, level: m.level };
+});
+
+const toSel = (s: Selected) => {
+  const [lng, lat] = gcj(s.lng, s.lat);
+  const [x, y] = project(lng, lat);
+  return { x, y, ...s };
+};
+const selSets: Record<string, ReturnType<typeof toSel>[]> = selectedByVenue
+  ? Object.fromEntries(Object.entries(selectedByVenue).map(([k, v]) => [k, v.map(toSel)]))
+  : { '': selected.map(toSel) };
+
+const poiPts = showPois
+  ? (poi as any[]).map((p) => {
+      const [lng, lat] = gcj(p.lng, p.lat);
+      const [x, y] = project(lng, lat);
+      return { x, y };
+    })
+  : [];
+
+const venuePts = (venues as any[]).map((v) => {
+  const [lng, lat] = gcj(v.coords.lng, v.coords.lat);
+  const [x, y] = project(lng, lat);
+  return { x, y, name: v.name, rings: v.rings_km ?? [6, 20, 50] };
+});
+
+const gridLines: { x?: number; y?: number }[] = [];
+if (grid) {
+  for (let i = 1; i < 6; i++) gridLines.push({ x: (W / 6) * i });
+  for (let i = 1; i < 5; i++) gridLines.push({ y: (H / 5) * i });
+}
+---
+<svg class:list={['ps-map-svg', cls]} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" role="img" aria-label="上海 16 个区、3 个场馆圈层与 838 个可定位地铁出入口的点位图">
+  <style>
+    .ps-map-district-0 { fill: #d9cbb4; }
+    .ps-map-district-1 { fill: #e0d3bd; }
+    .ps-map-district-2 { fill: #d2c3a9; }
+    .ps-map-district-line { fill: none; stroke: #f2ece2; stroke-width: 1.6; }
+    .ps-map-grid { stroke: #22261f; stroke-opacity: .07; stroke-width: 1; }
+    .ps-map-metro { fill: #22261f; fill-opacity: .48; }
+    .ps-map-selected { fill: #2e5b44; stroke: #f7f2ea; stroke-width: 2.4; }
+    .ps-map-venue { fill: #22261f; stroke: #efe9e0; stroke-width: 1.6; }
+    .ps-map-venue-label { font: 500 19px/1 "Noto Sans SC", sans-serif; fill: #22261f; paint-order: stroke; stroke: #efe9e0; stroke-width: 6px; stroke-linejoin: round; }
+    .ps-map-ring { fill: none; stroke: #2e5b44; stroke-opacity: .5; stroke-width: 2; stroke-dasharray: 5 7; }
+    .ps-map-ring:nth-child(3) { stroke-opacity: .28; }
+  </style>
+  <rect width={W} height={H} fill="#e8e2d7"></rect>
+  {gridLines.map((g) => <line class="ps-map-grid" x1={g.x ?? 0} y1={g.y ?? 0} x2={g.x ?? W} y2={g.y ?? H}></line>)}
+  <g data-map-layer="districts">
+    {districtPaths.map((d) => (
+      <g>
+        <path class={d.cls} d={d.d}></path>
+        <path class="ps-map-district-line" d={d.d}></path>
+      </g>
+    ))}
+  </g>
+  <g data-map-layer="venues">
+    {venuePts.map((v) => (
+      <g>
+        {v.rings.slice(0, 2).map((km: number) => (
+          <circle class="ps-map-ring" cx={v.x} cy={v.y} r={km * pxPerKm}></circle>
+        ))}
+        <circle class="ps-map-venue" cx={v.x} cy={v.y} r="5"></circle>
+        {labels && <text class="ps-map-venue-label" x={v.x + 9} y={v.y + 5}>{v.name.replace('上海', '').replace('度假区', '').replace('海洋公园', '')}</text>}
+      </g>
+    ))}
+  </g>
+  {showPois && (
+    <g data-map-layer="poi">
+      {poiPts.map((p) => <circle cx={p.x} cy={p.y} r="1.15" fill="#2e5b44" fill-opacity=".26"></circle>)}
+    </g>
+  )}
+  <g data-map-layer="metro">
+    {metroPts.map((m) => <circle class="ps-map-metro" cx={m.x} cy={m.y} r="1.55"></circle>)}
+  </g>
+  <g data-map-layer="plan">
+    {Object.entries(selSets).map(([vid, pts]) => (
+      <g data-venue-plan={vid || undefined} hidden={vid !== '' && vid !== defaultVenue}>
+        {pts.map((s) => (
+          <g class="ps-map-point" data-point-id={s.id} data-point-name={s.name} data-point-level={s.level} data-point-district={s.district} data-point-free={s.free} data-point-price={s.price} style="cursor:pointer">
+            <circle class="ps-map-selected" cx={s.x} cy={s.y} r="4.2"></circle>
+            <circle cx={s.x} cy={s.y} r="9" fill="none" stroke="#2e5b44" stroke-opacity=".35"></circle>
+          </g>
+        ))}
+      </g>
+    ))}
+  </g>
+</svg>

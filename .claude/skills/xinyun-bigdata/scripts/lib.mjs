@@ -16,10 +16,12 @@ try {
     throw new Error('缺少 Playwright：请在 .claude/skills/xinyun-bigdata/scripts 运行 npm install playwright')
   }
 }
-export const { chromium } = playwright
+export const { chromium, request: apiRequest } = playwright
 
-export const BASE = 'https://flairmedia.com.cn:38880'
-export const STATE = path.join(ROOT, 'data', 'external', 'platform_storage.json')
+// XINYUN_BASE / XINYUN_STATE are only for local mock-server tests; real runs use
+// the platform host and the manually saved session.
+export const BASE = process.env.XINYUN_BASE || 'https://flairmedia.com.cn:38880'
+export const STATE = process.env.XINYUN_STATE || path.join(ROOT, 'data', 'external', 'platform_storage.json')
 export const CRED = path.join(ROOT, 'scripts', '.credentials')
 export const OUT = path.join(ROOT, 'data', 'external', 'platform', 'queries')
 
@@ -54,6 +56,85 @@ async function launchBrowser(headless) {
   throw lastErr
 }
 
+// nginx on :38880 sometimes redirects https -> http. Playwright ≥1.5x rejects
+// route.continue({url}) across protocols ("New URL must have same protocol"),
+// so proxy the http hop through the context's APIRequestContext instead. That
+// client speaks https correctly, shares the context cookie jar, and can be
+// fulfilled back into the browser.
+function _proxyHeaders(headers) {
+  const out = {}
+  for (const [name, value] of Object.entries(headers || {})) {
+    const key = name.toLowerCase()
+    if (['host', 'content-length', 'connection', 'accept-encoding', 'cookie', 'origin', 'referer'].includes(key)) continue
+    out[name] = value
+  }
+  return out
+}
+
+function _isPlatformHttp(url) {
+  try {
+    const u = new URL(url)
+    return u.protocol === 'http:' && u.hostname === 'flairmedia.com.cn' && u.port === '38880'
+  } catch {
+    return false
+  }
+}
+
+function _sameOriginAsBase(url) {
+  try {
+    return new URL(url).origin === new URL(BASE).origin
+  } catch {
+    return false
+  }
+}
+
+async function installProtocolProxy(context) {
+  await context.route('**/*', async (route) => {
+    const request = route.request()
+    const url = request.url()
+
+    // Navigation: inspect the redirect before the browser follows it. When the
+    // platform answers https with Location: http://…:38880/login, rewrite the
+    // header to https so the browser never hits the "HTTP to HTTPS port" 400.
+    if (request.isNavigationRequest() && _sameOriginAsBase(url)) {
+      try {
+        const response = await route.fetch({ maxRedirects: 0 })
+        const headers = { ...response.headers() }
+        const location = headers.location
+        if (location && _isPlatformHttp(location)) {
+          headers.location = location.replace(/^http:/, 'https:')
+          await route.fulfill({ status: response.status(), headers, body: '' })
+          return
+        }
+        for (const key of ['content-encoding', 'content-length', 'transfer-encoding', 'connection']) delete headers[key]
+        await route.fulfill({ status: response.status(), headers, body: await response.body() })
+        return
+      } catch {
+        return route.abort()
+      }
+    }
+
+    // Non-navigation http hop (subresource/XHR): proxy it through the context's
+    // APIRequestContext, which can speak https to the same origin.
+    if (!_isPlatformHttp(url)) return route.continue()
+    const target = url.replace(/^http:/, 'https:')
+    try {
+      const response = await context.request.fetch(target, {
+        method: request.method(),
+        headers: _proxyHeaders(request.headers()),
+        data: request.postDataBuffer() ?? undefined,
+        maxRedirects: 0,
+        failOnStatusCode: false,
+      })
+      const headers = { ...response.headers() }
+      for (const key of ['content-encoding', 'content-length', 'transfer-encoding', 'connection']) delete headers[key]
+      await route.fulfill({ status: response.status(), headers, body: await response.body() })
+    } catch {
+      await route.abort()
+    }
+  })
+}
+
 export async function launch({ headless = true, acceptDownloads = false, storageState } = {}) {
   const browser = await launchBrowser(headless)
   const context = await browser.newContext({
@@ -63,15 +144,9 @@ export async function launch({ headless = true, acceptDownloads = false, storage
     acceptDownloads,
     viewport: { width: 1440, height: 1000 },
   })
+  // Attach to the context before creating pages so every page/popup is covered.
+  await installProtocolProxy(context)
   const page = await context.newPage()
-  // nginx on :38880 wrongly redirects https -> http; rewrite back to https.
-  await page.route('**/*', (route) => {
-    const u = route.request().url()
-    if (u.startsWith('http://flairmedia.com.cn:38880')) {
-      return route.continue({ url: u.replace('http://', 'https://') })
-    }
-    return route.continue()
-  })
   return { browser, context, page }
 }
 
