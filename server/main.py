@@ -175,6 +175,9 @@ if DIST.exists():
         candidate = DIST / full_path
         if full_path and candidate.exists() and candidate.is_file():
             return Response(content=candidate.read_bytes(), media_type=_guess_media(candidate))
+        # 绝不能把 index.html 当作 .pdf 返回（否则浏览器会把 HTML 存成 .pdf）
+        if full_path.lower().endswith(".pdf"):
+            return _json({"error": {"code": "PDF_NOT_FOUND", "message": "PDF 未生成或 run 不存在"}}, 404)
         index = DIST / "index.html"
         if index.exists():
             return HTMLResponse(index.read_text(encoding="utf-8", errors="replace"))
