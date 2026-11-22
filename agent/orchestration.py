@@ -729,6 +729,13 @@ def execute_run(run_id: str, payload: Dict[str, Any], data_runtime: Optional[Dat
             "warnings": [],
             "error": {"code": "RUNNER_ERROR", "message": redact(exc)},
         }
+    # 每次 run 完成即生成本地 PDF；用户点击下载时直接拿 PDF，无需等待/兜底。
+    if isinstance(result, dict) and result.get("plan"):
+        try:
+            from server.proposal_pdf import generate_proposal_pdf
+            generate_proposal_pdf(result)
+        except Exception as exc:
+            result.setdefault("warnings", []).append(f"PDF 生成失败：{redact(exc)}")
     with _RUNS_LOCK:
         _RUNS[run_id] = result
     persist_run(result)
