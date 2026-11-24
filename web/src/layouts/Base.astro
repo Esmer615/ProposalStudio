@@ -1,6 +1,7 @@
 ---
 import '../styles/tokens.css';
 import '../styles/app.css';
+import AmbientBg from '../components/AmbientBg.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
@@ -8,49 +9,102 @@ interface Props {
   title: string;
   description: string;
   active?: string;
-  /** Footer data (server-side rendered when a page knows the version; result pages set it via code). */
   dataVersion?: string;
   inventoryTs?: string;
-  /** Hide the standard header/footer chrome (unused for now). */
   chrome?: boolean;
-  /** Page provides its own footer (e.g. index renders a footer.closing with a closing CTA). */
   hideFooter?: boolean;
 }
-const { title, description, active = '', dataVersion = '—', inventoryTs = '—', chrome = true, hideFooter = false } = Astro.props;
+const {
+  title,
+  description,
+  active = '',
+  dataVersion = '—',
+  inventoryTs = '—',
+  chrome = true,
+  hideFooter = false,
+} = Astro.props;
 ---
 <!doctype html>
-<html lang="zh-CN" data-type="software" data-radius="soft" data-buttons="solid" data-motion>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="page-type" content="software" />
-  <meta name="site-kind" content="software" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="/share.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="zh_CN" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content="/share.jpg" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="theme-color" content="#efe9e0" />
-  <link rel="stylesheet" href="/assets/system.css" />
-  <link rel="stylesheet" href="/assets/ui/cards.css" />
-  <link rel="stylesheet" href="/assets/motion/motion.css" />
-  <link rel="stylesheet" href="/assets/ui/base.css" />
-  <script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+  <meta name="theme-color" content="#08090c" />
 </head>
 <body>
+  <AmbientBg />
   {chrome && <Nav active={active} />}
   <slot />
   {chrome && !hideFooter && <Footer dataVersion={dataVersion} inventoryTs={inventoryTs} />}
-  <script type="module" src="/assets/system.js"></script>
-  <script type="module" src="/assets/motion/motion.js"></script>
+  <script>
+    (() => {
+      // 1) Floating navbar subtle elevation on scroll (rAF-throttled)
+      const nav = document.querySelector<HTMLElement>('.nav');
+      if (nav) {
+        let ticking = false;
+        const onScroll = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            nav.classList.toggle('is-scrolled', window.scrollY > 18);
+            ticking = false;
+          });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      }
+
+      // 2) Scroll reveals via IntersectionObserver (reveal once, weighted curve)
+      const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (reveals.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((en) => {
+              if (en.isIntersecting) {
+                en.target.classList.add('is-visible');
+                io.unobserve(en.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -36px 0px' },
+        );
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+      }
+
+      // 3) Linear/Raycast pointer-tracking spotlight shimmer on .card elements
+      document.addEventListener(
+        'pointermove',
+        (ev) => {
+          const target = (ev.target as HTMLElement | null)?.closest<HTMLElement>('.card');
+          if (!target) return;
+          const rect = target.getBoundingClientRect();
+          target.style.setProperty('--mx', `${ev.clientX - rect.left}px`);
+          target.style.setProperty('--my', `${ev.clientY - rect.top}px`);
+        },
+        { passive: true },
+      );
+
+      // 4) Close open <details class="export-menu"> on outside click or Escape
+      document.addEventListener('click', (ev) => {
+        document.querySelectorAll<HTMLDetailsElement>('details.export-menu[open]').forEach((d) => {
+          if (!d.contains(ev.target as Node)) d.removeAttribute('open');
+        });
+      });
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape') {
+          document.querySelectorAll<HTMLDetailsElement>('details.export-menu[open]').forEach((d) => d.removeAttribute('open'));
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

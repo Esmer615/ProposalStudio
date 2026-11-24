@@ -27,15 +27,15 @@ import StaticMap from '../../components/StaticMap.astro';
     <div class="wrap" style="display:grid;gap:var(--s-6)">
 
       <!-- map + filter rail -->
-      <div class="gsplit" style="grid-template-columns:minmax(0,1fr) 300px">
-        <div class="map-frame" id="media-map" data-mode="fallback" style="min-height:640px">
+      <div class="gsplit" style="grid-template-columns:minmax(0,1fr) 310px">
+        <div class="map-frame" id="media-map" data-mode="fallback" style="min-height:620px">
           <div id="amap"></div>
           <div class="map-fallback"><StaticMap showPois labels /></div>
-          <div class="map-note" data-map-note>静态图层预览</div>
+          <div class="map-note" data-map-note>暗色矢量图层预览</div>
           <div class="map-legend">
-            <span><i class="ring"></i>场馆圈层</span>
-            <span><i class="accent"></i>入选</span>
-            <span><i></i>地铁口</span>
+            <span><i class="ring"></i>场馆辐射圈</span>
+            <span><i class="accent"></i>入选点位</span>
+            <span><i></i>地铁出入口</span>
             <span data-k="routes-legend-bus"><i class="route"></i>公交线路 · 2023-05</span>
             <span data-k="routes-legend-metro" hidden><i class="route route--metro"></i>地铁线路 · 2023-05</span>
           </div>
@@ -43,28 +43,28 @@ import StaticMap from '../../components/StaticMap.astro';
 
         <aside class="card" style="align-self:start">
           <div class="card-head"><span>图层与筛选</span></div>
-          <div style="padding:var(--s-4);display:grid;gap:var(--s-3)">
-            <div style="display:grid;gap:8px">
+          <div class="card-body" style="display:grid;gap:18px">
+            <div style="display:grid;gap:10px">
               <label class="check-label"><input type="checkbox" data-layer="metro" checked /> 地铁出入口</label>
               <label class="check-label"><input type="checkbox" data-layer="routes" checked /> 方案线路（公交/地铁 · 2023-05）</label>
               <label class="check-label"><input type="checkbox" data-layer="poi" checked /> POI 命中</label>
               <label class="check-label"><input type="checkbox" data-layer="districts" checked /> 区县边界</label>
               <label class="check-label"><input type="checkbox" data-layer="coverage" data-layer-xinyun disabled /> 平台补充（新云）</label>
-              <p class="muted" style="font-size:12px;margin:0" data-k="routes-help">新云 AI线路 · 2023-05 · 近似轨迹（仅可视化；缺失按区县示意）</p>
+              <p class="faint t-xs" data-k="routes-help">新云 AI线路 · 2023-05 · 近似轨迹（仅可视化；缺失按区县示意）</p>
             </div>
             <div class="field">
-              <label class="muted" style="font-size:13px;font-weight:500" for="level-filter">等级筛选</label>
+              <span class="field__lbl">等级筛选</span>
               <div class="seg" id="level-filter" role="group" aria-label="等级筛选">
-                <button type="button" data-level="all" aria-pressed="true">全部等级</button>
+                <button type="button" data-level="all" aria-pressed="true">全部</button>
                 <button type="button" data-level="S" aria-pressed="false">S</button>
                 <button type="button" data-level="A++" aria-pressed="false">A++</button>
                 <button type="button" data-level="A+" aria-pressed="false">A+</button>
               </div>
             </div>
             <div class="field">
-              <label class="muted" style="font-size:13px;font-weight:500" for="media-filter">媒介</label>
+              <span class="field__lbl">媒介筛选</span>
               <div class="seg" id="media-filter" role="group" aria-label="媒介筛选">
-                <button type="button" data-media="all" aria-pressed="true">全部媒介</button>
+                <button type="button" data-media="all" aria-pressed="true">全部</button>
                 <button type="button" data-media="bus" aria-pressed="false">公交</button>
                 <button type="button" data-media="metro" aria-pressed="false">地铁</button>
               </div>
@@ -74,20 +74,24 @@ import StaticMap from '../../components/StaticMap.astro';
       </div>
 
       <!-- POI hits + district mix -->
-      <div class="gsplit" style="grid-template-columns:1fr 1fr">
+      <div class="gsplit">
         <div class="card">
-          <div class="card-head"><span>POI 命中</span><span class="chip chip--quiet mono" data-k="poi-n">0</span></div>
-          <div class="rows" data-k="poi-hits" style="padding:0 var(--s-4)"></div>
+          <div class="card-head"><span>POI 命中</span><span class="chip chip--accent mono" data-k="poi-n">0</span></div>
+          <div class="card-body" style="padding:8px 20px;max-height:320px;overflow-y:auto">
+            <div class="rows" data-k="poi-hits"></div>
+          </div>
         </div>
         <div class="card">
-          <div class="card-head"><span>区县配比</span></div>
-          <div class="kv" data-k="district-mix" style="padding:0 var(--s-4)"></div>
+          <div class="card-head"><span>区县点位配比</span></div>
+          <div class="card-body" style="padding:12px 20px;max-height:320px;overflow-y:auto">
+            <div class="kv" data-k="district-mix"></div>
+          </div>
         </div>
       </div>
 
       <!-- point table -->
       <section aria-labelledby="media-table-h">
-        <h2 id="media-table-h" style="margin-bottom:var(--s-3)">公交 + 地铁点位</h2>
+        <h2 id="media-table-h" class="heading-5" style="margin-bottom:var(--s-4)">入选点位明细（点击名称查看证据抽屉）</h2>
         <div class="table-shell">
           <div class="table-scroll">
             <table class="data" id="media-table">
@@ -279,7 +283,7 @@ import StaticMap from '../../components/StaticMap.astro';
     if (venueCoords?.lng) {
       const c = wgsToGcj(venueCoords.lng, venueCoords.lat);
       (v.rings_km || [6, 20, 50]).slice(0, 2).forEach((km: number) => {
-        map.add(new AMap.Circle({ center: c, radius: km * 1000, strokeColor: '#2e5b44', strokeOpacity: 0.5, strokeWeight: 1, strokeStyle: 'dashed', fillOpacity: 0 }));
+        map.add(new AMap.Circle({ center: c, radius: km * 1000, strokeColor: '#d4a36a', strokeOpacity: 0.55, strokeWeight: 1.4, strokeStyle: 'dashed', fillOpacity: 0 }));
       });
       map.add(new AMap.Marker({ position: c, content: '<div class="amap-pin amap-pin--venue" role="img" aria-label="场馆"></div>', offset: new AMap.Pixel(-9, -9) }));
     }
@@ -320,9 +324,9 @@ import StaticMap from '../../components/StaticMap.astro';
         routeFitPts.push(...path);
         const line = new AMap.Polyline({
           path,
-          strokeColor: isMetro ? '#a8794a' : '#2e5b44',
-          strokeWeight: 4,
-          strokeOpacity: 0.85,
+          strokeColor: isMetro ? '#d4a36a' : '#34d399',
+          strokeWeight: 3.8,
+          strokeOpacity: 0.88,
           strokeStyle: isMetro ? 'dashed' : 'solid',
           lineJoin: 'round',
           lineCap: 'round',
@@ -380,7 +384,7 @@ import StaticMap from '../../components/StaticMap.astro';
     // district boundaries
     fetch('/data/shanghai_districts.geojson').then((r) => r.json()).then((geo) => {
       const P = AMap.Polygon;
-      const dist = new AMap.GeoJSON({ geoJSON: geo, getPolygon: (_g: any, lnglats: number[][]) => new P({ path: lnglats, strokeColor: '#5f7a66', strokeWeight: 1, strokeOpacity: 0.35, fillColor: '#d9ccb7', fillOpacity: 0.32 }) });
+      const dist = new AMap.GeoJSON({ geoJSON: geo, getPolygon: (_g: any, lnglats: number[][]) => new P({ path: lnglats, strokeColor: '#d4a36a', strokeWeight: 1, strokeOpacity: 0.28, fillColor: '#161b26', fillOpacity: 0.24 }) });
       map.add(dist);
     }).catch(() => {});
   }

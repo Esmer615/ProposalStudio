@@ -2,10 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import ResultHeader from '../../components/ResultHeader.astro';
 import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
-
-// Economics: quote waterfall (刊例→折扣→折后→制作→4A→总价), line allocation check,
-// gift, budget utilization/slack, date-based schedule (phases + install batches) + night capacity / rain / SLA / 误一补二.
-// All numbers come from the run payload; no price math here.
 ---
 <Base
   title="报价与排期 · 新云媒介提案台"
@@ -15,64 +11,81 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
 <main id="top" class="page">
   <ResultHeader active="economics" title="报价与排期" />
 
-  <div data-result-empty hidden class="empty section">
+  <div data-result-empty hidden class="empty">
     <div class="wrap">
       <h2 class="empty__title">暂无可展示的方案</h2>
-      <p class="empty__body" data-empty-body>没有有效的 run 参数。请返回输入页重新生成。</p>
-      <a class="btn btn--primary" href="/input.html">去生成方案</a>
+      <p class="empty__body" data-empty-body>没有有效的 run 参数。请返回方案工作台重新生成。</p>
+      <a class="btn btn--primary btn--lg" href="/input.html">前往方案工作台</a>
     </div>
   </div>
 
   <div data-result-content class="app-section" hidden>
     <div class="wrap" style="display:grid;gap:var(--s-6)">
-
-      <!-- quote waterfall -->
+      <!-- 报价瀑布 -->
       <section aria-labelledby="eco-quote-h">
-        <div style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-4);flex-wrap:wrap">
-          <h2 id="eco-quote-h" style="margin:0">报价瀑布</h2>
-          <div class="doc-bar" style="margin-left:auto" data-eco-docs>
-            <a class="btn btn--secondary" data-eco-doc="contract-direct" href="#" download>直客合同 PDF</a>
-            <a class="btn btn--secondary" data-eco-doc="contract-4a-order" href="#" download>4A 排期订单 PDF</a>
-            <a class="btn btn--secondary" data-eco-doc="contract-4a-framework" href="#" download>4A 框架合同 PDF</a>
-          </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-4);flex-wrap:wrap">
+          <h2 id="eco-quote-h" class="heading-5">报价瀑布与分摊校验</h2>
+          <a class="link" data-eco-matched-contract href="#" download hidden>
+            导出当前配套合同 PDF →
+          </a>
         </div>
         <div class="gsplit">
           <div class="card">
-            <div class="card-head"><span>刊例 → 总价</span><span class="chip chip--quiet mono" data-k="discount-tier-label">—</span></div>
-            <div class="kv" style="padding:var(--s-4)" data-k="waterfall"></div>
+            <div class="card-head">
+              <span>刊例 → 应付总价</span>
+              <span class="chip chip--accent mono" data-k="discount-tier-label">—</span>
+            </div>
+            <div class="card-body" style="padding:12px 20px">
+              <div class="kv" data-k="waterfall"></div>
+            </div>
           </div>
           <div class="card">
-            <div class="card-head"><span>逐行分摊核对</span><span class="chip" data-k="alloc-pass" id="alloc-chip">—</span></div>
-            <div class="kv" style="padding:var(--s-4)" data-k="allocation"></div>
+            <div class="card-head">
+              <span>逐行分摊核对</span>
+              <span class="chip" data-k="alloc-pass" id="alloc-chip">—</span>
+            </div>
+            <div class="card-body" style="padding:12px 20px">
+              <div class="kv" data-k="allocation"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- budget utilization + gift -->
+      <!-- 预算使用与赠媒 -->
       <section aria-labelledby="eco-budget-h">
-        <h2 id="eco-budget-h" style="margin-bottom:var(--s-4)">预算使用与赠媒</h2>
+        <h2 id="eco-budget-h" class="heading-5" style="margin-bottom:var(--s-4)">预算使用与配赠资源</h2>
         <div class="kpi-grid">
-          <div class="kpi"><span class="kpi__label">预算</span><span class="kpi__value" data-k="budget">—</span><span class="kpi__sub">万元</span></div>
-          <div class="kpi"><span class="kpi__label">应付总价</span><span class="kpi__value" data-k="total-paid">—</span><span class="kpi__sub">万元</span></div>
-          <div class="kpi"><span class="kpi__label">预算使用率</span><span class="kpi__value" data-k="util">—</span></div>
+          <div class="kpi"><span class="kpi__label">目标预算</span><span class="kpi__value" data-k="budget">—</span><span class="kpi__sub">万元</span></div>
+          <div class="kpi"><span class="kpi__label">方案应付总价</span><span class="kpi__value gold" data-k="total-paid">—</span><span class="kpi__sub">万元</span></div>
+          <div class="kpi"><span class="kpi__label">预算使用率</span><span class="kpi__value" style="color:var(--emerald)" data-k="util">—</span><span class="kpi__sub">不超预算硬约束</span></div>
           <div class="kpi"><span class="kpi__label">预算余量</span><span class="kpi__value" data-k="slack">—</span><span class="kpi__sub">万元</span></div>
         </div>
         <div class="card" style="margin-top:var(--s-4)">
-          <div class="card-head"><span>赠媒（等值，不计付费 KPI）</span><span class="chip chip--quiet mono" data-k="gift-wan">—</span></div>
-          <div class="rows" data-k="gift-items" style="padding:0 var(--s-4)"></div>
+          <div class="card-head">
+            <span>等值赠媒（不计入付费 KPI）</span>
+            <span class="chip chip--accent mono" data-k="gift-wan">—</span>
+          </div>
+          <div class="card-body" style="padding:8px 20px">
+            <div class="rows" data-k="gift-items"></div>
+          </div>
         </div>
       </section>
 
-      <!-- date-based schedule -->
+      <!-- 日期排期 -->
       <section aria-labelledby="eco-sched-h">
-        <h2 id="eco-sched-h" style="margin-bottom:var(--s-4)">排期</h2>
+        <h2 id="eco-sched-h" class="heading-5" style="margin-bottom:var(--s-4)">全周期排期与施工保障</h2>
         <div class="card">
-          <div class="card-head"><span>日期排期</span><span class="chip chip--quiet mono" data-k="sched-span">—</span></div>
+          <div class="card-head">
+            <span>投放与夜间安装日历</span>
+            <span class="chip chip--quiet mono" data-k="sched-span">—</span>
+          </div>
           <ScheduleCalendar />
         </div>
         <div class="card" style="margin-top:var(--s-4)">
-          <div class="card-head"><span>夜间产能 · 监测 · 补偿</span></div>
-          <div class="kv" style="padding:var(--s-4)" data-k="schedule-kv"></div>
+          <div class="card-head"><span>夜间产能 · 监测 SLA · 补偿承诺</span></div>
+          <div class="card-body" style="padding:12px 20px">
+            <div class="kv" data-k="schedule-kv"></div>
+          </div>
         </div>
       </section>
     </div>
@@ -82,7 +95,7 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
 <script>
   import { initResult } from '../../scripts/result';
   import { renderSchedule } from '../../scripts/schedule';
-  import { fmtWan, fmtInt, ratioPct } from '../../lib/format';
+  import { fmtWan, ratioPct } from '../../lib/format';
 
   initResult((plan, run) => {
     const q = plan.quote || {};
@@ -90,17 +103,15 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
     const sched = plan.schedule || {};
     const runId = (run as any)?.run_id;
     const is4a = (plan.inputs || {}).customer_type === '4a';
-    const ecoDocs = document.querySelector<HTMLElement>('[data-eco-docs]');
-    if (runId) {
+
+    const matchedLink = document.querySelector<HTMLAnchorElement>('[data-eco-matched-contract]');
+    if (matchedLink && runId) {
       const enc = encodeURIComponent(runId);
-      document.querySelectorAll<HTMLAnchorElement>('[data-eco-doc]').forEach((a) => {
-        const slug = a.dataset.ecoDoc || '';
-        a.href = `/proposals/${enc}/${slug}.pdf`;
-        const primary = is4a ? (slug === 'contract-4a-order') : (slug === 'contract-direct');
-        a.className = 'btn ' + (primary ? 'btn--primary' : 'btn--secondary');
-      });
-    } else if (ecoDocs) {
-      ecoDocs.hidden = true;
+      matchedLink.href = is4a
+        ? `/proposals/${enc}/contract-4a-order.pdf`
+        : `/proposals/${enc}/contract-direct.pdf`;
+      matchedLink.textContent = is4a ? '导出 4A 户外排期订单 PDF →' : '导出直客广告发布合同 PDF →';
+      matchedLink.hidden = false;
     }
 
     // waterfall
@@ -108,7 +119,7 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
     wf.replaceChildren();
     const rows: [string, string, boolean][] = [
       ['刊例总额', fmtWan(q.rate_card_total_wan), false],
-      ['折扣', q.discount != null ? `${Math.round(q.discount * 100)}%` : '—', false],
+      ['适用折扣', q.discount != null ? `${Math.round(q.discount * 100)}%` : '—', false],
       ['折后媒体费', fmtWan(q.media_net_wan), false],
       ['制作费', fmtWan(q.production_wan), false],
       ['4A 服务费', fmtWan(q.agency_fee_wan), false],
@@ -120,18 +131,21 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
       d.innerHTML = `<span>${k}</span><b>${v}</b>`;
       wf.append(d);
     });
-    document.querySelector('[data-k="discount-tier-label"]')!.textContent = q.discount_tier?.label || (q.discount != null ? `折扣 ${Math.round(q.discount * 100)}%` : '—');
+    document.querySelector('[data-k="discount-tier-label"]')!.textContent =
+      q.discount_tier?.label || (q.discount != null ? `折扣 ${Math.round(q.discount * 100)}%` : '—');
 
     // allocation check
     const ac = q.allocation_check || {};
     const pass = ac.passed != null ? ac.passed : true;
     const chip = document.getElementById('alloc-chip')!;
-    chip.textContent = pass ? '通过' : '待核对';
-    chip.className = 'chip ' + (pass ? 'chip--accent' : 'chip--danger');
+    chip.textContent = pass ? '核对通过' : '待核对';
+    chip.className = 'chip ' + (pass ? 'chip--ok' : 'chip--danger');
     const alloc = document.querySelector('[data-k="allocation"]')!;
     alloc.replaceChildren();
-    [['逐行加总', fmtWan(ac.sum_lines)], ['总价', fmtWan(ac.total)], ['误差', fmtWan(ac.diff, 2)]].forEach(([k, v]) => {
-      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; alloc.append(d);
+    [['逐行加总', fmtWan(ac.sum_lines)], ['方案总价', fmtWan(ac.total)], ['分摊误差', fmtWan(ac.diff, 2)]].forEach(([k, v]) => {
+      const d = document.createElement('div');
+      d.innerHTML = `<span>${k}</span><b>${v}</b>`;
+      alloc.append(d);
     });
 
     // budget KPIs
@@ -149,28 +163,30 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
       const mark = document.createElement('span'); mark.className = 'row__mark'; mark.textContent = 'G';
       const main = document.createElement('div'); const b = document.createElement('b'); b.textContent = it.name || it.id || '—';
       main.append(b);
-      const chip = document.createElement('span'); chip.className = 'chip chip--quiet'; chip.textContent = fmtWan(it.gross_wan);
-      r.append(mark, main, chip);
+      const c = document.createElement('span'); c.className = 'chip chip--quiet mono'; c.textContent = `${fmtWan(it.gross_wan)} 万刊例`;
+      r.append(mark, main, c);
       gi.append(r);
     });
+    if (!(q.gift_items || []).length) {
+      gi.innerHTML = '<div class="muted t-small" style="padding:12px 0">本次方案无额外赠媒条目</div>';
+    }
 
-    // date-based schedule: calendar + dated task rows (phases and install batches)
+    // schedule
     set('[data-k="sched-span"]', sched.go_live && sched.take_down
       ? `${sched.go_live} → ${sched.take_down}${sched.total_days ? ` · ${sched.total_days} 天` : ''}`
       : '—');
     renderSchedule(document.querySelector<HTMLElement>('[data-sched]'), sched);
 
-    // schedule kv
     const nc = sched.night_capacity || {};
     const mon = sched.monitoring?.[0];
     const skv = document.querySelector('[data-k="schedule-kv"]')!;
     skv.replaceChildren();
     const lines: [string, string][] = [
       ['夜间产能', `公交 ${nc.bus_per_night ?? '—'} 辆 / 地铁 ${nc.metro_per_night ?? '—'} 口`],
-      ['施工夜 / 雨备夜', `${nc.nights ?? '—'} / ${nc.rain_buffer_nights ?? '—'}`],
+      ['施工夜 / 雨备夜', `${nc.nights ?? '—'} 夜 / ${nc.rain_buffer_nights ?? '—'} 夜`],
       ['上刊 / 下刊', `${sched.go_live || '—'} → ${sched.take_down || '—'}`],
       ['监测 SLA', `${mon?.name || '上刊监测'} · ${mon?.sla || mon?.due || '—'}`],
-      ['补偿', sched.compensation?.rule || '误一补二'],
+      ['延误补偿', sched.compensation?.rule || '误一补二'],
     ];
     lines.forEach(([k, v]) => { const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; skv.append(d); });
 

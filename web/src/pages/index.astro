@@ -1,136 +1,281 @@
 ---
 import Base from '../layouts/Base.astro';
-
-// Minimal product home: name + one real capability + one hard fact, one primary action,
-// three steps (each with a light UI-fragment visual), one data-scope line, one close+footer screen.
-// No photographs, no scroll effects. Four screens: hero, steps(+scope), a closing screen.
 ---
 <Base
-  title="新云媒介提案台：户外媒体的 AI 提案工作台"
-  description="输入场馆、预算、媒介与档期，Agent 自动取红豆库存、跑确定性引擎，生成可解释可复算的四页方案。"
+  title="新云媒介提案台 · FLAIR STUDIO"
+  description="输入场馆、预算、媒介与档期，Agent 自动核验红豆实时库存并运行确定性求解器，产出四页交互方案与四套官方模板 PDF。"
   active="index"
-  hideFooter
 >
 <main id="top">
-  <section class="hero hero--split" data-enter aria-labelledby="hero-h">
+  <!-- Hero Stage -->
+  <section class="hero-stage" aria-labelledby="hero-h">
     <div class="wrap">
-      <div class="hero-text grid hero-split">
-        <div class="hero-copy span-6">
-          <p class="hero-notice">户外媒体 AI 提案 · 确定性引擎</p>
-          <h1 id="hero-h">户外媒体的 AI 提案工作台</h1>
-          <p class="t-lead">输入场馆、预算、媒介与档期，Agent 取红豆库存、跑 CP-SAT 引擎，2 秒算出一份可解释、可复算的四页方案。</p>
-          <div class="btn-row">
-            <a class="btn btn--primary" href="/input.html">生成投放方案</a>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="hero-badge">
+            <span class="hero-badge__dot" aria-hidden="true"></span>
+            上海新云传媒 · 确定性户外媒介提案引擎
           </div>
-          <dl class="hero-facts grid" data-moment="counter-rolls">
-            <div class="span-4"><dt>默认场景</dt><dd><span class="t-stat" data-count>44</span> <span class="t-unit">个付费点位</span></dd></div>
-            <div class="span-4"><dt>有效曝光</dt><dd><span class="t-stat">7,463.8</span> <span class="t-unit">万人次</span></dd></div>
-            <div class="span-4"><dt>确定性引擎</dt><dd><span class="t-stat" data-count>2</span> <span class="t-unit">秒出方案</span></dd></div>
+
+          <h1 id="hero-h" class="heading-2 hero-gradient-text" style="line-height:60px">
+            让户外媒体提案<br />当天可交付，全链可复算
+          </h1>
+
+          <p class="hero-sub">
+            输入场馆、预算、媒介与档期，Agent 自动拉取红豆 2027 实时可售库存与新云线路轨迹，由 CP-SAT 求解最优组合，一键导出 16:9 销售提案与标准合同。
+          </p>
+
+          <div class="hero-cta-row">
+            <a class="btn btn--primary btn--lg" href="/input.html">
+              进入方案工作台
+              <svg class="ico-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4.5 10H15.5M15.5 10L11 5.5M15.5 10L11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <span class="hero-proof-line">100–500 万可伸缩 · 逐行分摊零误差</span>
+          </div>
+
+          <dl class="hero-metrics">
+            <div>
+              <dt>默认 500 万方案</dt>
+              <dd><span class="m-val" data-count-to="44">44</span><span class="m-unit">个付费点位</span></dd>
+            </div>
+            <div>
+              <dt>估算有效曝光</dt>
+              <dd><span class="m-val">7,463.8</span><span class="m-unit">万人次</span></dd>
+            </div>
+            <div>
+              <dt>确定性求解耗时</dt>
+              <dd><span class="m-val" data-count-to="2">2</span><span class="m-unit">秒出方案</span></dd>
+            </div>
           </dl>
         </div>
-        <div class="hero-visual frame frame--photo span-6 start-7" role="img" aria-label="示例方案摘要：乐高 500 万，44 个付费点位，有效曝光 7,463.8 万人次">
-          <div class="card hero-card">
-            <div class="card-head"><span>示例方案 · 乐高 2027 暑期</span><span class="chip chip--quiet mono">44 / 44 可售</span></div>
-            <div class="stats hero-stats">
-              <div><dt class="muted">公交车身</dt><dd class="t-stat">32 条 · 39 辆</dd></div>
-              <div><dt class="muted">地铁出入口</dt><dd class="t-stat">5 站 · 5 口</dd></div>
-              <div><dt class="muted">有效曝光</dt><dd class="t-stat">7,463.8 万</dd></div>
-              <div><dt class="muted">Reach</dt><dd class="t-stat">82.0%</dd></div>
-              <div><dt class="muted">Frequency</dt><dd class="t-stat">36.4</dd></div>
-              <div><dt class="muted">CPM</dt><dd class="t-stat">63.05 元</dd></div>
+
+        <!-- Right Hero Showcase Bento -->
+        <div class="hero-showcase" role="img" aria-label="示例方案预览：上海乐高乐园 2027 暑期 500 万方案">
+          <div class="hero-showcase__inner">
+            <div class="showcase-topbar">
+              <span class="win-dot win-dot--gold"></span>
+              <span class="win-dot"></span>
+              <span class="win-dot"></span>
+              <span class="showcase-title">上海乐高乐园 · 2027 暑期（8 周）</span>
+              <span class="chip chip--ok mono" style="margin-left:auto">44 / 44 可售</span>
             </div>
-            <div class="kv hero-kv">
-              <div><span>折后媒体费</span><b>470.56 万</b></div>
-              <div><span>制作费</span><b>29.40 万</b></div>
-              <div class="total"><span>应付总价</span><b>499.96 万</b></div>
+
+            <div class="showcase-body">
+              <div class="showcase-kpis">
+                <div class="sc-tile">
+                  <span>有效曝光</span>
+                  <b class="gold">7,463.8 万</b>
+                </div>
+                <div class="sc-tile">
+                  <span>目标 Reach</span>
+                  <b class="em">82.0%</b>
+                </div>
+                <div class="sc-tile">
+                  <span>综合 CPM</span>
+                  <b>63.05 元</b>
+                </div>
+                <div class="sc-tile">
+                  <span>公交车身</span>
+                  <b>32 线 · 39 辆</b>
+                </div>
+                <div class="sc-tile">
+                  <span>地铁出入口</span>
+                  <b>5 站 · 5 口</b>
+                </div>
+                <div class="sc-tile">
+                  <span>触达频次</span>
+                  <b>36.4 次</b>
+                </div>
+              </div>
+
+              <div class="showcase-bars">
+                <div class="sc-bar-row">
+                  <span>折后媒体费配比</span>
+                  <span class="mono">公交 72.1% · 地铁 27.9%</span>
+                </div>
+                <div class="sc-bar-track">
+                  <div class="sc-bar-bus"></div>
+                  <div class="sc-bar-metro"></div>
+                </div>
+              </div>
+
+              <div class="kv">
+                <div><span>折后媒体发布费</span><b>470.56 万</b></div>
+                <div><span>画面制作安装费</span><b>29.40 万</b></div>
+                <div class="total"><span>方案应付总价</span><b>499.96 万</b></div>
+              </div>
+
+              <div class="showcase-foot">
+                <span class="mono">SOLVER · OR-TOOLS CP-SAT</span>
+                <span>含 16:9 提案 + 直客 / 4A 合同模板</span>
+              </div>
             </div>
-            <p class="muted hero-card__note">CP-SAT · 示例快照 2026-11-21 · 实际以 run 数据为准</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="steps" aria-labelledby="steps-h">
+  <!-- Mandatory Scroll Tagline Reveal Section -->
+  <section class="tagline-section" aria-label="核心价值宣言">
     <div class="wrap">
-      <div class="section-head section-head--split">
-        <div>
-          <h2 id="steps-h">三步，从 brief 到四页方案</h2>
-          <p class="t-lead" style="max-width:52ch">输入需求，Agent 补全缺口并取数，确定性引擎生成可溯源的四页方案——当天交付。</p>
-        </div>
+      <div class="tagline-wrap">
+        <div class="tagline-eyebrow">01 · WHY DETERMINISTIC PROPOSAL STUDIO</div>
+        <p class="tagline-reveal" data-tagline-reveal>
+          <span class="tr-seg">把数天的人工查表与手工拼图，</span><span class="tr-seg tr-seg--gold">压缩成一次可验证的确定性推演。</span><span class="tr-seg">每一条公交线路的空车数、</span><span class="tr-seg">每一个地铁出入口的落位理由、</span><span class="tr-seg tr-seg--gold">每一分折后与制作分摊，</span><span class="tr-seg">皆源自实时库存并直通签约文档。</span>
+        </p>
       </div>
-      <div class="grid steps" style="margin-top:var(--s-5)">
-        <article class="card span-4">
-          <div class="step-visual" role="img" aria-label="输入表单示意">
-            <div class="step-visual__fld"><span class="step-visual__label">场馆</span><b>上海乐高乐园度假区</b></div>
-            <div class="step-visual__fld"><span class="step-visual__label">预算</span><b>500 万</b></div>
-            <div class="step-visual__fld"><span class="step-visual__label">媒介</span><b class="chip chip--accent">公交 + 地铁</b></div>
-            <div class="step-visual__fld"><span class="step-visual__label">档期</span><b>2027-07-01 · 8 周</b></div>
+    </div>
+  </section>
+
+  <!-- Three-Step Bento Process -->
+  <section class="home-section" id="steps" aria-labelledby="steps-h">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div>
+          <div class="sec-eyebrow">02 · WORKFLOW ARCHITECTURE</div>
+          <h2 id="steps-h" class="heading-3">三步闭环，从一句话需求到可签单 PDF</h2>
+        </div>
+        <p class="t-small muted" style="max-width:44ch">
+          AI 负责理解意图、编排取数与解释策略；组合优化、折扣不动点与价格分摊全部交由确定性数学模型执行。
+        </p>
+      </div>
+
+      <div class="bento-3" data-reveal>
+        <article class="card step-card">
+          <div class="step-visual" aria-hidden="true">
+            <div class="sv-row"><span>目标场馆</span><b>上海乐高乐园度假区</b></div>
+            <div class="sv-row"><span>预算规模</span><b class="gold mono">500 万</b></div>
+            <div class="sv-row"><span>媒介组合</span><span class="chip chip--accent">公交 + 地铁</span></div>
+            <div class="sv-row"><span>投放档期</span><b class="mono">2027-07-01 · 8 周</b></div>
           </div>
-          <h3>输入</h3>
-          <p>场馆、预算、媒介、档期，加一句 brief。Agent 帮你补全缺口，缺月份不静默换月。</p>
+          <span class="step-num">STEP 01</span>
+          <h3>结构化输入与 Brief 解析</h3>
+          <p>支持场馆、预算、媒介、档期与直客/4A 切换，附带一句话需求解析；缺失档期绝不静默换月。</p>
         </article>
-        <article class="card span-4">
-          <div class="step-visual step-visual--flow" role="img" aria-label="取数流程示意">
-            <span class="step-visual__node">红豆库存</span>
-            <span class="step-visual__arrow" aria-hidden="true">→</span>
-            <span class="step-visual__node">逐条核验</span>
-            <span class="step-visual__arrow" aria-hidden="true">→</span>
-            <span class="step-visual__node step-visual__node--accent">可售快照</span>
+
+        <article class="card step-card">
+          <div class="step-visual" aria-hidden="true">
+            <div class="sv-flow">
+              <span class="sv-node">红豆库存</span>
+              <span class="muted">→</span>
+              <span class="sv-node">最小可售</span>
+              <span class="muted">→</span>
+              <span class="sv-node sv-node--gold">CP-SAT 求解</span>
+            </div>
+            <div class="sv-row" style="margin-top:8px"><span>新云 AI 线路</span><b class="mono" style="color:var(--emerald)">真实轨迹注入</b></div>
           </div>
-          <h3>Agent 取数</h3>
-          <p>红豆库存跨月取最小可售，逐条核验；新云补充图层需人工登录时显式提示，不阻塞求解。</p>
+          <span class="step-num">STEP 02</span>
+          <h3>双技能取数与确定性优化</h3>
+          <p>自动调度红豆实时可售库存与新云大数据平台轨迹，严格校验库存上限、夜间施工产能与预算边界。</p>
         </article>
-        <article class="card span-4">
-          <div class="step-visual step-visual--tabs" role="img" aria-label="四页方案标签示意">
-            <span class="step-visual__tab is-on">概览</span>
-            <span class="step-visual__tab">媒体</span>
-            <span class="step-visual__tab">经济</span>
-            <span class="step-visual__tab">效果</span>
+
+        <article class="card step-card">
+          <div class="step-visual" aria-hidden="true">
+            <div class="sv-tabs">
+              <div class="sv-tab is-on"><span>16:9 销售提案</span><span class="mono">PPT</span></div>
+              <div class="sv-tab"><span>直客发布合同</span><span class="mono">M3</span></div>
+              <div class="sv-tab"><span>4A 排期订单</span><span class="mono">Spot</span></div>
+              <div class="sv-tab"><span>4A 框架合同</span><span class="mono">18条</span></div>
+            </div>
           </div>
-          <h3>四页方案</h3>
-          <p>概览、媒体、经济、效果。选点理由、报价瀑布、排期与曝光，每个数字可溯源。</p>
+          <span class="step-num">STEP 03</span>
+          <h3>四页工作台与官方模板导出</h3>
+          <p>概览、地图、报价排期与效果校验联动展示，一键生成新云官方 16:9 销售提案与三套标准签约合同 PDF。</p>
         </article>
       </div>
 
-      <div class="scope-note" id="scope">
-        <h3>数据口径</h3>
-        <p style="margin-top:var(--s-2);max-width:78ch">媒体库存来自红豆广告媒体管理系统 2027 年可售快照，跨月取最小可售；曝光、Reach、Frequency、CPM 为模型估算，目标人群为策划假设。每条选点带理由与证据，报价逐行分摊加总等于总价。</p>
+      <div class="scope-strip" data-reveal>
+        <p>
+          <b style="color:var(--ink);font-weight:600;margin-right:8px">数据口径与透明边界</b>
+          库存数据取自红豆广告媒体管理系统 2027 月度可售快照（跨月取最小可售）；公交与地铁线路轨迹来自新云大数据可视化平台 2023-05 快照，仅用于地图可视化展示；曝光、Reach、Frequency 与 CPM 为确定性模型估算。
+        </p>
+        <span class="chip chip--quiet mono">VERSION <span data-meta-version>—</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA Band -->
+  <section class="closing-band" aria-labelledby="close-h">
+    <div class="wrap">
+      <div class="closing-card" data-reveal>
+        <div>
+          <h2 id="close-h">现在就生成一份完整投放方案</h2>
+          <p>调动实时库存、确定性求解与新云官方 PDF 模板，全链路本地闭环运行。</p>
+        </div>
+        <a class="btn btn--primary btn--lg" href="/input.html">
+          开始生成方案
+          <svg class="ico-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4.5 10H15.5M15.5 10L11 5.5M15.5 10L11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="footer closing" id="footer" aria-labelledby="close-h">
-  <div class="wrap">
-    <div class="closing__cta close--type">
-      <div class="section-head">
-        <h2 id="close-h">今天就出一份方案</h2>
-        <p>输入四项，Agent 取数、引擎求解，四页方案当天交付。</p>
-      </div>
-      <a class="btn btn--primary btn--xl btn--wide" href="/input.html">生成投放方案<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
-    </div>
-    <div class="closing__links">
-      <div class="footer__legal">
-        <span>
-          <b style="color:var(--ink);font-weight:500">数据来源</b> 红豆广告媒体管理系统 2027 月度可售库存快照 · 公开 POI/地图近似数据
-          <span style="margin-left:var(--s-5)"><b style="color:var(--ink);font-weight:500">估算声明</b> 曝光 / Reach / Frequency / CPM 为模型估算，非实测触达；不承诺入园、销量或回报</span>
-        </span>
-        <span>
-          <span>数据版本 <span class="mono" data-meta-version>—</span></span>
-          <span style="margin-left:var(--s-5)">库存快照 <span class="mono" data-meta-ts>—</span></span>
-          <span style="margin-left:var(--s-5)">© 2026 新云媒介提案台</span>
-        </span>
-      </div>
-    </div>
-  </div>
-</footer>
 <script>
-  // The footer is a data line, not a run result: show the current snapshot manifest.
-  fetch('/api/meta').then((r) => r.json()).then((meta) => {
-    const m = meta.manifest || {};
-    document.querySelectorAll<HTMLElement>('[data-meta-version]').forEach((el) => { el.textContent = m.data_version || '—'; });
-    document.querySelectorAll<HTMLElement>('[data-meta-ts]').forEach((el) => { el.textContent = String(m.inventory_ts || '—').replace('T', ' ').slice(0, 16); });
-  }).catch(() => {});
+  // Load live manifest version/timestamp for footer & scope strip
+  fetch('/api/meta')
+    .then((r) => r.json())
+    .then((meta) => {
+      const m = meta.manifest || {};
+      const ver = m.data_version || '—';
+      const ts = String(m.inventory_ts || '—').replace('T', ' ').slice(0, 16);
+      document.querySelectorAll<HTMLElement>('[data-meta-version]').forEach((el) => { el.textContent = ver; });
+      document.querySelectorAll<HTMLElement>('[data-meta-ts]').forEach((el) => { el.textContent = ts; });
+    })
+    .catch(() => {});
+
+  // Smooth count-up roll for hero numeric counters
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) {
+    document.querySelectorAll<HTMLElement>('[data-count-to]').forEach((el) => {
+      const target = Number(el.dataset.countTo || 0);
+      if (!target) return;
+      const start = performance.now();
+      const dur = 820;
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = String(Math.max(1, Math.round(target * eased)));
+        if (t < 1) requestAnimationFrame(step);
+        else el.textContent = String(target);
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  // Mandatory Tagline Reveal (B11): phrase-by-phrase scroll illumination via rAF-throttled scroll
+  const tagEl = document.querySelector<HTMLElement>('[data-tagline-reveal]');
+  if (tagEl) {
+    const segs = [...tagEl.querySelectorAll<HTMLElement>('.tr-seg')];
+    if (reduced) {
+      segs.forEach((s) => s.classList.add('is-lit'));
+    } else {
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const rect = tagEl.getBoundingClientRect();
+        const vh = window.innerHeight || 800;
+        const progress = Math.max(0, Math.min(1, (vh * 0.84 - rect.top) / (vh * 0.56)));
+        const litCount = Math.ceil(progress * segs.length);
+        segs.forEach((s, i) => s.classList.toggle('is-lit', i < litCount));
+      };
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        },
+        { passive: true },
+      );
+      update();
+    }
+  }
 </script>
 </Base>

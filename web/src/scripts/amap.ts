@@ -65,7 +65,7 @@ export async function loadAmap(containerId: string): Promise<AmapKit | null> {
       viewMode: '2D',
       zoom: 10.6,
       center: [121.4737, 31.2304],
-      mapStyle: 'amap://styles/whitesmoke',
+      mapStyle: 'amap://styles/darkblue',
       showLabel: true,
       resizeEnable: true,
     });

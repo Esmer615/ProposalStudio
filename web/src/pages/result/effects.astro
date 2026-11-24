@@ -26,35 +26,38 @@ import ResultHeader from '../../components/ResultHeader.astro';
 
       <!-- effects KPIs -->
       <section aria-labelledby="fx-kpi-h">
-        <h2 id="fx-kpi-h" style="margin-bottom:var(--s-4)">效果 KPI</h2>
+        <h2 id="fx-kpi-h" class="heading-5" style="margin-bottom:var(--s-4)">效果估算 KPI</h2>
         <div class="kpi-grid">
-          <div class="kpi"><span class="kpi__label">有效曝光</span><span class="kpi__value" data-k="impressions">—</span><span class="kpi__sub">人次</span></div>
-          <div class="kpi"><span class="kpi__label">GRP</span><span class="kpi__value" data-k="grp">—</span></div>
-          <div class="kpi"><span class="kpi__label">Reach</span><span class="kpi__value" data-k="reach">—</span></div>
-          <div class="kpi"><span class="kpi__label">Frequency</span><span class="kpi__value" data-k="frequency">—</span></div>
+          <div class="kpi"><span class="kpi__label">有效曝光</span><span class="kpi__value gold" data-k="impressions">—</span><span class="kpi__sub">人次</span></div>
+          <div class="kpi"><span class="kpi__label">GRP</span><span class="kpi__value" data-k="grp">—</span><span class="kpi__sub">毛评点</span></div>
+          <div class="kpi"><span class="kpi__label">Reach</span><span class="kpi__value" style="color:var(--emerald)" data-k="reach">—</span><span class="kpi__sub">去重到达率</span></div>
+          <div class="kpi"><span class="kpi__label">Frequency</span><span class="kpi__value" data-k="frequency">—</span><span class="kpi__sub">平均频次</span></div>
         </div>
         <div class="kpi-grid" style="margin-top:var(--s-4)">
-          <div class="kpi"><span class="kpi__label">CPM</span><span class="kpi__value" data-k="cpm">—</span><span class="kpi__sub">元</span></div>
-          <div class="kpi"><span class="kpi__label">目标人群</span><span class="kpi__value" data-k="target-pop">—</span><span class="kpi__sub">策划假设</span></div>
-          <div class="kpi" style="grid-column:span 2"><span class="kpi__label">分媒体归因（不可相加成到达率）</span><span class="kpi__value" data-k="by-media" style="font-size:16px">—</span></div>
+          <div class="kpi"><span class="kpi__label">CPM</span><span class="kpi__value" data-k="cpm">—</span><span class="kpi__sub">元 / 千次曝光</span></div>
+          <div class="kpi"><span class="kpi__label">目标人群基数</span><span class="kpi__value" data-k="target-pop">—</span><span class="kpi__sub">策划假设口径</span></div>
+          <div class="kpi" style="grid-column:span 2"><span class="kpi__label">分媒体归因（不直接相加到达率）</span><div data-k="by-media" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">—</div></div>
         </div>
       </section>
 
       <!-- elasticity dual-axis + 9-budget table -->
       <section aria-labelledby="fx-elast-h">
-        <h2 id="fx-elast-h" style="margin-bottom:var(--s-4)">预算弹性</h2>
+        <h2 id="fx-elast-h" class="heading-5" style="margin-bottom:var(--s-4)">预算弹性曲线（100–500 万）</h2>
         <div class="card">
-          <div class="card-head"><span>累计曝光（左轴）· 边际每万元曝光（右轴）</span><span class="chip chip--quiet mono" data-k="knee">拐点 —</span></div>
-          <div style="padding:var(--s-4)">
+          <div class="card-head">
+            <span>累计曝光（金线 · 左轴）· 边际每万元曝光（绿虚线 · 右轴）</span>
+            <span class="chip chip--accent mono" data-k="knee">拐点 —</span>
+          </div>
+          <div class="card-body">
             <svg class="chart" data-k="elast-chart" viewBox="0 0 1200 360" role="img" aria-label="预算弹性双轴图"></svg>
-            <p class="faint" style="font-size:12px;margin-top:var(--s-2)" data-k="elast-note">—</p>
+            <p class="faint t-xs" style="margin-top:var(--s-3)" data-k="elast-note">—</p>
           </div>
         </div>
         <div class="table-shell" style="margin-top:var(--s-4)">
           <div class="table-scroll">
             <table class="data">
               <thead>
-                <tr><th class="num">预算(万)</th><th class="num">曝光</th><th class="num">Reach</th><th class="num">频率</th><th class="num">CPM(元)</th><th class="num">边际曝光/万</th></tr>
+                <tr><th class="num">预算(万)</th><th class="num">曝光(万)</th><th class="num">Reach</th><th class="num">频率</th><th class="num">CPM(元)</th><th class="num">边际曝光/万</th></tr>
               </thead>
               <tbody data-k="elast-rows"></tbody>
             </table>
@@ -64,34 +67,36 @@ import ResultHeader from '../../components/ResultHeader.astro';
 
       <!-- validator checks + self-check-10 -->
       <section aria-labelledby="fx-val-h">
-        <h2 id="fx-val-h" style="margin-bottom:var(--s-4)">自主校验</h2>
+        <h2 id="fx-val-h" class="heading-5" style="margin-bottom:var(--s-4)">确定性自主校验</h2>
         <div class="gsplit">
           <div class="card">
-            <div class="card-head"><span>Validator 检查</span><span class="chip" data-k="val-pass">—</span></div>
-            <div data-k="checks" style="padding:0 var(--s-4)"></div>
+            <div class="card-head"><span>Validator 独立检查</span><span class="chip" data-k="val-pass">—</span></div>
+            <div class="card-body" style="padding:8px 20px"><div data-k="checks"></div></div>
           </div>
           <div class="card">
-            <div class="card-head"><span>10 条自检</span></div>
-            <div data-k="self-check" style="padding:0 var(--s-4)"></div>
+            <div class="card-head"><span>10 项交付自检</span></div>
+            <div class="card-body" style="padding:8px 20px"><div data-k="self-check"></div></div>
           </div>
         </div>
       </section>
 
       <!-- limitations + data source -->
       <section aria-labelledby="fx-limits-h">
-        <h2 id="fx-limits-h" style="margin-bottom:var(--s-3)">局限 · 数据来源 · 版本 · 时间戳</h2>
+        <h2 id="fx-limits-h" class="heading-5" style="margin-bottom:var(--s-4)">局限与数据溯源</h2>
         <div class="card">
-          <div class="kv" style="padding:var(--s-4)" data-k="limits"></div>
-          <div class="kv" style="padding:var(--s-4)" data-k="sources"></div>
+          <div class="card-body" style="padding:12px 20px;display:grid;gap:12px">
+            <div class="kv" data-k="limits"></div>
+            <div class="kv" data-k="sources"></div>
+          </div>
         </div>
       </section>
 
       <!-- agent + data timeline -->
       <section aria-labelledby="fx-timeline-h">
-        <h2 id="fx-timeline-h" style="margin-bottom:var(--s-4)">Agent 与数据阶段时间线</h2>
+        <h2 id="fx-timeline-h" class="heading-5" style="margin-bottom:var(--s-4)">Agent 与数据阶段时间线</h2>
         <div class="card">
           <div class="card-head"><span>workflow.stages</span><span class="chip chip--quiet mono" data-k="workflow-mode">—</span></div>
-          <div style="padding:var(--s-4);display:grid;gap:8px" data-k="timeline"></div>
+          <div class="card-body" style="padding:12px 20px;display:grid;gap:8px" data-k="timeline"></div>
         </div>
       </section>
     </div>

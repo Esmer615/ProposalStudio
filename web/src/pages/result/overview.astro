@@ -1,165 +1,200 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ResultHeader from '../../components/ResultHeader.astro';
-
-// Overview: run/meta/inputs, 4 KPIs, H1–H7, strategy/audience/transport/media-roles,
-// media-mix small bar, tabs (in header), 口径/局限 summary.
 ---
 <Base
   title="方案概览 · 新云媒介提案台"
-  description="运行状态、四项输入、假设书 H1–H7、策略、媒体配比与局限摘要。"
+  description="运行状态、核心 KPI、官方模板 PDF 交付中心、Campaign 假设书 H1–H7、策略与媒体配比。"
   active=""
 >
 <main id="top" class="page">
   <ResultHeader active="overview" title="方案概览" />
 
-  <div data-result-empty hidden class="empty section">
+  <div data-result-empty hidden class="empty">
     <div class="wrap">
       <h2 class="empty__title">暂无可展示的方案</h2>
-      <p class="empty__body" data-empty-body>没有有效的 run 参数，或该方案未生成。请返回输入页重新生成。</p>
-      <a class="btn btn--primary" href="/input.html">去生成方案</a>
+      <p class="empty__body" data-empty-body>当前链接缺少有效的 run 参数，或该方案尚未生成完成。请返回方案工作台重新生成。</p>
+      <a class="btn btn--primary btn--lg" href="/input.html">前往方案工作台</a>
     </div>
   </div>
 
   <div data-result-content class="app-section" hidden>
     <div class="wrap" style="display:grid;gap:var(--s-6)">
-      <!-- summary + inputs (the page's single h1 lives in ResultHeader) -->
+      <!-- 核心参数摘要 + 4 大 KPI -->
       <section aria-label="方案摘要">
-        <div style="display:flex;align-items:center;gap:var(--s-3);flex-wrap:wrap">
-          <p class="muted" data-k="inputs-line" style="margin:0">—</p>
-          <div class="doc-bar" style="margin-left:auto">
-            <a class="btn btn--primary" data-pdf-download data-doc-link="proposal" href="#" download>下载销售提案 PDF</a>
-            <a class="btn btn--secondary" data-doc-link="matched-contract" href="#" download>下载配套合同 PDF</a>
+        <p class="muted t-small mono" data-k="inputs-line" style="margin-bottom:var(--s-4)">—</p>
+        <div class="kpi-grid">
+          <div class="kpi">
+            <span class="kpi__label">估算有效曝光</span>
+            <span class="kpi__value gold" data-k="impressions">—</span>
+            <span class="kpi__sub">周期累计曝光人次</span>
           </div>
-          <script is:inline data-pdf-href-sync>
-            (() => {
-              const runId = new URLSearchParams(location.search).get('run');
-              const links = document.querySelectorAll('[data-doc-link]');
-              if (!runId) {
-                links.forEach((el) => el.setAttribute('hidden', ''));
-                return;
-              }
-              const enc = encodeURIComponent(runId);
-              const primary = document.querySelector('[data-pdf-download]');
-              if (primary) primary.setAttribute('href', `/proposals/${enc}.pdf`);
-              const matched = document.querySelector('[data-doc-link="matched-contract"]');
-              if (matched) matched.setAttribute('href', `/proposals/${enc}/contract-direct.pdf`);
-            })();
-          </script>
-        </div>
-        <div class="kpi-grid" style="margin-top:var(--s-5)">
-          <div class="kpi"><span class="kpi__label">有效曝光</span><span class="kpi__value" data-k="impressions">—</span></div>
-          <div class="kpi"><span class="kpi__label">Reach</span><span class="kpi__value" data-k="reach">—</span></div>
-          <div class="kpi"><span class="kpi__label">Frequency</span><span class="kpi__value" data-k="frequency">—</span></div>
-          <div class="kpi"><span class="kpi__label">CPM（元）</span><span class="kpi__value" data-k="cpm">—</span></div>
+          <div class="kpi">
+            <span class="kpi__label">目标人群 Reach</span>
+            <span class="kpi__value" style="color:var(--emerald)" data-k="reach">—</span>
+            <span class="kpi__sub">单一饱和曲线合并口径</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">平均触达频次</span>
+            <span class="kpi__value" data-k="frequency">—</span>
+            <span class="kpi__sub">Frequency（次）</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi__label">千次曝光成本</span>
+            <span class="kpi__value" data-k="cpm">—</span>
+            <span class="kpi__sub">CPM（元）</span>
+          </div>
         </div>
       </section>
 
-      <!-- deliverable PDFs from official Flair Media templates -->
+      <!-- 官方模板交付中心（4 张可点击 Bento 卡片，去除重复下载按钮） -->
       <section aria-labelledby="ov-docs-h" data-doc-panel>
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4);flex-wrap:wrap">
-          <h2 id="ov-docs-h" style="margin:0">交付文件导出（新云官方模板自动填充）</h2>
-          <span class="muted" style="font-size:12.5px">直接依据历史销售提案样本与三份标准合同模板自动填入本次方案数据</span>
+          <h2 id="ov-docs-h" class="heading-5">官方模板交付中心</h2>
+          <span class="faint t-xs mono">自动填入本次 run 真实点位、报价与条款 · 点击卡片直接下载 PDF</span>
         </div>
+
         <div class="doc-grid">
-          <article class="doc-card doc-card--primary" data-doc-card="proposal">
-            <div class="doc-card__top">
-              <h3 class="doc-card__title">销售提案方案</h3>
+          <a class="doc-tile doc-tile--primary" data-doc-card="proposal" data-doc-link="proposal" href="#" download>
+            <div class="doc-tile__top">
+              <span class="doc-tile__ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <rect x="2.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M6.5 17.5H13.5M10 15V17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
               <span class="chip chip--accent">16:9 PPT版</span>
             </div>
-            <p class="doc-card__desc">复刻新云历史销售提案模板：黑金封面、企业与媒体介绍、策略洞察、覆盖地图、双栏线路明细、报价排期与赠媒实景。</p>
-            <div class="doc-card__meta">样本：历史销售提案样本</div>
-            <a class="btn btn--primary doc-card__btn" data-doc-link="proposal" href="#" download>下载销售提案 PDF</a>
-          </article>
+            <div class="doc-tile__title">销售提案方案</div>
+            <p class="doc-tile__desc">复刻新云历史销售提案模板：黑金封面、策略洞察、轨迹覆盖地图、双栏线路明细、报价排期与赠媒实景。</p>
+            <div class="doc-tile__foot">
+              <span class="mono">历史销售提案样本</span>
+              <span>下载 PDF →</span>
+            </div>
+          </a>
 
-          <article class="doc-card" data-doc-card="contract-direct">
-            <div class="doc-card__top">
-              <h3 class="doc-card__title">直客广告发布合同</h3>
+          <a class="doc-tile" data-doc-card="contract-direct" data-doc-link="contract-direct" href="#" download>
+            <div class="doc-tile__top">
+              <span class="doc-tile__ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <path d="M5.5 2.5H12L15.5 6V17.5H5.5V2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  <path d="M8 10H13M8 13H11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
               <span class="chip chip--quiet" data-doc-badge="contract-direct">A4 竖版</span>
             </div>
-            <p class="doc-card__desc">按《M3-直客合同》标准版式填入全部入选线路/点位、刊例/折扣/制作费、付款节点与第 1–8 条完整法律条款。</p>
-            <div class="doc-card__meta">样本：M3-直客合同</div>
-            <a class="btn btn--secondary doc-card__btn" data-doc-link="contract-direct" href="#" download>下载直客合同 PDF</a>
-          </article>
+            <div class="doc-tile__title">直客广告发布合同</div>
+            <p class="doc-tile__desc">依据《M3-直客合同》自动填入全量入选线路、刊例/折扣/制作费、付款节点及第 1–8 条完整法律条款。</p>
+            <div class="doc-tile__foot">
+              <span class="mono">M3-直客合同</span>
+              <span>下载 PDF →</span>
+            </div>
+          </a>
 
-          <article class="doc-card" data-doc-card="contract-4a-order">
-            <div class="doc-card__top">
-              <h3 class="doc-card__title">4A 户外排期表（订单）</h3>
+          <a class="doc-tile" data-doc-card="contract-4a-order" data-doc-link="contract-4a-order" href="#" download>
+            <div class="doc-tile__top">
+              <span class="doc-tile__ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <rect x="2.5" y="4.5" width="15" height="11" rx="1.8" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M2.5 8.5H17.5M8 8.5V15.5M13 8.5V15.5" stroke="currentColor" stroke-width="1.4"/>
+                </svg>
+              </span>
               <span class="chip chip--quiet" data-doc-badge="contract-4a-order">A4 横版</span>
             </div>
-            <p class="doc-card__desc">按《M3-4A订单》Proposed Outdoor Spot Plan 双语表式填入位置、档期、刊例价、折扣、净价、制作费与总价。</p>
-            <div class="doc-card__meta">样本：M3-4A订单</div>
-            <a class="btn btn--secondary doc-card__btn" data-doc-link="contract-4a-order" href="#" download>下载 4A 排期订单 PDF</a>
-          </article>
+            <div class="doc-tile__title">4A 户外排期表（订单）</div>
+            <p class="doc-tile__desc">依据《M3-4A订单》Proposed Outdoor Spot Plan 双语表式填入位置、档期、刊例、折扣、净价与制作费。</p>
+            <div class="doc-tile__foot">
+              <span class="mono">M3-4A订单</span>
+              <span>下载 PDF →</span>
+            </div>
+          </a>
 
-          <article class="doc-card" data-doc-card="contract-4a-framework">
-            <div class="doc-card__top">
-              <h3 class="doc-card__title">4A 年度框架合同书</h3>
+          <a class="doc-tile" data-doc-card="contract-4a-framework" data-doc-link="contract-4a-framework" href="#" download>
+            <div class="doc-tile__top">
+              <span class="doc-tile__ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <path d="M5 3H13.5L16 5.5V17H5V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  <path d="M7.5 8.5H13.5M7.5 11.5H13.5M7.5 14.5H11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+              </span>
               <span class="chip chip--quiet" data-doc-badge="contract-4a-framework">A4 竖版</span>
             </div>
-            <p class="doc-card__desc">完整保留《M3-4A框架》18 条正文与附件一创意制作通用条款，自动联动合同年份、项目主体与有效期。</p>
-            <div class="doc-card__meta">样本：M3-4A框架</div>
-            <a class="btn btn--secondary doc-card__btn" data-doc-link="contract-4a-framework" href="#" download>下载 4A 框架合同 PDF</a>
-          </article>
+            <div class="doc-tile__title">4A 年度框架合同书</div>
+            <p class="doc-tile__desc">完整保留《M3-4A框架》18 条正文与附件一创意制作通用条款，自动联动合同年份、主体与有效期。</p>
+            <div class="doc-tile__foot">
+              <span class="mono">M3-4A框架</span>
+              <span>下载 PDF →</span>
+            </div>
+          </a>
         </div>
       </section>
 
-      <!-- H1–H7 -->
+      <!-- Campaign 假设书 H1-H7 -->
       <section aria-labelledby="ov-hyp-h">
-        <h2 id="ov-hyp-h" style="margin-bottom:var(--s-4)">Campaign 假设书</h2>
+        <h2 id="ov-hyp-h" class="heading-5" style="margin-bottom:var(--s-4)">Campaign 假设书</h2>
         <div class="hyp" data-k="hypothesis"></div>
         <div class="card" style="margin-top:var(--s-4)">
-          <div class="card-head"><span>一句话策略</span></div>
-          <p style="font-size:15px;padding:var(--s-4)" data-k="one-liner">—</p>
+          <div class="card-head"><span>核心一句话策略</span><span class="chip chip--accent">One-Liner</span></div>
+          <div class="card-body">
+            <p style="font-size:16px;line-height:26px;color:var(--ink)" data-k="one-liner">—</p>
+          </div>
         </div>
       </section>
 
-      <!-- strategy / audience / transport / media roles -->
+      <!-- 策略 / 人群 / 交通 / 媒介角色 -->
       <section aria-labelledby="ov-strat-h">
-        <h2 id="ov-strat-h" style="margin-bottom:var(--s-4)">策略 · 人群 · 交通 · 媒介角色</h2>
+        <h2 id="ov-strat-h" class="heading-5" style="margin-bottom:var(--s-4)">策略 · 人群 · 交通与媒介角色</h2>
         <div class="gsplit">
-          <div class="card" style="align-self:stretch">
+          <div class="card">
             <div class="card-head"><span>策略主线</span></div>
-            <p style="padding:var(--s-4);font-size:14px" data-k="strategy">—</p>
+            <div class="card-body">
+              <p style="font-size:14px;line-height:24px;color:var(--ink-soft)" data-k="strategy">—</p>
+            </div>
           </div>
           <div class="card">
-            <div class="card-head"><span>人群与交通</span></div>
-            <div class="kv" style="padding:var(--s-4)" data-k="audi-transport"></div>
+            <div class="card-head"><span>人群与交通结构</span></div>
+            <div class="card-body" style="padding:12px 20px">
+              <div class="kv" data-k="audi-transport"></div>
+            </div>
           </div>
         </div>
         <div class="card" style="margin-top:var(--s-4)">
-          <div class="card-head"><span>媒介角色</span></div>
-          <div class="rows" data-k="media-roles" style="padding:0 var(--s-4)"></div>
+          <div class="card-head"><span>媒介角色分配</span></div>
+          <div class="card-body" style="padding:8px 20px">
+            <div class="rows" data-k="media-roles"></div>
+          </div>
         </div>
       </section>
 
-      <!-- media mix small bar -->
+      <!-- 媒体配比 -->
       <section aria-labelledby="ov-mix-h">
-        <h2 id="ov-mix-h" style="margin-bottom:var(--s-4)">媒体配比</h2>
+        <h2 id="ov-mix-h" class="heading-5" style="margin-bottom:var(--s-4)">媒体结构配比</h2>
         <div class="card">
-          <div class="card-head"><span>媒体配比（按折后媒体费）</span></div>
-          <div style="padding:var(--s-4);display:grid;gap:var(--s-4)">
-            <svg class="chart" viewBox="0 0 360 56" role="img" aria-label="媒体配比条形图：公交与地铁按折后媒体费的占比">
-              <rect x="0" y="0" width="360" height="18" rx="4" fill="color-mix(in oklab, var(--ink) 10%, transparent)"></rect>
-              <rect class="bar" data-k="bus-bar" x="0" y="0" width="0" height="18" rx="4"></rect>
-              <rect class="bar bar--alt" data-k="metro-bar" x="0" y="0" width="0" height="18" rx="4"></rect>
-              <text x="0" y="40" font-size="11" data-k="bus-label">公交 0%</text>
-              <text x="360" y="40" text-anchor="end" font-size="11" data-k="metro-label">地铁 0%</text>
+          <div class="card-head"><span>按折后媒体费占比</span></div>
+          <div class="card-body" style="display:grid;gap:var(--s-4)">
+            <svg class="chart" viewBox="0 0 360 48" role="img" aria-label="媒体配比条形图：公交与地铁按折后媒体费的占比">
+              <rect x="0" y="0" width="360" height="14" rx="7" fill="rgba(255,255,255,0.08)"></rect>
+              <rect class="bar" data-k="bus-bar" x="0" y="0" width="0" height="14" rx="7"></rect>
+              <rect class="bar bar--alt" data-k="metro-bar" x="0" y="0" width="0" height="14" rx="7"></rect>
+              <text x="0" y="36" font-size="11" data-k="bus-label">公交 0%</text>
+              <text x="360" y="36" text-anchor="end" font-size="11" data-k="metro-label">地铁 0%</text>
             </svg>
             <div class="kv">
               <div><span>公交线路 / 车辆</span><b data-k="bus-units">—</b></div>
               <div><span>地铁站点 / 出入口</span><b data-k="metro-units">—</b></div>
-              <div><span>总付费单元</span><b data-k="paid-units">—</b></div>
+              <div class="total"><span>总付费单元</span><b data-k="paid-units">—</b></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 口径/局限摘要 -->
+      <!-- 口径与局限摘要 -->
       <section aria-labelledby="ov-limits-h">
-        <h2 id="ov-limits-h" style="margin-bottom:var(--s-3)">口径与局限摘要</h2>
+        <h2 id="ov-limits-h" class="heading-5" style="margin-bottom:var(--s-4)">口径与局限摘要</h2>
         <div class="card">
-          <div class="kv" style="padding:var(--s-4)" data-k="limits"></div>
+          <div class="card-body" style="padding:12px 20px">
+            <div class="kv" data-k="limits"></div>
+          </div>
         </div>
       </section>
     </div>
@@ -168,7 +203,7 @@ import ResultHeader from '../../components/ResultHeader.astro';
 </Base>
 <script>
   import { initResult } from '../../scripts/result';
-  import { fmtWan, fmtPct, pctReadable, ratioPct, fmtMoney, shortName } from '../../lib/format';
+  import { fmtWan, pctReadable, ratioPct } from '../../lib/format';
 
   initResult((plan, run) => {
     const inputs = plan.inputs || {};
@@ -176,15 +211,15 @@ import ResultHeader from '../../components/ResultHeader.astro';
     const hyp = plan.hypothesis || {};
     const strategy = plan.strategy || {};
     const summary = plan.plan?.summary || {};
-    const quote = plan.quote || {};
     const limits = plan.validation?.limitations || [];
 
-    const h1 = `${inputs.venue_name || plan.venue?.name || '方案'} · ${inputs.budget_wan ?? '—'} 万 · ${inputs.start_date ?? ''} 起`;
+    const h1 = `${inputs.venue_name || plan.venue?.name || '方案'} · ${inputs.budget_wan ?? '—'} 万`;
     const title = document.querySelector('[data-result-title]');
     if (title) title.textContent = h1;
     document.querySelector('[data-k="inputs-line"]')!.textContent =
-      `${(inputs.media || []).map((m: string) => m === 'bus' ? '公交车身' : '地铁出入口').join(' + ')} · ${inputs.weeks ?? '—'} 周 · ${inputs.customer_type_label || (inputs.customer_type === '4a' ? '4A 代理' : '直客')} · 档期 ${inputs.start_date ?? '—'} → ${inputs.end_date ?? '—'}`;
+      `${(inputs.media || []).map((m: string) => (m === 'bus' ? '公交车身' : '地铁出入口')).join(' + ')} · ${inputs.weeks ?? '—'} 周 · ${inputs.customer_type_label || (inputs.customer_type === '4a' ? '4A 代理' : '直客')} · 档期 ${inputs.start_date ?? '—'} → ${inputs.end_date ?? '—'}`;
 
+    // Wire 4 official PDF tiles + highlight matched customer contract
     const runId = (run as any)?.run_id;
     const is4a = inputs.customer_type === '4a';
     const docPanel = document.querySelector<HTMLElement>('[data-doc-panel]');
@@ -195,35 +230,24 @@ import ResultHeader from '../../components/ResultHeader.astro';
         'contract-direct': `/proposals/${enc}/contract-direct.pdf`,
         'contract-4a-order': `/proposals/${enc}/contract-4a-order.pdf`,
         'contract-4a-framework': `/proposals/${enc}/contract-4a-framework.pdf`,
-        'matched-contract': is4a
-          ? `/proposals/${enc}/contract-4a-order.pdf`
-          : `/proposals/${enc}/contract-direct.pdf`,
       };
       document.querySelectorAll<HTMLAnchorElement>('[data-doc-link]').forEach((el) => {
         const key = el.dataset.docLink || '';
-        if (urlMap[key]) {
-          el.href = urlMap[key];
-          el.hidden = false;
-        }
+        if (urlMap[key]) el.href = urlMap[key];
       });
-      const matchedTop = document.querySelector<HTMLAnchorElement>('[data-doc-link="matched-contract"]');
-      if (matchedTop) {
-        matchedTop.textContent = is4a ? '下载 4A 排期订单 PDF' : '下载直客合同 PDF';
-      }
       const highlightKeys = is4a ? ['contract-4a-order', 'contract-4a-framework'] : ['contract-direct'];
       (['contract-direct', 'contract-4a-order', 'contract-4a-framework'] as const).forEach((k) => {
         const card = document.querySelector<HTMLElement>(`[data-doc-card="${k}"]`);
         const badge = document.querySelector<HTMLElement>(`[data-doc-badge="${k}"]`);
         const on = highlightKeys.includes(k);
-        if (card) card.classList.toggle('doc-card--primary', on);
+        if (card) card.classList.toggle('doc-tile--primary', on);
         if (badge) {
           badge.textContent = on ? '当前客户匹配' : (k === 'contract-4a-order' ? 'A4 横版' : 'A4 竖版');
           badge.className = 'chip ' + (on ? 'chip--accent' : 'chip--quiet');
         }
       });
-    } else {
-      document.querySelectorAll<HTMLElement>('[data-doc-link]').forEach((el) => (el.hidden = true));
-      if (docPanel) docPanel.hidden = true;
+    } else if (docPanel) {
+      docPanel.hidden = true;
     }
 
     set('[data-k="impressions"]', `${fmtWan((effects.impressions || 0) / 10000, 1)} 万`);

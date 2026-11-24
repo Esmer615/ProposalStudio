@@ -1,63 +1,126 @@
-/* Design tokens — clay-pine palette (kept from the dealt set) mapped onto the taste system's
-   --p-* variables. Type: the platform's CJK + UI stacks (no external font files, no 3rd-party CDN). */
+/* Design System Tokens — FLAIR MEDIA Precision Obsidian Studio
+ * Dark-first luxury editorial + Linear/Vercel precision telemetry palette.
+ * Spacing strictly snaps to the 4/8/12/16/24/32/40/48/64/80/96 scale.
+ */
 :root {
-  /* palette (hex only; fx.js reads --bg --surface --ink --muted --accent --accent-ink) */
-  --p-bg: #efe9e0;
-  --p-surface: #e2d9cb;
-  --p-ink: #22261f;
-  --p-muted: #5a5c53;
-  --p-accent: #2e5b44;
-  --p-accent-ink: #ffffff;
-  --p-action: #2e5b44;
-  --p-action-ink: #ffffff;
-  --p-inv-bg: #22261f;
-  --p-inv-surface: #2e322a;
-  --p-inv-ink: #efe9e0;
-  --p-inv-muted: #a19e96;
-  --p-inv-accent: #efe9e0;
-  --p-inv-accent-ink: #22261f;
-  --p-inv-action: #efe9e0;
-  --p-inv-action-ink: #22261f;
-  --ground-bg: #d9ccb7; --ground-surface: #e9e0d2; --ground-ink: #2a2622; --ground-muted: #5a534a; --ground-accent: #a8794a;
+  /* Core Surfaces (aligned with #000000 / #131209 / #181818 / #1F1F1F / #272727 / #313131) */
+  --bg: #08090c;
+  --bg-elevated: #111318;
+  --surface: #181818;
+  --surface-2: #1f1f1f;
+  --surface-3: #272727;
+  --card: #12141a;
+  --card-hover: #171a22;
 
-  /* fonts */
-  --font-display: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
-  --font-text: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
-  --font-mono: ui-monospace, Consolas, "Liberation Mono", monospace;
-  --display-weight: 500;    /* 500 on a tech page (software) */
-  --display-tracking: -0.02em;
+  /* Borders & Specular Hairlines */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --line-gold: rgba(212, 163, 106, 0.36);
+  --specular: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-  --nav: 72px;
-  --padt: 120px;
-  --padb: 72px;
-  --hgap: 48px;
-  --hpadb: 64px;
-  --bar: 0px;
+  /* Ink Hierarchy */
+  --ink: #f4f5f7;
+  --ink-soft: #cfd4de;
+  --muted: #8c94a6;
+  --faint: #636b7d;
 
-  --container: 1280px;
-  --gut: 80px;
-  --pad: var(--gut);
-  --gutter: 24px;
+  /* Brand Accents — FLAIR Champagne Gold + Precision Emerald */
+  --accent: #d4a36a;
+  --accent-bright: #e7c08e;
+  --accent-dim: rgba(212, 163, 106, 0.14);
+  --accent-ink: #12100d;
 
-  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
-  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
-  --section: 40px;
-  --section-band: 56px;
-  --head-gap: 48px;
-  --card-pad: 16px;
-  --card-gap: 16px;
+  --action: #d4a36a;
+  --action-ink: #12100d;
 
-  --t-label: 13px;
+  --emerald: #34d399;
+  --emerald-dim: rgba(52, 211, 153, 0.14);
+  --warn: #f0b45a;
+  --warn-dim: rgba(240, 180, 90, 0.14);
+  --danger: #f06464;
+  --danger-dim: rgba(240, 100, 100, 0.14);
+
+  /* Legacy compatibility aliases (consumed by map pins / scripts) */
+  --p-bg: #08090c;
+  --p-surface: #181818;
+  --p-ink: #f4f5f7;
+  --p-muted: #8c94a6;
+  --p-accent: #d4a36a;
+  --p-accent-ink: #12100d;
+  --p-action: #d4a36a;
+  --p-action-ink: #12100d;
+  --p-inv-bg: #f4f5f7;
+  --p-inv-ink: #0c0d10;
+  --ground-bg: #111318;
+  --ground-surface: #181a20;
+  --ground-accent: #34d399;
+  --error: #f06464;
+
+  /* Typography — Clean Geometric UI + Tabular Mono (Zero italics, zero ultra-bold) */
+  --font-display: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-text: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, Consolas, monospace;
+
+  /* Tailwind Type Scale Steps */
+  --t-xs: 12px;
+  --t-sm: 14px;
+  --t-base: 16px;
+  --t-lg: 18px;
+  --t-xl: 20px;
+  --t-2xl: 24px;
+  --t-3xl: 30px;
+  --t-4xl: 36px;
+  --t-5xl: 48px;
+  --t-6xl: 60px;
+
+  /* Semantic Type Aliases */
+  --t-label: 12px;
   --t-small: 14px;
   --t-body: 16px;
   --t-lead: 18px;
   --t-card: 18px;
   --t-h3: 24px;
-  --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
-  --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
-  --t-stat: clamp(28px, .952vw + 24.29px, 38px);
+  --t-h2: 36px;
+  --t-h1: 60px;
+  --t-stat: 30px;
 
-  --radius: 16px;
+  /* Spacing Scale (strictly B2) */
+  --s-0: 0px;
+  --s-25: 2px;
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 40px;
+  --s-8: 48px;
+  --s-9: 64px;
+  --s-10: 80px;
+  --s-11: 96px;
+
+  /* Radii (Tailwind scale, nested inner = outer - gap) */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-pill: 9999px;
+
+  /* Layout */
+  --nav: 84px;
+  --container: 1320px;
+  --gutter: 24px;
+
+  /* Motion — Weighted Deceleration Curve */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 220ms;
+  --dur-med: 320ms;
+  --dur-slow: 560ms;
 }
 
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}

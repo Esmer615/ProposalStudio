@@ -1,34 +1,44 @@
 ---
-// App chrome nav: logo + two text links + a right-side mono label (deterministic engine).
-// No mega menu, no image cards, no primary CTA button. The label anchors the right edge
-// so the nav content spans the container at 80-1360px (SR-6 container-edges).
+// Floating translucent frosted-glass navigation bar (Linear / Vercel style).
+// Minimal links, active state indicator, conditional "最近方案" shortcut, zero redundant buttons.
 interface Props { active?: string }
 const { active = '' } = Astro.props;
 const links = [
-  { key: 'index', label: '主页', href: '/index.html' },
-  { key: 'input', label: '生成提案', href: '/input.html' },
+  { key: 'index', label: '概览', href: '/index.html' },
+  { key: 'input', label: '方案工作台', href: '/input.html' },
 ];
 ---
 <header class="nav">
-  <div class="wrap nav__bar">
-    <a class="skip-link" href="#top">跳到正文</a>
-    <a class="nav__logo" href="/index.html"><span class="mark" data-mark="stack" aria-hidden="true"></span>新云媒介提案台</a>
+  <a class="skip-link" href="#top">跳到正文</a>
+  <div class="nav__bar">
+    <a class="nav__logo" href="/index.html">
+      <span class="nav__mark" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M2.5 4.2L13.5 2.5L11.2 6.8H5.8L4.4 13.5L2.5 4.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M5.6 9.5H10.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span>新云媒介提案台</span>
+      <span class="nav__brand-sub">FLAIR STUDIO</span>
+    </a>
+
     <nav class="nav__links" aria-label="主导航">
       {links.map((l) => (
-        <div class="nav__item">
-          <a class="nav__link" href={l.href} aria-current={active === l.key ? 'page' : undefined}>{l.label}</a>
-        </div>
+        <a class="nav__link" href={l.href} aria-current={active === l.key ? 'page' : undefined}>{l.label}</a>
       ))}
-    </nav>
-    <div class="nav__actions">
       <a class="nav__link" href="/result/overview.html" data-recent hidden>最近方案</a>
-      <span class="nav__tag mono">确定性引擎 · 2027 可售</span>
+    </nav>
+
+    <div class="nav__actions">
+      <span class="nav__live-pill" title="确定性 CP-SAT 求解引擎与 2027 实时库存">
+        <span class="nav__live-dot" aria-hidden="true"></span>
+        CP-SAT · 2027 可售
+      </span>
     </div>
   </div>
 </header>
 <script>
-  // Surface a lightweight "最近方案" text link if a last run exists (handoff: 最近方案如有).
-  const el = document.querySelector('[data-recent]');
+  const el = document.querySelector<HTMLAnchorElement>('[data-recent]');
   if (el) {
     const id = localStorage.getItem('lastRunId');
     if (id) {

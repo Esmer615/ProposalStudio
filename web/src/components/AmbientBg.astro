@@ -1,0 +1,176 @@
+---
+// Ambient living background: precision architectural dot-grid + subtle Shanghai transit
+// corridor light arcs & floating telemetry particles on a GPU-friendly 60fps canvas.
+// Respects prefers-reduced-motion (renders one calm static frame).
+---
+<div class="ambient-layer" aria-hidden="true">
+  <div class="ambient-grid"></div>
+  <canvas id="ambient-canvas"></canvas>
+  <div class="ambient-vignette"></div>
+</div>
+
+<script>
+  (() => {
+    const canvas = document.getElementById('ambient-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let mx = 0.5;
+    let my = 0.35;
+    let tx = 0.5;
+    let ty = 0.35;
+
+    interface Node {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      gold: boolean;
+      phase: number;
+    }
+
+    interface Arc {
+      yBase: number;
+      amp: number;
+      freq: number;
+      speed: number;
+      gold: boolean;
+      phase: number;
+    }
+
+    const nodes: Node[] = [];
+    const arcs: Arc[] = [
+      { yBase: 0.24, amp: 48, freq: 0.0022, speed: 0.00028, gold: true, phase: 0.4 },
+      { yBase: 0.56, amp: 64, freq: 0.0017, speed: -0.00022, gold: false, phase: 2.1 },
+      { yBase: 0.80, amp: 38, freq: 0.0026, speed: 0.00019, gold: true, phase: 4.3 },
+    ];
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas!.width = Math.floor(W * dpr);
+      canvas!.height = Math.floor(H * dpr);
+      canvas!.style.width = W + 'px';
+      canvas!.style.height = H + 'px';
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      if (nodes.length === 0) {
+        const count = Math.min(44, Math.max(22, Math.floor((W * H) / 42000)));
+        for (let i = 0; i < count; i++) {
+          nodes.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.22,
+            vy: (Math.random() - 0.5) * 0.18,
+            r: 1.1 + Math.random() * 1.4,
+            gold: i % 3 !== 0,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+    }
+
+    window.addEventListener('resize', resize, { passive: true });
+    if (!reduced) {
+      window.addEventListener(
+        'pointermove',
+        (ev) => {
+          tx = ev.clientX / Math.max(1, W);
+          ty = ev.clientY / Math.max(1, H);
+        },
+        { passive: true },
+      );
+    }
+
+    function draw(now: number) {
+      mx += (tx - mx) * 0.04;
+      my += (ty - my) * 0.04;
+      ctx!.clearRect(0, 0, W, H);
+
+      // Soft pointer-reactive atmospheric aura (very understated, high-craft)
+      const gx = W * (0.22 + mx * 0.56);
+      const gy = H * (0.12 + my * 0.34);
+      const g1 = ctx!.createRadialGradient(gx, gy, 0, gx, gy, Math.max(W, H) * 0.52);
+      g1.addColorStop(0, 'rgba(212, 163, 106, 0.075)');
+      g1.addColorStop(0.5, 'rgba(212, 163, 106, 0.02)');
+      g1.addColorStop(1, 'rgba(8, 9, 12, 0)');
+      ctx!.fillStyle = g1;
+      ctx!.fillRect(0, 0, W, H);
+
+      const g2 = ctx!.createRadialGradient(W * 0.82, H * 0.78, 0, W * 0.82, H * 0.78, Math.max(W, H) * 0.45);
+      g2.addColorStop(0, 'rgba(52, 211, 153, 0.045)');
+      g2.addColorStop(1, 'rgba(8, 9, 12, 0)');
+      ctx!.fillStyle = g2;
+      ctx!.fillRect(0, 0, W, H);
+
+      // Flowing Shanghai transit corridor silk-lines
+      for (const a of arcs) {
+        ctx!.beginPath();
+        const py = H * a.yBase + (my - 0.5) * 24;
+        for (let x = -20; x <= W + 20; x += 28) {
+          const y = py + Math.sin(x * a.freq + now * a.speed + a.phase) * a.amp;
+          if (x === -20) ctx!.moveTo(x, y);
+          else ctx!.lineTo(x, y);
+        }
+        ctx!.strokeStyle = a.gold ? 'rgba(212, 163, 106, 0.085)' : 'rgba(52, 211, 153, 0.065)';
+        ctx!.lineWidth = 1;
+        ctx!.stroke();
+      }
+
+      // Subtle drifting constellation nodes & nearby transit links
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        if (!reduced) {
+          n.x += n.vx;
+          n.y += n.vy;
+          if (n.x < -20) n.x = W + 20;
+          if (n.x > W + 20) n.x = -20;
+          if (n.y < -20) n.y = H + 20;
+          if (n.y > H + 20) n.y = -20;
+        }
+        const px = n.x + (mx - 0.5) * 16;
+        const py = n.y + (my - 0.5) * 12;
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j];
+          const mx2 = m.x + (mx - 0.5) * 16;
+          const my2 = m.y + (my - 0.5) * 12;
+          const dx = px - mx2;
+          const dy = py - my2;
+          const dist2 = dx * dx + dy * dy;
+          if (dist2 < 21000) {
+            const alpha = (1 - Math.sqrt(dist2) / 145) * 0.09;
+            ctx!.beginPath();
+            ctx!.moveTo(px, py);
+            ctx!.lineTo(mx2, my2);
+            ctx!.strokeStyle = n.gold ? `rgba(212, 163, 106, ${alpha.toFixed(3)})` : `rgba(180, 200, 220, ${alpha.toFixed(3)})`;
+            ctx!.lineWidth = 0.75;
+            ctx!.stroke();
+          }
+        }
+
+        const pulse = 0.45 + 0.35 * Math.sin(now * 0.0014 + n.phase);
+        ctx!.beginPath();
+        ctx!.arc(px, py, n.r, 0, Math.PI * 2);
+        ctx!.fillStyle = n.gold
+          ? `rgba(212, 163, 106, ${(pulse * 0.55).toFixed(3)})`
+          : `rgba(52, 211, 153, ${(pulse * 0.42).toFixed(3)})`;
+        ctx!.fill();
+      }
+
+      if (!reduced) {
+        requestAnimationFrame(draw);
+      }
+    }
+
+    resize();
+    requestAnimationFrame(draw);
+  })();
+</script>

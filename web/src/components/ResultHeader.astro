@@ -1,46 +1,104 @@
 ---
-// Shared result-page header: status bar + four tabs (preserve ?run=) + a "修改输入" link.
+// Shared result header: title, telemetry status strip, 4-tab switcher, and one unified
+// "导出 PDF" dropdown (all 4 official Flair Media templates available from every tab without button clutter).
 interface Props { active: 'overview' | 'media' | 'economics' | 'effects'; title?: string }
 const { active, title = '方案结果' } = Astro.props;
 const tabs: { key: string; label: string }[] = [
   { key: 'overview', label: '概览' },
-  { key: 'media', label: '媒体' },
-  { key: 'economics', label: '经济' },
-  { key: 'effects', label: '效果' },
+  { key: 'media', label: '媒体与地图' },
+  { key: 'economics', label: '报价与排期' },
+  { key: 'effects', label: '效果与校验' },
 ];
 ---
-<header class="app-section" style="padding-top:calc(var(--nav) + var(--s-5));padding-bottom:var(--s-4)" aria-label="结果页头">
+<header class="result-head" aria-label="结果页头">
   <div class="wrap">
-    <div style="display:flex;align-items:baseline;gap:var(--s-4);flex-wrap:wrap">
-      <h1 style="font-size:var(--t-h2)" data-result-title>{title}</h1>
-      <span class="mono muted" style="font-size:12px">run <span data-run-id>—</span></span>
-      <a class="link" href="/input.html" style="margin-left:auto;font-size:13px">修改输入</a>
+    <div class="result-head__top">
+      <div class="result-head__title">
+        <h1 data-result-title>{title}</h1>
+        <span class="chip chip--quiet mono">run <span data-run-id>—</span></span>
+      </div>
+
+      <div class="result-head__actions">
+        <a class="btn btn--ghost" href="/input.html">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          重新配置
+        </a>
+
+        <details class="export-menu" data-header-export hidden>
+          <summary class="btn btn--primary">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 3.5V12.5M10 12.5L6.5 9M10 12.5L13.5 9M4 15.5H16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            导出官方模板 PDF
+            <svg viewBox="0 0 16 16" fill="none" style="width:13px;height:13px" aria-hidden="true">
+              <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <div class="export-menu__panel" role="menu">
+            <a class="export-menu__item" data-hdr-doc="proposal" href="#" download role="menuitem">
+              <div>销售提案方案（PPT 版）<small>16:9 横版 · 新云历史销售提案模板</small></div>
+              <span class="chip chip--accent">主文档</span>
+            </a>
+            <a class="export-menu__item" data-hdr-doc="contract-direct" href="#" download role="menuitem">
+              <div>直客广告发布合同<small>A4 竖版 · M3 直客合同完整条款</small></div>
+              <span class="chip chip--quiet">直客</span>
+            </a>
+            <a class="export-menu__item" data-hdr-doc="contract-4a-order" href="#" download role="menuitem">
+              <div>4A 户外排期表（订单）<small>A4 横版 · 中英双语 Spot Plan</small></div>
+              <span class="chip chip--quiet">4A</span>
+            </a>
+            <a class="export-menu__item" data-hdr-doc="contract-4a-framework" href="#" download role="menuitem">
+              <div>4A 年度框架合同书<small>A4 竖版 · 18 条正文 + 附件一</small></div>
+              <span class="chip chip--quiet">4A</span>
+            </a>
+          </div>
+        </details>
+      </div>
     </div>
 
-    <div class="statusbar" data-result-status-bar style="margin-top:var(--s-4)">
+    <div class="statusbar" data-result-status-bar>
       <span>状态 <b data-run-status>—</b></span>
       <span>求解器 <b data-solver class="mono">—</b></span>
-      <span>数据版本 <b data-data-version class="mono">—</b></span>
-      <span>库存快照 <b data-inventory-ts class="mono">—</b></span>
-      <span class="chip chip--quiet mono" data-src-inventory>红豆快照 · —</span>
+      <span>版本 <b data-data-version class="mono">—</b></span>
+      <span>快照 <b data-inventory-ts class="mono">—</b></span>
+      <span class="chip chip--quiet mono" data-src-inventory style="margin-left:auto">红豆快照 · —</span>
       <span class="chip chip--quiet mono" data-src-bigdata>新云补充 · —</span>
       <span class="chip chip--warn" data-degraded-flag hidden>降级 · 补充数据不可用</span>
     </div>
 
-    <nav class="result-tabs" style="margin-top:var(--s-4)" aria-label="结果页导航">
-      {tabs.map((t) => (
-        <a href={`/result/${t.key}.html`} data-tab={t.key} aria-current={active === t.key ? 'page' : undefined}>{t.label}</a>
-      ))}
-    </nav>
+    <div class="result-tabs-row">
+      <nav class="result-tabs" aria-label="结果页导航">
+        {tabs.map((t) => (
+          <a href={`/result/${t.key}.html`} data-tab={t.key} aria-current={active === t.key ? 'page' : undefined}>{t.label}</a>
+        ))}
+      </nav>
+    </div>
   </div>
 </header>
 <script>
-  const p = new URLSearchParams(location.search).get('run');
-  if (p) {
+  const runId = new URLSearchParams(location.search).get('run');
+  if (runId) {
+    const enc = encodeURIComponent(runId);
     document.querySelectorAll<HTMLAnchorElement>('[data-tab]').forEach((a) => {
       const u = new URL(a.href, location.origin);
-      u.searchParams.set('run', p);
+      u.searchParams.set('run', runId);
       a.href = u.toString();
     });
+    const exp = document.querySelector<HTMLElement>('[data-header-export]');
+    if (exp) {
+      exp.hidden = false;
+      const map: Record<string, string> = {
+        'proposal': `/proposals/${enc}.pdf`,
+        'contract-direct': `/proposals/${enc}/contract-direct.pdf`,
+        'contract-4a-order': `/proposals/${enc}/contract-4a-order.pdf`,
+        'contract-4a-framework': `/proposals/${enc}/contract-4a-framework.pdf`,
+      };
+      exp.querySelectorAll<HTMLAnchorElement>('[data-hdr-doc]').forEach((a) => {
+        const key = a.dataset.hdrDoc || '';
+        if (map[key]) a.href = map[key];
+      });
+    }
   }
 </script>

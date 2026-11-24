@@ -495,7 +495,7 @@ if (form) {
 
     // rings for the selected venue / custom place only (not all three at once)
     rings.slice(0, 2).forEach((km: number) => {
-      add(new AMap.Circle({ center: origin, radius: Number(km) * 1000, strokeColor: '#2e5b44', strokeOpacity: 0.5, strokeWeight: 1, strokeStyle: 'dashed', fillOpacity: 0 }));
+      add(new AMap.Circle({ center: origin, radius: Number(km) * 1000, strokeColor: '#d4a36a', strokeOpacity: 0.55, strokeWeight: 1.4, strokeStyle: 'dashed', fillOpacity: 0 }));
     });
 
     // venue markers always carry a name label; the selected one is highlighted
