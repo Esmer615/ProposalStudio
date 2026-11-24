@@ -25,24 +25,82 @@ import ResultHeader from '../../components/ResultHeader.astro';
     <div class="wrap" style="display:grid;gap:var(--s-6)">
       <!-- summary + inputs (the page's single h1 lives in ResultHeader) -->
       <section aria-label="方案摘要">
-        <div style="display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:var(--s-3);flex-wrap:wrap">
           <p class="muted" data-k="inputs-line" style="margin:0">—</p>
-          <a class="btn btn--secondary" data-pdf-download href="#" download style="margin-left:auto">下载提案 PDF</a>
-        <script is:inline data-pdf-href-sync>
-          (() => {
-            const runId = new URLSearchParams(location.search).get('run');
-            const link = document.querySelector('[data-pdf-download]');
-            if (!link) return;
-            if (runId) link.setAttribute('href', `/proposals/${encodeURIComponent(runId)}.pdf`);
-            else link.setAttribute('hidden', '');
-          })();
-        </script>
+          <div class="doc-bar" style="margin-left:auto">
+            <a class="btn btn--primary" data-pdf-download data-doc-link="proposal" href="#" download>下载销售提案 PDF</a>
+            <a class="btn btn--secondary" data-doc-link="matched-contract" href="#" download>下载配套合同 PDF</a>
+          </div>
+          <script is:inline data-pdf-href-sync>
+            (() => {
+              const runId = new URLSearchParams(location.search).get('run');
+              const links = document.querySelectorAll('[data-doc-link]');
+              if (!runId) {
+                links.forEach((el) => el.setAttribute('hidden', ''));
+                return;
+              }
+              const enc = encodeURIComponent(runId);
+              const primary = document.querySelector('[data-pdf-download]');
+              if (primary) primary.setAttribute('href', `/proposals/${enc}.pdf`);
+              const matched = document.querySelector('[data-doc-link="matched-contract"]');
+              if (matched) matched.setAttribute('href', `/proposals/${enc}/contract-direct.pdf`);
+            })();
+          </script>
         </div>
         <div class="kpi-grid" style="margin-top:var(--s-5)">
           <div class="kpi"><span class="kpi__label">有效曝光</span><span class="kpi__value" data-k="impressions">—</span></div>
           <div class="kpi"><span class="kpi__label">Reach</span><span class="kpi__value" data-k="reach">—</span></div>
           <div class="kpi"><span class="kpi__label">Frequency</span><span class="kpi__value" data-k="frequency">—</span></div>
           <div class="kpi"><span class="kpi__label">CPM（元）</span><span class="kpi__value" data-k="cpm">—</span></div>
+        </div>
+      </section>
+
+      <!-- deliverable PDFs from official Flair Media templates -->
+      <section aria-labelledby="ov-docs-h" data-doc-panel>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4);flex-wrap:wrap">
+          <h2 id="ov-docs-h" style="margin:0">交付文件导出（新云官方模板自动填充）</h2>
+          <span class="muted" style="font-size:12.5px">直接依据历史销售提案样本与三份标准合同模板自动填入本次方案数据</span>
+        </div>
+        <div class="doc-grid">
+          <article class="doc-card doc-card--primary" data-doc-card="proposal">
+            <div class="doc-card__top">
+              <h3 class="doc-card__title">销售提案方案</h3>
+              <span class="chip chip--accent">16:9 PPT版</span>
+            </div>
+            <p class="doc-card__desc">复刻新云历史销售提案模板：黑金封面、企业与媒体介绍、策略洞察、覆盖地图、双栏线路明细、报价排期与赠媒实景。</p>
+            <div class="doc-card__meta">样本：历史销售提案样本</div>
+            <a class="btn btn--primary doc-card__btn" data-doc-link="proposal" href="#" download>下载销售提案 PDF</a>
+          </article>
+
+          <article class="doc-card" data-doc-card="contract-direct">
+            <div class="doc-card__top">
+              <h3 class="doc-card__title">直客广告发布合同</h3>
+              <span class="chip chip--quiet" data-doc-badge="contract-direct">A4 竖版</span>
+            </div>
+            <p class="doc-card__desc">按《M3-直客合同》标准版式填入全部入选线路/点位、刊例/折扣/制作费、付款节点与第 1–8 条完整法律条款。</p>
+            <div class="doc-card__meta">样本：M3-直客合同</div>
+            <a class="btn btn--secondary doc-card__btn" data-doc-link="contract-direct" href="#" download>下载直客合同 PDF</a>
+          </article>
+
+          <article class="doc-card" data-doc-card="contract-4a-order">
+            <div class="doc-card__top">
+              <h3 class="doc-card__title">4A 户外排期表（订单）</h3>
+              <span class="chip chip--quiet" data-doc-badge="contract-4a-order">A4 横版</span>
+            </div>
+            <p class="doc-card__desc">按《M3-4A订单》Proposed Outdoor Spot Plan 双语表式填入位置、档期、刊例价、折扣、净价、制作费与总价。</p>
+            <div class="doc-card__meta">样本：M3-4A订单</div>
+            <a class="btn btn--secondary doc-card__btn" data-doc-link="contract-4a-order" href="#" download>下载 4A 排期订单 PDF</a>
+          </article>
+
+          <article class="doc-card" data-doc-card="contract-4a-framework">
+            <div class="doc-card__top">
+              <h3 class="doc-card__title">4A 年度框架合同书</h3>
+              <span class="chip chip--quiet" data-doc-badge="contract-4a-framework">A4 竖版</span>
+            </div>
+            <p class="doc-card__desc">完整保留《M3-4A框架》18 条正文与附件一创意制作通用条款，自动联动合同年份、项目主体与有效期。</p>
+            <div class="doc-card__meta">样本：M3-4A框架</div>
+            <a class="btn btn--secondary doc-card__btn" data-doc-link="contract-4a-framework" href="#" download>下载 4A 框架合同 PDF</a>
+          </article>
         </div>
       </section>
 
@@ -127,10 +185,46 @@ import ResultHeader from '../../components/ResultHeader.astro';
     document.querySelector('[data-k="inputs-line"]')!.textContent =
       `${(inputs.media || []).map((m: string) => m === 'bus' ? '公交车身' : '地铁出入口').join(' + ')} · ${inputs.weeks ?? '—'} 周 · ${inputs.customer_type_label || (inputs.customer_type === '4a' ? '4A 代理' : '直客')} · 档期 ${inputs.start_date ?? '—'} → ${inputs.end_date ?? '—'}`;
 
-    const pdfLink = document.querySelector<HTMLAnchorElement>('[data-pdf-download]');
     const runId = (run as any)?.run_id;
-    if (pdfLink && runId) pdfLink.href = `/proposals/${encodeURIComponent(runId)}.pdf`;
-    else if (pdfLink) pdfLink.hidden = true;
+    const is4a = inputs.customer_type === '4a';
+    const docPanel = document.querySelector<HTMLElement>('[data-doc-panel]');
+    if (runId) {
+      const enc = encodeURIComponent(runId);
+      const urlMap: Record<string, string> = {
+        'proposal': `/proposals/${enc}.pdf`,
+        'contract-direct': `/proposals/${enc}/contract-direct.pdf`,
+        'contract-4a-order': `/proposals/${enc}/contract-4a-order.pdf`,
+        'contract-4a-framework': `/proposals/${enc}/contract-4a-framework.pdf`,
+        'matched-contract': is4a
+          ? `/proposals/${enc}/contract-4a-order.pdf`
+          : `/proposals/${enc}/contract-direct.pdf`,
+      };
+      document.querySelectorAll<HTMLAnchorElement>('[data-doc-link]').forEach((el) => {
+        const key = el.dataset.docLink || '';
+        if (urlMap[key]) {
+          el.href = urlMap[key];
+          el.hidden = false;
+        }
+      });
+      const matchedTop = document.querySelector<HTMLAnchorElement>('[data-doc-link="matched-contract"]');
+      if (matchedTop) {
+        matchedTop.textContent = is4a ? '下载 4A 排期订单 PDF' : '下载直客合同 PDF';
+      }
+      const highlightKeys = is4a ? ['contract-4a-order', 'contract-4a-framework'] : ['contract-direct'];
+      (['contract-direct', 'contract-4a-order', 'contract-4a-framework'] as const).forEach((k) => {
+        const card = document.querySelector<HTMLElement>(`[data-doc-card="${k}"]`);
+        const badge = document.querySelector<HTMLElement>(`[data-doc-badge="${k}"]`);
+        const on = highlightKeys.includes(k);
+        if (card) card.classList.toggle('doc-card--primary', on);
+        if (badge) {
+          badge.textContent = on ? '当前客户匹配' : (k === 'contract-4a-order' ? 'A4 横版' : 'A4 竖版');
+          badge.className = 'chip ' + (on ? 'chip--accent' : 'chip--quiet');
+        }
+      });
+    } else {
+      document.querySelectorAll<HTMLElement>('[data-doc-link]').forEach((el) => (el.hidden = true));
+      if (docPanel) docPanel.hidden = true;
+    }
 
     set('[data-k="impressions"]', `${fmtWan((effects.impressions || 0) / 10000, 1)} 万`);
     set('[data-k="reach"]', pctReadable(effects.reach_pct ?? effects.reach));

@@ -80,8 +80,35 @@ class Handler(BaseHTTPRequestHandler):
             self._json(core.manifest())
         elif path == "/api/agent/skills":
             self._json(core.agent_skills())
+        elif path.startswith("/proposals/") and path.endswith(".pdf"):
+            self._proposal_pdf(path)
         else:
             self._static(path)
+
+    def _proposal_pdf(self, path: str) -> None:
+        rel = unquote(path[len("/proposals/") : -len(".pdf")]).strip("/")
+        if "/" in rel:
+            run_id, doc_slug = rel.split("/", 1)
+        else:
+            run_id, doc_slug = rel, "proposal"
+        code, payload, headers = core.proposal_pdf(run_id, doc_slug)
+        if code != 200:
+            self._json(payload if isinstance(payload, dict) else {"error": {"code": "PDF_GENERATION_FAILED", "message": str(payload)}}, code, headers)
+            return
+        pdf_path = Path(payload)
+        if not pdf_path.is_file():
+            self._json({"error": {"code": "PDF_NOT_FOUND", "message": "PDF 未找到"}}, 404)
+            return
+        data = pdf_path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/pdf")
+        self.send_header("Content-Disposition", f'attachment; filename="{doc_slug}-{run_id}.pdf"')
+        self.send_header("Content-Length", str(len(data)))
+        for k, v in headers.items():
+            self.send_header(k, str(v))
+        self._cors()
+        self.end_headers()
+        self.wfile.write(data)
 
     def do_POST(self) -> None:  # noqa: N802
         path = urlparse(self.path).path

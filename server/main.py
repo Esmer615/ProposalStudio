@@ -144,10 +144,8 @@ async def api_agent_analyze(request: Request) -> JSONResponse:
     return _json(payload, code, headers)
 
 
-@app.get("/proposals/{run_id}.pdf")
-def api_proposal_pdf(run_id: str) -> Response:
-    """本地下载：模板化提案 PDF（懒生成并缓存到 data/exports/proposals）。"""
-    code, payload, headers = core.proposal_pdf(run_id)
+def _serve_pdf(run_id: str, doc_type: str, download_name: str) -> Response:
+    code, payload, headers = core.proposal_pdf(run_id, doc_type)
     if code != 200:
         return _json(payload if isinstance(payload, dict) else {"error": {"code": "PDF_GENERATION_FAILED", "message": str(payload)}}, code, headers)
     path = Path(payload)
@@ -157,8 +155,25 @@ def api_proposal_pdf(run_id: str) -> Response:
     return Response(
         content=data,
         media_type="application/pdf",
-        headers={**headers, "Content-Disposition": f'attachment; filename="proposal-{run_id}.pdf"', "Content-Length": str(len(data))},
+        headers={
+            **headers,
+            "Content-Disposition": f'attachment; filename="{download_name}"',
+            "Content-Length": str(len(data)),
+        },
     )
+
+
+@app.get("/proposals/{run_id}.pdf")
+def api_proposal_pdf(run_id: str) -> Response:
+    """本地下载：16:9 新云历史提案样本模板 PDF（懒生成并缓存）。"""
+    return _serve_pdf(run_id, "proposal", f"proposal-{run_id}.pdf")
+
+
+@app.get("/proposals/{run_id}/{doc_slug}.pdf")
+def api_proposal_document_pdf(run_id: str, doc_slug: str) -> Response:
+    """本地下载：按模板下载销售提案 / 直客合同 / 4A排期订单 / 4A框架合同 PDF。"""
+    safe_slug = doc_slug.strip().lower()
+    return _serve_pdf(run_id, safe_slug, f"{safe_slug}-{run_id}.pdf")
 
 
 # --------------------------------------------------------------------------- #

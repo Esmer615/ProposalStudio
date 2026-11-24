@@ -603,19 +603,43 @@ def proposal_events(run_id: str) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
     return 200, {"run_id": run_id, "status": result.get("status"), "events": events}, {}
 
 
-def proposal_pdf(run_id: str) -> Tuple[int, Any, Dict[str, str]]:
-    """生成本地提案 PDF（模板化 HTML → Chrome 打印），返回缓存文件路径。"""
-    try:
-        from agent.orchestration import get_run  # type: ignore
-    except Exception as exc:
-        return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+def _demo_run_payload() -> Optional[Dict[str, Any]]:
+    """当 run_id == 'demo' 时加载内置 lego-500 演示方案，便于本地演示页直接下载 4 套模板 PDF。"""
+    for candidate in (
+        ROOT / "web" / "src" / "data" / "fixtures" / "plan-lego-500.json",
+        ROOT / "web" / "public" / "data" / "fixtures" / "plan-lego-500.json",
+    ):
+        plan = _read_json(candidate)
+        if isinstance(plan, dict) and plan.get("plan"):
+            return {
+                "run_id": "demo",
+                "status": "done",
+                "inputs": {"request": plan.get("inputs") or {}},
+                "plan": plan,
+                "elasticity": plan.get("elasticity"),
+            }
+    return None
 
-    result = get_run(run_id)
+
+def proposal_pdf(run_id: str, doc_type: str = "proposal") -> Tuple[int, Any, Dict[str, str]]:
+    """生成本地模板 PDF（支持销售提案 + 3 份合同模板），返回缓存文件路径。"""
+    if run_id == "demo":
+        result = _demo_run_payload()
+    else:
+        try:
+            from agent.orchestration import get_run  # type: ignore
+        except Exception as exc:
+            return 503, {"error": {"code": "ORCHESTRATION_UNAVAILABLE", "message": f"{type(exc).__name__}: {exc}", "suggestions": [], "recoverable": True}}, {}
+        result = get_run(run_id)
+
     if result is None:
         return 404, {"error": {"code": "RUN_NOT_FOUND", "message": f"未知 run_id：{run_id}", "suggestions": [], "recoverable": False}}, {}
     try:
-        from server.proposal_pdf import generate_proposal_pdf  # type: ignore
-        path = generate_proposal_pdf(result)
+        from server.proposal_pdf import generate_document_pdf, normalize_doc_type  # type: ignore
+        key = normalize_doc_type(doc_type)
+        path = generate_document_pdf(result, key)
+    except ValueError as exc:
+        return 404, {"error": {"code": "UNKNOWN_DOC_TYPE", "message": str(exc), "suggestions": [], "recoverable": False}}, {}
     except Exception as exc:
         return 500, {"error": {"code": "PDF_GENERATION_FAILED", "message": f"{type(exc).__name__}: {exc}", "suggestions": ["确认本机 Chrome/Edge 可用后重试"], "recoverable": True}}, {}
     return 200, str(path), {"X-Data-Version": str((result.get("plan") or {}).get("meta", {}).get("data_version") or _data_version())}

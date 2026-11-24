@@ -28,7 +28,14 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
 
       <!-- quote waterfall -->
       <section aria-labelledby="eco-quote-h">
-        <h2 id="eco-quote-h" style="margin-bottom:var(--s-4)">报价瀑布</h2>
+        <div style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-4);flex-wrap:wrap">
+          <h2 id="eco-quote-h" style="margin:0">报价瀑布</h2>
+          <div class="doc-bar" style="margin-left:auto" data-eco-docs>
+            <a class="btn btn--secondary" data-eco-doc="contract-direct" href="#" download>直客合同 PDF</a>
+            <a class="btn btn--secondary" data-eco-doc="contract-4a-order" href="#" download>4A 排期订单 PDF</a>
+            <a class="btn btn--secondary" data-eco-doc="contract-4a-framework" href="#" download>4A 框架合同 PDF</a>
+          </div>
+        </div>
         <div class="gsplit">
           <div class="card">
             <div class="card-head"><span>刊例 → 总价</span><span class="chip chip--quiet mono" data-k="discount-tier-label">—</span></div>
@@ -77,10 +84,24 @@ import ScheduleCalendar from '../../components/ScheduleCalendar.astro';
   import { renderSchedule } from '../../scripts/schedule';
   import { fmtWan, fmtInt, ratioPct } from '../../lib/format';
 
-  initResult((plan) => {
+  initResult((plan, run) => {
     const q = plan.quote || {};
     const summary = plan.plan?.summary || {};
     const sched = plan.schedule || {};
+    const runId = (run as any)?.run_id;
+    const is4a = (plan.inputs || {}).customer_type === '4a';
+    const ecoDocs = document.querySelector<HTMLElement>('[data-eco-docs]');
+    if (runId) {
+      const enc = encodeURIComponent(runId);
+      document.querySelectorAll<HTMLAnchorElement>('[data-eco-doc]').forEach((a) => {
+        const slug = a.dataset.ecoDoc || '';
+        a.href = `/proposals/${enc}/${slug}.pdf`;
+        const primary = is4a ? (slug === 'contract-4a-order') : (slug === 'contract-direct');
+        a.className = 'btn ' + (primary ? 'btn--primary' : 'btn--secondary');
+      });
+    } else if (ecoDocs) {
+      ecoDocs.hidden = true;
+    }
 
     // waterfall
     const wf = document.querySelector('[data-k="waterfall"]')!;

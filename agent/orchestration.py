@@ -729,11 +729,11 @@ def execute_run(run_id: str, payload: Dict[str, Any], data_runtime: Optional[Dat
             "warnings": [],
             "error": {"code": "RUNNER_ERROR", "message": redact(exc)},
         }
-    # 每次 run 完成即生成本地 PDF；用户点击下载时直接拿 PDF，无需等待/兜底。
+    # 每次 run 完成即生成本地交付 PDF（销售提案 + 对应客户类型合同）；其余模板点击时按需懒生成。
     if isinstance(result, dict) and result.get("plan"):
         try:
-            from server.proposal_pdf import generate_proposal_pdf
-            generate_proposal_pdf(result)
+            from server.proposal_pdf import generate_run_pdfs
+            generate_run_pdfs(result)
         except Exception as exc:
             result.setdefault("warnings", []).append(f"PDF 生成失败：{redact(exc)}")
     with _RUNS_LOCK:
