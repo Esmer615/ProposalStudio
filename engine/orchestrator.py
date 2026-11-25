@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from . import config
 from . import __version__
-from .models import PlanError, PlanRequest
+from .models import PlanError, PlanRequest, STRATEGY_MODES
 from .skill_loader import build_skill, Skill
 from .finance import load_rate_card, RateCard, unit_price, production_price, discount_for_gross, quote as finance_quote
 from .data_loader import load_inventory, Inventory
@@ -81,7 +81,8 @@ def _solution_gross(res, bus_items, metro_items, months) -> float:
     return gross
 
 
-def _discount_iteration(bus_items, metro_items, budget_wan, months, customer_type, locks, rc, skill):
+def _discount_iteration(bus_items, metro_items, budget_wan, months, customer_type, locks, rc, skill,
+                        strategy_mode: str = "balanced"):
     """折扣不动点：start 88% → solve（预算约束内用 discount）→ 反推 gross → 落档
     → 档位变化则重解（<=5 轮）。
 
@@ -107,6 +108,7 @@ def _discount_iteration(bus_items, metro_items, budget_wan, months, customer_typ
             customer_type, locks,
             skill.bus_mix_bounds(), skill.metro_mix_bounds(),
             prod_bus=rc.production_bus, prod_metro=rc.production_metro,
+            strategy_mode=strategy_mode,
         )
         if res["status"] == "INFEASIBLE":
             return res, discount, False
@@ -129,11 +131,29 @@ def _discount_iteration(bus_items, metro_items, budget_wan, months, customer_typ
     return last_res, discount, False
 
 
-def generate_plan(request: Any, include_elasticity: bool = False) -> Dict[str, Any]:
+def _bigdata_fingerprint(bigdata_context: Optional[Dict[str, Any]]) -> str:
+    if not isinstance(bigdata_context, dict):
+        return ""
+    cov = bigdata_context.get("coverage") if isinstance(bigdata_context.get("coverage"), dict) else bigdata_context
+    bl = sorted(str(x) for x in (cov.get("bus_lines") or []))[:20]
+    ms = sorted(str(x) for x in (cov.get("metro_stations") or []))[:10]
+    if not bl and not ms:
+        return ""
+    raw = "|".join(bl) + "::" + "|".join(ms)
+    return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:8]
+
+
+def generate_plan(
+    request: Any,
+    include_elasticity: bool = False,
+    *,
+    bigdata_context: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     """唯一编排入口。
 
     include_elasticity=False（默认）只解当前预算，保证滑杆/现场改输入响应；
     九档弹性通过 generate_elasticity() / POST /api/elasticity 按需计算并缓存。
+    bigdata_context（可选）传入新云大数据周边实测覆盖线路/POI，参与空间亲和度加权。
     """
     t0 = time.time()
 
@@ -142,12 +162,13 @@ def generate_plan(request: Any, include_elasticity: bool = False) -> Dict[str, A
     else:
         req = request
 
-    skill = build_skill(req.venue)
+    skill = build_skill(req.venue, custom_venue=req.custom_venue, industry=req.industry)
     rc = load_rate_card()
     inv = load_inventory(req)
 
     data_version = inv.data_version
-    ckey = _cache_key(req, data_version)
+    bd_fp = _bigdata_fingerprint(bigdata_context)
+    ckey = f"{_cache_key(req, data_version)}:{bd_fp}" if bd_fp else _cache_key(req, data_version)
     cached = _cache_get(ckey)
     if cached is not None:
         out = dict(cached)
@@ -161,8 +182,8 @@ def generate_plan(request: Any, include_elasticity: bool = False) -> Dict[str, A
     # 富化候选（按请求 media 过滤：单媒体时另一媒体置空）
     use_bus = "bus" in req.media
     use_metro = "metro" in req.media
-    enriched_bus = enrich(inv.bus, skill, rc) if use_bus else []
-    enriched_metro = enrich(inv.metro, skill, rc) if use_metro else []
+    enriched_bus = enrich(inv.bus, skill, rc, bigdata_context=bigdata_context) if use_bus else []
+    enriched_metro = enrich(inv.metro, skill, rc, bigdata_context=bigdata_context) if use_metro else []
     bus_items = prefilter(enriched_bus, "bus") if use_bus else []
     metro_items = prefilter(enriched_metro, "metro") if use_metro else []
 
@@ -171,9 +192,9 @@ def generate_plan(request: Any, include_elasticity: bool = False) -> Dict[str, A
     _attach_alternatives(metro_items)
 
     # 折扣不动点 + 求解
-    solve_t0 = time.time()
     res, discount, discount_converged = _discount_iteration(
         bus_items, metro_items, req.budget_wan, req.months, req.customer_type, req.locks, rc, skill,
+        strategy_mode=req.strategy_mode,
     )
     solve_ms = res.get("solve_ms", 0)
 
@@ -266,6 +287,8 @@ def generate_plan(request: Any, include_elasticity: bool = False) -> Dict[str, A
         "inventory_ts": inv.inventory_ts,
         "inventory_periods": inv.inventory_periods,
         "solver": res.get("solver", "CP-SAT"),
+        "strategy_mode": req.strategy_mode,
+        "strategy_title": (STRATEGY_MODES.get(req.strategy_mode) or {}).get("title", "均衡首选方案"),
         "fallback_chain": res.get("fallback_chain", []),
         "status": res.get("status", "FEASIBLE"),
         "cache_hit": False,
@@ -299,23 +322,76 @@ def generate_plan(request: Any, include_elasticity: bool = False) -> Dict[str, A
 # --------------------------------------------------------------------------- #
 # 组装辅助
 # --------------------------------------------------------------------------- #
-def generate_elasticity(request: Any) -> Dict[str, Any]:
+def generate_elasticity(request: Any, *, bigdata_context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """按需计算九档弹性（同一引擎，按场馆/媒体/档期缓存）。"""
     req = PlanRequest.from_dict(request) if isinstance(request, dict) else request
-    skill = build_skill(req.venue)
+    skill = build_skill(req.venue, custom_venue=req.custom_venue, industry=req.industry)
     rc = load_rate_card()
     inv = load_inventory(req)
-    key = _elasticity_key(req, inv.data_version)
+    key = _elasticity_key(req, inv.data_version) + (":" + str((req.custom_venue or {}).get("name") or "") if req.custom_venue else "")
     cached = _ELASTICITY_CACHE.get(key)
     if cached is not None:
         return cached
-    enriched_bus = enrich(inv.bus, skill, rc) if "bus" in req.media else []
-    enriched_metro = enrich(inv.metro, skill, rc) if "metro" in req.media else []
+    enriched_bus = enrich(inv.bus, skill, rc, bigdata_context=bigdata_context) if "bus" in req.media else []
+    enriched_metro = enrich(inv.metro, skill, rc, bigdata_context=bigdata_context) if "metro" in req.media else []
     bus_items = prefilter(enriched_bus, "bus") if "bus" in req.media else []
     metro_items = prefilter(enriched_metro, "metro") if "metro" in req.media else []
     el = _build_elasticity(req, skill, rc, bus_items, metro_items)
     _ELASTICITY_CACHE[key] = el
     return el
+
+
+def generate_plan_variants(
+    request: Any,
+    *,
+    bigdata_context: Optional[Dict[str, Any]] = None,
+    modes: Tuple[str, ...] = ("balanced", "max_reach", "precision"),
+) -> Dict[str, Any]:
+    """同一请求下生成 3 套差异化确定性方案（均衡首选 / 全域广度 / 地标聚焦）。"""
+    base_dict = dict(request) if isinstance(request, dict) else request.to_dict()
+    plans: Dict[str, Dict[str, Any]] = {}
+    comparison: List[Dict[str, Any]] = []
+    for mode in modes:
+        sub_req = dict(base_dict)
+        sub_req["strategy_mode"] = mode
+        p = generate_plan(sub_req, include_elasticity=False, bigdata_context=bigdata_context)
+        plans[mode] = p
+        eff = p.get("effects") or {}
+        q = p.get("quote") or {}
+        s = (p.get("plan") or {}).get("summary") or {}
+        info = STRATEGY_MODES.get(mode) or {"title": mode, "short": mode, "tagline": ""}
+        cov_hits = sum(
+            1 for it in ((p.get("plan") or {}).get("bus") or []) + ((p.get("plan") or {}).get("metro") or [])
+            if it.get("xinyun_matched")
+        )
+        comparison.append({
+            "mode": mode,
+            "title": info["title"],
+            "short": info["short"],
+            "tagline": info["tagline"],
+            "is_default": mode == "balanced",
+            "impressions": eff.get("impressions", 0),
+            "reach": eff.get("reach", 0.0),
+            "reach_pct": eff.get("reach_pct", 0.0),
+            "frequency": eff.get("frequency", 0.0),
+            "cpm_yuan": eff.get("cpm_yuan", 0.0),
+            "total_paid_wan": q.get("total_paid_wan", 0.0),
+            "budget_utilization": s.get("budget_utilization", 0.0),
+            "bus_lines": s.get("bus_lines", 0),
+            "bus_units": s.get("bus_units", 0),
+            "metro_stations": s.get("metro_stations", 0),
+            "metro_units": s.get("metro_units", 0),
+            "bus_pct": (s.get("media_mix") or {}).get("bus_pct", 0.0),
+            "metro_pct": (s.get("media_mix") or {}).get("metro_pct", 0.0),
+            "districts_count": len(s.get("district_mix") or {}),
+            "xinyun_matched_count": cov_hits,
+            "passed": bool((p.get("validation") or {}).get("passed", True)),
+        })
+    return {
+        "default_mode": "balanced" if "balanced" in plans else next(iter(plans.keys())),
+        "plans": plans,
+        "comparison": comparison,
+    }
 
 
 def _attach_alternatives(items: List[Dict[str, Any]]) -> None:
@@ -375,6 +451,9 @@ def _materialize_item(cand, units, months, discount, agency_factor, req, rc=None
         "geo": cand["geo"],
         "poi_hits": cand.get("poi_hits", []),
         "poi_count": cand.get("poi_count", 0),
+        "distance_km": cand.get("distance_km"),
+        "xinyun_matched": bool(cand.get("xinyun_matched")),
+        "xinyun_distance_m": cand.get("xinyun_distance_m"),
         "hypothesis_refs": ["H4", "H6"] + (["H7"] if cand["kind"] == "metro" else []),
         "locked": cand["id"] in req.locks.get("include", []),
         "status": "paid",
@@ -617,4 +696,4 @@ def reload_data() -> None:
     _ELASTICITY_CACHE.clear()
 
 
-__all__ = ["generate_plan", "generate_elasticity", "reload_data"]
+__all__ = ["generate_plan", "generate_plan_variants", "generate_elasticity", "reload_data"]

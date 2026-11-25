@@ -4,7 +4,7 @@ import StaticMap from '../components/StaticMap.astro';
 ---
 <Base
   title="方案工作台 · 新云媒介提案台"
-  description="配置场馆、预算、媒介、档期与客户类型，Agent 实时拉取红豆与新云数据并运行确定性引擎。"
+  description="输入任意上海公司/品牌/地标，与 Agent 交互确认投放细节，实时拉取红豆库存与新云大数据并生成三套差异化方案。"
   active="input"
 >
 <main id="top">
@@ -13,41 +13,76 @@ import StaticMap from '../components/StaticMap.astro';
       <header class="input-header">
         <div>
           <h1 id="page-h">投放方案生成工作台</h1>
-          <p>配置目标场馆、预算与档期（可补充一句话 brief），启动 Agent 实时取数并由 CP-SAT 引擎求解。</p>
+          <p>支持输入任意上海公司、品牌或地标；可通过下方 Agent 对话细化需求，系统自动拉取红豆库存与新云大数据并一次生成三套策略方案。</p>
         </div>
         <span class="chip chip--quiet mono" data-out="intro-fact">正在连接本地引擎…</span>
       </header>
 
       <div class="input-split">
-        <!-- 左栏：配置表单 + Agent 日志 + 8 阶段进度 -->
+        <!-- 左栏：配置表单 + 交互式 Agent 顾问 + 8 阶段管线 -->
         <div class="input-split__main">
           <div class="card">
             <div class="card-head">
-              <span>需求配置</span>
-              <span class="chip chip--accent mono">确定性求解</span>
+              <span>投放需求与目标定位</span>
+              <span class="chip chip--accent mono">一次输出 3 套策略</span>
             </div>
             <div class="card-body">
               <div id="plan-form" class="form" style="grid-template-columns:1fr 1fr">
+                <!-- 自由输入任意上海公司/品牌/地标 + 快捷示例筹码 -->
                 <div class="field field--full">
-                  <label for="f-venue">目标场馆</label>
-                  <select id="f-venue" name="venue"></select>
-                  <div class="venue-search" role="search" aria-label="自定义地点查询">
-                    <input id="f-venue-query" type="search" autocomplete="off" placeholder="或输入上海任意地标检索，如：上海天文馆" />
+                  <label for="f-venue-query">
+                    <span>目标公司 / 品牌 / 上海地标（支持自由指定）</span>
+                    <span class="chip chip--quiet mono" id="selected-loc-badge">上海乐高乐园 · 金山区</span>
+                  </label>
+                  <div class="venue-search" role="search" aria-label="输入上海任意公司、品牌或地标">
+                    <input id="f-venue-query" type="search" autocomplete="off" placeholder="输入任意上海公司/地标，如：陆家嘴中国平安、静安寺、张江科学城…" value="上海乐高乐园" />
                     <button type="button" class="btn btn--secondary" id="btn-venue-search">定位</button>
                   </div>
+                  <div class="loc-presets" id="loc-presets" aria-label="快捷上海地点预设">
+                    <button type="button" class="preset-pill is-active" data-loc-preset="lego_shanghai">上海乐高乐园</button>
+                    <button type="button" class="preset-pill" data-loc-preset="disney_shanghai">上海迪士尼</button>
+                    <button type="button" class="preset-pill" data-loc-preset="haichang_shanghai">上海海昌</button>
+                    <button type="button" class="preset-pill" data-loc-preset="custom_pingan">陆家嘴·中国平安</button>
+                    <button type="button" class="preset-pill" data-loc-preset="custom_jingan">静安寺商圈</button>
+                    <button type="button" class="preset-pill" data-loc-preset="custom_xujiahui">徐家汇港汇</button>
+                    <button type="button" class="preset-pill" data-loc-preset="custom_peoplesq">人民广场</button>
+                  </div>
+                  <select id="f-venue" name="venue" hidden></select>
                   <span class="faint t-xs" id="venue-search-note" hidden></span>
+                </div>
+
+                <div class="field">
+                  <label for="f-industry">所属行业（自动匹配 POI 与合规）</label>
+                  <select id="f-industry" name="industry">
+                    <option value="乐园" selected>乐园 / 文旅目的地</option>
+                    <option value="银行保险">银行保险 / 金融</option>
+                    <option value="食品饮料">食品饮料 / 快消</option>
+                    <option value="保健品">保健品 / 大健康</option>
+                    <option value="私立医院">私立医院 / 医疗</option>
+                    <option value="其他">其他商业品牌</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="f-strategy">默认主推策略（同时生成三套）</label>
+                  <select id="f-strategy" name="strategy_mode">
+                    <option value="balanced" selected>均衡首选（推荐）</option>
+                    <option value="max_reach">全域广度 · 低 CPM</option>
+                    <option value="precision">核心地标高浓聚焦</option>
+                  </select>
                 </div>
 
                 <div class="field field--full">
                   <label for="f-budget">
                     <span>投放预算（万元）</span>
-                    <span class="mono gold" style="font-size:20px;font-weight:600"><span id="budget-val">500</span> <small style="font-size:12px;color:var(--muted);font-weight:400">万</small></span>
+                    <span class="mono gold" style="font-size:20px;font-weight:600"><span id="budget-val">300</span> <small style="font-size:12px;color:var(--muted);font-weight:400">万</small></span>
                   </label>
-                  <input type="range" id="f-budget" name="budget_wan" min="100" max="500" step="10" value="500" />
+                  <input type="range" id="f-budget" name="budget_wan" min="100" max="500" step="10" value="300" />
                   <div class="preset-row" aria-label="常用预算档位">
                     <button type="button" class="preset-pill" data-budget-preset="100">100 万</button>
                     <button type="button" class="preset-pill" data-budget-preset="200">200 万</button>
-                    <button type="button" class="preset-pill is-active" data-budget-preset="500">500 万</button>
+                    <button type="button" class="preset-pill is-active" data-budget-preset="300">300 万</button>
+                    <button type="button" class="preset-pill" data-budget-preset="500">500 万</button>
                   </div>
                 </div>
 
@@ -99,11 +134,11 @@ import StaticMap from '../components/StaticMap.astro';
                 </details>
 
                 <div class="field field--full">
-                  <label for="f-brief">一句话 Brief 补充（可选）</label>
-                  <textarea id="f-brief" name="brief_text" rows="2" placeholder="例：乐高 2027 暑期，500 万，公交地铁组合覆盖亲子家庭，走直客"></textarea>
+                  <label for="f-brief">补充投放说明 / Brief（自动与下方 Agent 同步）</label>
+                  <textarea id="f-brief" name="brief_text" rows="2" placeholder="例：我们是陆家嘴中国平安，预算 300 万投 8 周，覆盖白领与中产社区，直客签约"></textarea>
                   <div class="input-submit">
                     <button type="button" class="btn btn--primary btn--lg" id="btn-generate" style="flex:1">
-                      启动 Agent 生成方案
+                      启动 Agent 生成三套方案
                       <svg class="ico-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                         <path d="M4.5 10H15.5M15.5 10L11 5.5M15.5 10L11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -117,25 +152,38 @@ import StaticMap from '../components/StaticMap.astro';
             </div>
           </div>
 
-          <!-- Agent 实时通信与 8 阶段管线 -->
+          <!-- 交互式 Agent 顾问 + 8 阶段管线 -->
           <div class="card pipeline-card">
-            <div class="stage-live" data-out="stage-live">等待启动</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+              <div class="stage-live" data-out="stage-live" style="margin-bottom:0">Agent 顾问在线 · 可先对话确认细节</div>
+              <span class="chip chip--accent mono">AI 需求沟通</span>
+            </div>
             <div class="stages input-stages" id="run-stages" aria-label="运行阶段">
               <div class="stage" data-stage="intake" data-state="pending"><b>解析</b></div>
               <div class="stage" data-stage="data_inventory" data-state="pending"><b>红豆</b></div>
               <div class="stage" data-stage="data_bigdata" data-state="pending"><b>新云</b></div>
-              <div class="stage" data-stage="engine" data-state="pending"><b>求解</b></div>
-              <div class="stage" data-stage="data_routes" data-state="pending"><b>线路</b></div>
-              <div class="stage" data-stage="visualize" data-state="pending"><b>地图</b></div>
+              <div class="stage" data-stage="engine" data-state="pending"><b>三方案</b></div>
+              <div class="stage" data-stage="data_routes" data-state="pending"><b>轨迹画像</b></div>
+              <div class="stage" data-stage="visualize" data-state="pending"><b>热力图</b></div>
               <div class="stage" data-stage="narrative" data-state="pending"><b>话术</b></div>
               <div class="stage" data-stage="done" data-state="pending"><b>完成</b></div>
             </div>
 
             <div class="dialog" id="agent-dialog" role="log" aria-live="polite" aria-label="Agent 交流" style="margin-top:16px">
               <div class="msg msg--agent">
-                <div class="msg__head">AGENT · READY</div>
-                确认左侧参数后点击「启动 Agent 生成方案」；系统将自动拉取实时红豆库存、注入新云线路轨迹并输出四页交互方案与官方 PDF。
+                <div class="msg__head">FLAIR AGENT · 媒介策略顾问</div>
+                您好！请直接告诉我您的公司/品牌名称、所在上海区域、行业与预算目标，我会自动定位地图、追问关键投放细节并同步左侧参数；确认后一键生成「均衡首选 / 全域广度 / 地标聚焦」三套方案。
+                <div class="agent-chips" style="margin-top:8px">
+                  <button type="button" class="q-chip" data-consult-quick="我们是陆家嘴中国平安，银行保险行业，预算300万投8周，优先核心地标聚焦">试试：陆家嘴中国平安 · 300万</button>
+                  <button type="button" class="q-chip" data-consult-quick="我们在静安寺商圈做饮用水快消推广，预算200万，想要全域广度最低CPM">试试：静安寺快消 · 200万</button>
+                  <button type="button" class="q-chip" data-consult-quick="上海乐高乐园暑期500万，公交加地铁组合，直客签约">试试：乐高乐园暑期 · 500万</button>
+                </div>
               </div>
+            </div>
+
+            <div class="agent-composer">
+              <input id="agent-chat-input" type="text" autocomplete="off" placeholder="跟 Agent 聊需求，如：我们是张江科学城的一家口腔医院，预算250万，4A代理…" />
+              <button type="button" class="btn btn--secondary" id="btn-agent-send">发送</button>
             </div>
           </div>
         </div>
@@ -144,18 +192,18 @@ import StaticMap from '../components/StaticMap.astro';
         <div class="grail input-split__rail">
           <div class="card">
             <div class="card-head">
-              <span>上海场馆与覆盖圈层预览</span>
+              <span data-out="map-card-title">目标定位与辐射圈预览</span>
               <span class="chip chip--quiet mono" data-out="map-status">加载中</span>
             </div>
-            <div class="map-frame" id="input-map" data-default-venue="lego_shanghai" data-mode="fallback" style="border:0;border-radius:0;min-height:580px">
+            <div class="map-frame" id="input-map" data-default-venue="lego_shanghai" data-mode="fallback" style="border:0;border-radius:0;min-height:600px">
               <div id="amap"></div>
               <div class="map-fallback">
                 <StaticMap showPois labels />
               </div>
               <div class="map-note" data-map-note>暗色矢量图层预览</div>
               <div class="map-legend">
-                <span><i class="ring"></i>场馆辐射圈</span>
-                <span><i class="accent"></i>入选点位</span>
+                <span><i class="ring"></i>目标辐射圈</span>
+                <span><i class="accent"></i>已选定位点</span>
                 <span><i></i>地铁出入口</span>
               </div>
             </div>
@@ -172,7 +220,7 @@ import StaticMap from '../components/StaticMap.astro';
                 <div><span>已覆盖档期</span><b data-out="inventory-months" class="mono">—</b></div>
                 <div><span>新云大数据会话</span><b data-out="xinyun-status">—</b></div>
               </div>
-              <p class="faint t-xs" style="margin-top:10px" data-out="xinyun-note">新云 2023-05 轨迹与 POI 补充需本机人工登录一次，未登录时自动降级不阻塞求解。</p>
+              <p class="faint t-xs" style="margin-top:10px" data-out="xinyun-note">新云 2023-05 周边覆盖、AI 线路轨迹与人群画像已接入工作流；会话有效时自动抓取并支持点击点位查看明细。</p>
             </div>
           </div>
         </div>
@@ -196,7 +244,7 @@ import StaticMap from '../components/StaticMap.astro';
   presets.forEach((b) => {
     b.addEventListener('click', () => {
       if (!budgetInput) return;
-      budgetInput.value = b.dataset.budgetPreset || '500';
+      budgetInput.value = b.dataset.budgetPreset || '300';
       if (budgetVal) budgetVal.textContent = budgetInput.value;
       budgetInput.dispatchEvent(new Event('input', { bubbles: true }));
       budgetInput.dispatchEvent(new Event('change', { bubbles: true }));

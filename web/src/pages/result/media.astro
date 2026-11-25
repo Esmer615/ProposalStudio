@@ -2,18 +2,14 @@
 import Base from '../../layouts/Base.astro';
 import ResultHeader from '../../components/ResultHeader.astro';
 import StaticMap from '../../components/StaticMap.astro';
-
-// Media: full-screen AMap (venue/rings/selected metro/POI/district; bus is district/schematics),
-// layer + level filters, bus+metro paginated table, click drawer, POI hits & district mix,
-// xinyun coverage as a "platform supplement" layer when present.
 ---
 <Base
-  title="媒体点位 · 新云媒介提案台"
-  description="入选公交线路与地铁出入口、图层与等级筛选、选点抽屉、POI 命中与区县配比。"
+  title="媒体与地图 · 新云媒介提案台"
+  description="入选公交线路与地铁出入口、全功能图层与等级筛选、方案人流密度热力图、新云大数据实测抽屉。"
   active=""
 >
 <main id="top" class="page">
-  <ResultHeader active="media" title="媒体点位" />
+  <ResultHeader active="media" title="媒体与地图" />
 
   <div data-result-empty hidden class="empty section">
     <div class="wrap">
@@ -26,34 +22,37 @@ import StaticMap from '../../components/StaticMap.astro';
   <div data-result-content class="app-section" hidden>
     <div class="wrap" style="display:grid;gap:var(--s-6)">
 
-      <!-- map + filter rail -->
-      <div class="gsplit" style="grid-template-columns:minmax(0,1fr) 310px">
-        <div class="map-frame" id="media-map" data-mode="fallback" style="min-height:620px">
+      <!-- 地图 + 全联动图层与条件筛选面板 -->
+      <div class="gsplit" style="grid-template-columns:minmax(0,1fr) 320px">
+        <div class="map-frame" id="media-map" data-mode="fallback" style="min-height:640px">
           <div id="amap"></div>
           <div class="map-fallback"><StaticMap showPois labels /></div>
           <div class="map-note" data-map-note>暗色矢量图层预览</div>
           <div class="map-legend">
-            <span><i class="ring"></i>场馆辐射圈</span>
-            <span><i class="accent"></i>入选点位</span>
-            <span><i></i>地铁出入口</span>
+            <span><i class="ring"></i>目标辐射圈</span>
+            <span><i class="accent"></i>入选站点 / 热力中心</span>
             <span data-k="routes-legend-bus"><i class="route"></i>公交线路 · 2023-05</span>
-            <span data-k="routes-legend-metro" hidden><i class="route route--metro"></i>地铁线路 · 2023-05</span>
+            <span data-k="routes-legend-metro"><i class="route route--metro"></i>地铁线路 · 2023-05</span>
           </div>
         </div>
 
         <aside class="card" style="align-self:start">
-          <div class="card-head"><span>图层与筛选</span></div>
+          <div class="card-head">
+            <span>图层与条件筛选</span>
+            <span class="chip chip--accent mono" data-k="map-filter-badge">联动生效</span>
+          </div>
           <div class="card-body" style="display:grid;gap:18px">
             <div style="display:grid;gap:10px">
-              <label class="check-label"><input type="checkbox" data-layer="metro" checked /> 地铁出入口</label>
+              <label class="check-label"><input type="checkbox" data-layer="heatmap" checked /> 人流密度热力图（方案权重）</label>
               <label class="check-label"><input type="checkbox" data-layer="routes" checked /> 方案线路（公交/地铁 · 2023-05）</label>
-              <label class="check-label"><input type="checkbox" data-layer="poi" checked /> POI 命中</label>
-              <label class="check-label"><input type="checkbox" data-layer="districts" checked /> 区县边界</label>
-              <label class="check-label"><input type="checkbox" data-layer="coverage" data-layer-xinyun disabled /> 平台补充（新云）</label>
-              <p class="faint t-xs" data-k="routes-help">新云 AI线路 · 2023-05 · 近似轨迹（仅可视化；缺失按区县示意）</p>
+              <label class="check-label"><input type="checkbox" data-layer="metro" checked /> 地铁出入口点位</label>
+              <label class="check-label"><input type="checkbox" data-layer="poi" checked /> POI 命中（含新云周边实测）</label>
+              <label class="check-label"><input type="checkbox" data-layer="districts" checked /> 上海区县边界</label>
+              <p class="faint t-xs" data-k="routes-help">点击地图任意线路、地铁站、POI 或下方点位行可展开新云大数据实测抽屉。</p>
             </div>
+
             <div class="field">
-              <span class="field__lbl">等级筛选</span>
+              <span class="field__lbl">等级筛选（同步过滤地图与明细表）</span>
               <div class="seg" id="level-filter" role="group" aria-label="等级筛选">
                 <button type="button" data-level="all" aria-pressed="true">全部</button>
                 <button type="button" data-level="S" aria-pressed="false">S</button>
@@ -61,22 +60,53 @@ import StaticMap from '../../components/StaticMap.astro';
                 <button type="button" data-level="A+" aria-pressed="false">A+</button>
               </div>
             </div>
+
             <div class="field">
-              <span class="field__lbl">媒介筛选</span>
+              <span class="field__lbl">媒介筛选（同步过滤地图与明细表）</span>
               <div class="seg" id="media-filter" role="group" aria-label="媒介筛选">
                 <button type="button" data-media="all" aria-pressed="true">全部</button>
                 <button type="button" data-media="bus" aria-pressed="false">公交</button>
                 <button type="button" data-media="metro" aria-pressed="false">地铁</button>
               </div>
             </div>
+
+            <div class="kv" style="padding-top:10px;border-top:1px solid var(--line)">
+              <div><span>当前地图命中点位</span><b class="mono" data-k="filter-count">—</b></div>
+              <div><span>方案总人流密度源</span><b class="mono" data-k="heat-source">模型+实测</b></div>
+            </div>
           </div>
         </aside>
       </div>
 
-      <!-- POI hits + district mix -->
+      <!-- 新云大数据实测：时段人流密度 + 周边实测覆盖（可点击查看详情） -->
+      <div class="gsplit" data-k="bigdata-strip">
+        <div class="card">
+          <div class="card-head">
+            <span>方案时段人流密度（新云 2023-05 实测）</span>
+            <span class="chip chip--accent mono" data-k="flow-pv-chip">—</span>
+          </div>
+          <div class="card-body" data-k="flow-bars-wrap">
+            <div class="bar-list" data-k="flow-bars"></div>
+            <p class="faint t-xs" style="margin-top:10px" data-k="flow-note">基于入选线路在新云大数据平台的 2023-05 时段客流实测聚合。</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span>目标周边新云实测覆盖（1.5km）</span>
+            <span class="chip chip--quiet mono" data-k="cov-summary-chip">—</span>
+          </div>
+          <div class="card-body" style="display:grid;gap:12px;max-height:280px;overflow-y:auto">
+            <div class="poi-chips" data-k="cov-chips"></div>
+            <p class="faint t-xs" data-k="cov-note">点击任意实测 POI / 周边线路筹码可查看新云抓取的完整距离与坐标信息。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- POI 命中 + 区县配比 -->
       <div class="gsplit">
         <div class="card">
-          <div class="card-head"><span>POI 命中</span><span class="chip chip--accent mono" data-k="poi-n">0</span></div>
+          <div class="card-head"><span>POI 命中（点击查看坐标与来源）</span><span class="chip chip--accent mono" data-k="poi-n">0</span></div>
           <div class="card-body" style="padding:8px 20px;max-height:320px;overflow-y:auto">
             <div class="rows" data-k="poi-hits"></div>
           </div>
@@ -89,15 +119,15 @@ import StaticMap from '../../components/StaticMap.astro';
         </div>
       </div>
 
-      <!-- point table -->
+      <!-- 入选点位明细表 -->
       <section aria-labelledby="media-table-h">
-        <h2 id="media-table-h" class="heading-5" style="margin-bottom:var(--s-4)">入选点位明细（点击名称查看证据抽屉）</h2>
+        <h2 id="media-table-h" class="heading-5" style="margin-bottom:var(--s-4)">入选点位明细（点击名称查看定价证据与新云大数据画像）</h2>
         <div class="table-shell">
           <div class="table-scroll">
             <table class="data" id="media-table">
               <thead>
                 <tr>
-                  <th>媒介</th><th>名称</th><th>等级</th><th>区县</th><th class="num">可售</th><th class="num">折后(万)</th>
+                  <th>媒介</th><th>名称</th><th>等级</th><th>区县</th><th class="num">可售</th><th class="num">实测/标签</th><th class="num">折后总价(万)</th>
                 </tr>
               </thead>
               <tbody data-k="rows"></tbody>
@@ -115,33 +145,78 @@ import StaticMap from '../../components/StaticMap.astro';
       </section>
     </div>
   </div>
+</main>
 
-  <!-- drawer -->
+  <!-- 玻璃态滑出详情抽屉（置于 main 之外以确保层级高于悬浮导航栏） -->
   <div class="drawer__scrim" id="drawer-scrim" data-open="false" aria-hidden="true"></div>
-  <aside class="drawer" id="drawer" data-open="false" role="dialog" aria-modal="true" aria-label="点位详情">
+  <aside class="drawer" id="drawer" data-open="false" role="dialog" aria-modal="true" aria-label="点位与新云数据详情">
     <div class="drawer__head">
       <h3 id="drawer-title">—</h3>
       <button type="button" class="btn btn--ghost" id="drawer-close" aria-label="关闭">关闭</button>
     </div>
     <div class="drawer__body" id="drawer-body"></div>
   </aside>
-</main>
 </Base>
 <script>
   import { initResult } from '../../scripts/result';
   import { loadAmap, loadMapData, fitMarkers, wgsToGcj } from '../../scripts/amap';
-  import { fmtWan, shortName } from '../../lib/format';
+  import { fmtWan, fmtInt, shortName } from '../../lib/format';
+
+  // Exact SVG projection constants matching StaticMap.astro
+  const SVG_W = 1000;
+  const SVG_H = 760;
+  const SVG_BBOX = { minLng: 120.85, maxLng: 122.25, minLat: 30.68, maxLat: 31.88 };
+  const SVG_MID_LAT = (SVG_BBOX.minLat + SVG_BBOX.maxLat) / 2;
+  const SVG_KM_PER_LNG = 111 * Math.cos((SVG_MID_LAT * Math.PI) / 180);
+  const SVG_XKM_MAX = (SVG_BBOX.maxLng - SVG_BBOX.minLng) * SVG_KM_PER_LNG;
+  const SVG_YKM_MAX = (SVG_BBOX.maxLat - SVG_BBOX.minLat) * 111;
+  const SVG_SCALE = Math.min(SVG_W / SVG_XKM_MAX, SVG_H / SVG_YKM_MAX) * 0.94;
+  function projectSvg(lng: number, lat: number): [number, number] {
+    const x = ((lng - SVG_BBOX.minLng) * SVG_KM_PER_LNG - SVG_XKM_MAX / 2) * SVG_SCALE + SVG_W / 2;
+    const y = ((SVG_BBOX.maxLat - lat) * 111 - SVG_YKM_MAX / 2) * SVG_SCALE + SVG_H / 2;
+    return [x, y];
+  }
 
   let PLAN: any = null;
+  let RUN: any = null;
   let ITEMS: any[] = [];
+  let ITEM_BY_ID: Record<string, any> = {};
   let page = 0;
   const PAGE = 20;
   let level = 'all';
   let media = 'all';
   let amapKit: any = null;
-  let ROUTE_OVERLAYS: any[] = [];
+
+  // Tracked live AMap overlay groups so EVERY checkbox & level/media filter truly filters the map!
+  interface TrackedOverlay {
+    overlay: any;
+    layer: 'metro' | 'routes' | 'poi' | 'districts' | 'heatmap';
+    media?: 'bus' | 'metro';
+    levels?: string[];
+  }
+  let TRACKED: TrackedOverlay[] = [];
+  let AMAP_HEAT: any = null;
+  let HEAT_POINTS: { lng: number; lat: number; count: number; media?: string; levels?: string[] }[] = [];
 
   const $$ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s);
+  const chkState = (layer: string) => {
+    const el = document.querySelector<HTMLInputElement>(`[data-layer="${layer}"]`);
+    return el ? el.checked : true;
+  };
+
+  function normLine(s: any): string {
+    return String(s || '').replace(/路$/g, '').trim();
+  }
+
+  function findPortraitForLine(lineName: any): any {
+    const perLine = RUN?.data?.portrait?.per_line || {};
+    const target = normLine(lineName);
+    if (!target) return null;
+    for (const [k, v] of Object.entries(perLine)) {
+      if (normLine(k) === target) return v;
+    }
+    return null;
+  }
 
   function filtered() {
     return ITEMS.filter((it) => {
@@ -151,32 +226,81 @@ import StaticMap from '../../components/StaticMap.astro';
     });
   }
 
-  function renderRow(it: any) {
-    const tr = document.createElement('tr');
-    const td1 = document.createElement('td'); td1.textContent = it.kind === 'bus' ? '公交' : '地铁';
-    const td2 = document.createElement('td');
-    const a = document.createElement('a'); a.className = 'rowlink'; a.href = '#'; a.textContent = shortName(it.name);
-    a.addEventListener('click', (e) => { e.preventDefault(); openDrawer(it); });
-    td2.append(a);
-    const td3 = document.createElement('td'); td3.textContent = it.level ?? '—';
-    const td4 = document.createElement('td'); td4.textContent = it.district ?? '—';
-    const td5 = document.createElement('td'); td5.className = 'num'; td5.textContent = it.free_count != null ? String(it.free_count) : '—';
-    const td6 = document.createElement('td'); td6.className = 'num'; td6.textContent = fmtWan(it.total_wan, 2);
-    tr.append(td1, td2, td3, td4, td5, td6);
-    return tr;
+  function itemMatchesFilters(itemMedia?: string, itemLevels?: string[]): boolean {
+    if (media !== 'all' && itemMedia && itemMedia !== media) return false;
+    if (level !== 'all' && itemLevels && itemLevels.length && !itemLevels.includes(level)) return false;
+    return true;
   }
 
-  function renderTable() {
-    const list = filtered();
-    const pages = Math.max(1, Math.ceil(list.length / PAGE));
-    if (page >= pages) page = pages - 1;
-    const slice = list.slice(page * PAGE, page * PAGE + PAGE);
-    const tb = $$('[data-k="rows"]')!;
-    tb.replaceChildren(...slice.map(renderRow));
-    $$('[data-k="total"]')!.textContent = `共 ${list.length} 条 · 每页 ${PAGE} 条`;
-    $$('[data-k="page"]')!.textContent = `${page + 1} / ${pages}`;
-    $$<HTMLButtonElement>('#prev-page')!.disabled = page === 0;
-    $$<HTMLButtonElement>('#next-page')!.disabled = page >= pages - 1;
+  function renderPortraitBlock(container: HTMLElement, portraitEntry: any, title = '新云大数据实测洞察（2023-05）') {
+    const sum = portraitEntry?.summary || portraitEntry;
+    if (!sum || typeof sum !== 'object') return;
+    const box = document.createElement('div');
+    box.className = 'drawer-portrait';
+    box.innerHTML = `<div class="drawer-portrait__head"><span>${title}</span><span class="mono">2023-05 实测</span></div>`;
+
+    const kv = document.createElement('div');
+    kv.className = 'kv';
+    const rows: [string, string][] = [];
+    if (sum.cover_pv != null) rows.push(['月覆盖 PV', `${fmtWan(sum.cover_pv / 10000, 1)} 万`]);
+    if (sum.cover_uv != null) rows.push(['去重覆盖 UV', `${fmtWan(sum.cover_uv / 10000, 1)} 万`]);
+    if (sum.cover_pv_accurate != null) rows.push(['精准覆盖 PV', `${fmtWan(sum.cover_pv_accurate / 10000, 1)} 万`]);
+    if (sum.male_pct != null && sum.female_pct != null) rows.push(['性别分布', `男 ${sum.male_pct}% / 女 ${sum.female_pct}%`]);
+    if (sum.house_pct?.one != null) rows.push(['有房比例', `一套 ${sum.house_pct.one}% · 二套+ ${(Number(sum.house_pct.two || 0) + Number(sum.house_pct.more || 0)).toFixed(0)}%`]);
+    rows.forEach(([k, v]) => {
+      const d = document.createElement('div');
+      d.innerHTML = `<span>${k}</span><b class="mono">${v}</b>`;
+      kv.append(d);
+    });
+    box.append(kv);
+
+    if (sum.flow_periods) {
+      const fp = sum.flow_periods;
+      const entries: [string, number][] = [
+        ['早高峰', Number(fp.morning || 0)],
+        ['午间', Number(fp.midday || 0)],
+        ['晚高峰', Number(fp.evening || 0)],
+        ['夜间', Number(fp.night || 0)],
+      ];
+      const maxV = Math.max(1, ...entries.map((e) => e[1]));
+      const bl = document.createElement('div');
+      bl.className = 'bar-list';
+      entries.forEach(([lbl, val]) => {
+        const r = document.createElement('div');
+        r.className = 'bar-row';
+        r.innerHTML = `<span class="bar-row__lbl">${lbl}</span><span class="bar-row__track"><span class="bar-row__fill" style="width:${Math.round((val / maxV) * 100)}%"></span></span><span class="bar-row__val">${fmtInt(val)}</span>`;
+        bl.append(r);
+      });
+      box.append(bl);
+    }
+
+    if (sum.age_30_40_pct != null) {
+      const ages: [string, number][] = [
+        ['20岁以下', Number(sum.under20_pct || 0)],
+        ['20–30岁', Number(sum.age_20_30_pct || 0)],
+        ['30–40岁', Number(sum.age_30_40_pct || 0)],
+        ['40–50岁', Number(sum.age_40_50_pct || 0)],
+        ['50岁以上', Number(sum.age_50plus_pct || 0)],
+      ];
+      const bl = document.createElement('div');
+      bl.className = 'bar-list';
+      ages.forEach(([lbl, val]) => {
+        const r = document.createElement('div');
+        r.className = 'bar-row';
+        r.innerHTML = `<span class="bar-row__lbl">${lbl}</span><span class="bar-row__track"><span class="bar-row__fill bar-row__fill--emerald" style="width:${Math.min(100, Math.round(val * 2))}%"></span></span><span class="bar-row__val">${val}%</span>`;
+        bl.append(r);
+      });
+      box.append(bl);
+    }
+
+    if (Array.isArray(sum.top_phones) && sum.top_phones.length) {
+      const pEl = document.createElement('div');
+      pEl.className = 'faint t-xs';
+      pEl.textContent = '终端 Top：' + sum.top_phones.slice(0, 5).map((p: any) => `${p.phone_name}(${p.num})`).join(' · ');
+      box.append(pEl);
+    }
+
+    container.append(box);
   }
 
   function openDrawer(it: any) {
@@ -186,13 +310,18 @@ import StaticMap from '../../components/StaticMap.astro';
     const chips = document.createElement('div');
     chips.style.display = 'flex'; chips.style.gap = '6px'; chips.style.flexWrap = 'wrap';
     const routeChip = it.route_ref ? `${it.route_ref} · ${it.route_status === 'ready' ? '真实轨迹' : '区县示意'}` : '';
-    [it.level, it.district, it.free_count != null ? `${it.free_count} 可售` : '', it.media_type, routeChip].filter(Boolean).forEach((c) => {
-      const s = document.createElement('span'); s.className = 'chip chip--quiet'; s.textContent = String(c); chips.append(s);
+    const xyChip = it.xinyun_matched ? `新云实测命中 · ${Math.round(it.xinyun_distance_m || 0)}m` : '';
+    [it.level, it.district, it.free_count != null ? `${it.free_count} 可售` : '', it.media_type, routeChip, xyChip].filter(Boolean).forEach((c) => {
+      const s = document.createElement('span');
+      s.className = 'chip ' + (String(c).includes('新云实测') ? 'chip--accent' : 'chip--quiet');
+      s.textContent = String(c);
+      chips.append(s);
     });
     body.append(chips);
 
     const kv = document.createElement('div'); kv.className = 'kv';
     [['单价(万/月)', it.unit_price_wan != null ? fmtWan(it.unit_price_wan, 1) : '—'],
+     ['投放单元数', `${it.units ?? 1} ${it.kind === 'bus' ? '辆' : '口'}`],
      ['计费月数', it.months ?? '—'],
      ['刊例小计(万)', fmtWan(it.gross_wan, 2)],
      ['折后媒体费(万)', fmtWan(it.net_wan, 2)],
@@ -202,10 +331,16 @@ import StaticMap from '../../components/StaticMap.astro';
     });
     body.append(kv);
 
+    // Attach real xinyun-bigdata line portrait if available
+    const portrait = it.xinyun_portrait || (it.kind === 'bus' ? findPortraitForLine(it.line || it.route_ref) : null);
+    if (portrait) {
+      renderPortraitBlock(body, portrait, `新云大数据实测 · ${portrait.label?.thirdLabel || it.line || it.name}`);
+    }
+
     if (it.score_breakdown) {
-      const sh = document.createElement('div'); sh.className = 'panel-head'; sh.textContent = '评分分解';
+      const sh = document.createElement('div'); sh.className = 'panel-head'; sh.textContent = '模型评分分解';
       const score = document.createElement('div'); score.className = 'score'; score.style.padding = '0 4px';
-      const labels: Record<string, string> = { exposure: '曝光', audience_fit: '人群', poi: 'POI', zone: '区县', corridor: '换乘', cost_efficiency: '成本' };
+      const labels: Record<string, string> = { exposure: '曝光', audience_fit: '人群', poi: 'POI', zone: '区位亲和', corridor: '换乘廊道', cost_efficiency: '性价比' };
       Object.entries(it.score_breakdown).forEach(([k, v]) => {
         const row = document.createElement('div'); row.className = 'score__row';
         row.innerHTML = `<span>${labels[k] || k}</span><span class="score__bar"><i style="width:${Math.round(Number(v) * 100)}%"></i></span><b>${Number(v).toFixed(2)}</b>`;
@@ -221,16 +356,10 @@ import StaticMap from '../../components/StaticMap.astro';
       body.append(rh, ul);
     }
     if (it.evidence?.length) {
-      const eh = document.createElement('div'); eh.className = 'panel-head'; eh.textContent = '证据';
+      const eh = document.createElement('div'); eh.className = 'panel-head'; eh.textContent = '数据证据';
       const rows = document.createElement('div'); rows.className = 'kv';
-      it.evidence.forEach((e: any) => { const d = document.createElement('div'); d.innerHTML = `<span>${e.type || '证据'}</span><b>${e.text || ''}</b>`; rows.append(d); });
+      it.evidence.forEach((e: any) => { const d = document.createElement('div'); d.innerHTML = `<span>${e.source || e.type || '证据'}</span><b>${e.text || ''}</b>`; rows.append(d); });
       body.append(eh, rows);
-    }
-    if (it.alternatives?.length) {
-      const ah = document.createElement('div'); ah.className = 'panel-head'; ah.textContent = '替代项';
-      const rows = document.createElement('div'); rows.className = 'kv';
-      it.alternatives.forEach((a: any) => { const d = document.createElement('div'); d.innerHTML = `<span>${shortName(a.name)}</span><b>${a.reason || ''}</b>`; rows.append(d); });
-      body.append(ah, rows);
     }
     $$('#drawer')!.setAttribute('data-open', 'true');
     $$('#drawer-scrim')!.setAttribute('data-open', 'true');
@@ -238,24 +367,54 @@ import StaticMap from '../../components/StaticMap.astro';
 
   function openRouteDrawer(r: any, mediaType: 'bus' | 'metro' = 'bus') {
     const isMetro = mediaType === 'metro';
-    const items = (r.items || []) as string[];
+    const itemIds = (r.items || []) as string[];
+    const linkedItem = itemIds.map((id) => ITEM_BY_ID[id]).find(Boolean);
+    if (linkedItem && !isMetro) {
+      openDrawer(linkedItem);
+      return;
+    }
     $$('#drawer-title')!.textContent = r.lineName || `${r.line}路`;
     const body = $$('#drawer-body')!;
     body.replaceChildren();
     const chips = document.createElement('div');
     chips.style.display = 'flex'; chips.style.gap = '6px'; chips.style.flexWrap = 'wrap';
-    [r.line, isMetro ? '地铁' : '公交', '2023-05 近似轨迹', '仅用于可视化'].forEach((c) => {
+    [r.line, isMetro ? '地铁' : '公交', '2023-05 真实轨迹', '新云 AI线路'].forEach((c) => {
       const s = document.createElement('span'); s.className = 'chip chip--quiet'; s.textContent = String(c); chips.append(s);
     });
     body.append(chips);
     const kv = document.createElement('div'); kv.className = 'kv';
     [['线路', r.lineName || r.line || '—'],
      ['媒介', isMetro ? '地铁' : '公交'],
-     ['几何点数', r.geometry?.points ?? (r.geometry?.path?.length || 0)],
-     ['方案选点', items.length ? items.join('、') : '—'],
+     ['几何点数', String(r.geometry?.points ?? (r.geometry?.path?.length || 0))],
+     ['关联入选点位', itemIds.length ? itemIds.join('、') : '—'],
      ['来源', r.source || '新云传媒大数据可视化平台 · AI线路'],
-     ['数据月份', '2023-05'],
-     ['用途', '地图可视化；不参与报价、库存、Reach 或评分']].forEach(([k, v]) => {
+     ['数据月份', '2023-05']].forEach(([k, v]) => {
+      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; kv.append(d);
+    });
+    body.append(kv);
+    const portrait = findPortraitForLine(r.lineName || r.line);
+    if (portrait) renderPortraitBlock(body, portrait);
+    $$('#drawer')!.setAttribute('data-open', 'true');
+    $$('#drawer-scrim')!.setAttribute('data-open', 'true');
+  }
+
+  function openPoiDrawer(p: any) {
+    $$('#drawer-title')!.textContent = p.name || '周边 POI';
+    const body = $$('#drawer-body')!;
+    body.replaceChildren();
+    const chips = document.createElement('div');
+    chips.style.display = 'flex'; chips.style.gap = '6px'; chips.style.flexWrap = 'wrap';
+    [p.keyword || p.type || 'POI', p.region || '', p.distance != null ? `距目标 ${Math.round(p.distance)}m` : '', p.source || '新云大数据周边点位'].filter(Boolean).forEach((c) => {
+      const s = document.createElement('span'); s.className = 'chip chip--accent'; s.textContent = String(c); chips.append(s);
+    });
+    body.append(chips);
+    const kv = document.createElement('div'); kv.className = 'kv';
+    [['名称', p.name || '—'],
+     ['分类', p.keyword || p.type || '—'],
+     ['地址', p.address || '—'],
+     ['行政区', p.region || '—'],
+     ['距目标中心', p.distance != null ? `${Math.round(p.distance)} 米` : '—'],
+     ['坐标', p.lng && p.lat ? `${Number(p.lng).toFixed(5)}, ${Number(p.lat).toFixed(5)}` : '—']].forEach(([k, v]) => {
       const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; kv.append(d);
     });
     body.append(kv);
@@ -268,174 +427,510 @@ import StaticMap from '../../components/StaticMap.astro';
     $$('#drawer-scrim')!.setAttribute('data-open', 'false');
   }
 
-  // --- map ---
-  async function drawMap(data: any) {
-    const frame = $$('#media-map')!;
-    const kit = await loadAmap('amap');
-    if (!kit) { frame.setAttribute('data-mode', 'fallback'); return; }
-    amapKit = kit;
-    frame.setAttribute('data-mode', 'live');
-    $$('[data-map-note]')!.textContent = '高德在线';
-    const { AMap, map } = kit;
-    // venue rings + markers
-    const v = data.venues.find((x: any) => x.id === (PLAN.inputs?.venue || PLAN.venue?.id));
-    const venueCoords = v?.coords;
-    if (venueCoords?.lng) {
-      const c = wgsToGcj(venueCoords.lng, venueCoords.lat);
-      (v.rings_km || [6, 20, 50]).slice(0, 2).forEach((km: number) => {
-        map.add(new AMap.Circle({ center: c, radius: km * 1000, strokeColor: '#d4a36a', strokeOpacity: 0.55, strokeWeight: 1.4, strokeStyle: 'dashed', fillOpacity: 0 }));
-      });
-      map.add(new AMap.Marker({ position: c, content: '<div class="amap-pin amap-pin--venue" role="img" aria-label="场馆"></div>', offset: new AMap.Pixel(-9, -9) }));
+  function renderRow(it: any) {
+    const tr = document.createElement('tr');
+    const td1 = document.createElement('td'); td1.textContent = it.kind === 'bus' ? '公交' : '地铁';
+    const td2 = document.createElement('td');
+    const a = document.createElement('a'); a.className = 'rowlink'; a.href = '#'; a.textContent = shortName(it.name);
+    a.addEventListener('click', (e) => { e.preventDefault(); openDrawer(it); });
+    td2.append(a);
+    const td3 = document.createElement('td'); td3.textContent = it.level ?? '—';
+    const td4 = document.createElement('td'); td4.textContent = it.district ?? '—';
+    const td5 = document.createElement('td'); td5.className = 'num'; td5.textContent = it.free_count != null ? String(it.free_count) : '—';
+    const td6 = document.createElement('td'); td6.className = 'num';
+    const hasPortrait = Boolean(it.xinyun_portrait || (it.kind === 'bus' && findPortraitForLine(it.line)));
+    if (it.xinyun_matched) {
+      td6.innerHTML = `<span class="chip chip--accent" style="padding:2px 7px;font-size:11px">周边 ${Math.round(it.xinyun_distance_m || 0)}m</span>`;
+    } else if (hasPortrait) {
+      td6.innerHTML = `<span class="chip chip--quiet" style="padding:2px 7px;font-size:11px">含2023-05画像</span>`;
+    } else {
+      td6.textContent = '—';
     }
-    // selected metro markers
-    const metroPts: any[] = [];
-    (PLAN.plan?.metro || []).forEach((m: any) => {
-      if (!m.geo?.coords?.lng) return;
-      const c = wgsToGcj(m.geo.coords.lng, m.geo.coords.lat);
-      const mk = new AMap.Marker({ position: c, content: '<div class="amap-pin"></div>', offset: new AMap.Pixel(-7, -7), zIndex: 200 });
-      mk.on('click', () => openDrawer(m));
-      map.add(mk);
-      metroPts.push(mk);
+    const td7 = document.createElement('td'); td7.className = 'num'; td7.textContent = fmtWan(it.total_wan, 2);
+    tr.append(td1, td2, td3, td4, td5, td6, td7);
+    return tr;
+  }
+
+  function renderTable() {
+    const list = filtered();
+    const pages = Math.max(1, Math.ceil(list.length / PAGE));
+    if (page >= pages) page = pages - 1;
+    const slice = list.slice(page * PAGE, page * PAGE + PAGE);
+    const tb = $$('[data-k="rows"]')!;
+    tb.replaceChildren(...slice.map(renderRow));
+    $$('[data-k="total"]')!.textContent = `共 ${list.length} 条 · 每页 ${PAGE} 条`;
+    $$('[data-k="page"]')!.textContent = `${page + 1} / ${pages}`;
+    $$<HTMLButtonElement>('#prev-page')!.disabled = page === 0;
+    $$<HTMLButtonElement>('#next-page')!.disabled = page >= pages - 1;
+    const fc = $$('[data-k="filter-count"]');
+    if (fc) fc.textContent = `${list.length} / ${ITEMS.length} 项`;
+  }
+
+  // Unified visibility sync for BOTH live AMap AND dark SVG StaticMap!
+  function syncMapFilters() {
+    const showMetro = chkState('metro');
+    const showRoutes = chkState('routes');
+    const showPoi = chkState('poi');
+    const showDistricts = chkState('districts');
+    const showHeat = chkState('heatmap');
+
+    // 1) Sync live AMap overlays
+    if (amapKit) {
+      const { map } = amapKit;
+      TRACKED.forEach((t) => {
+        let on = true;
+        if (t.layer === 'metro') on = showMetro && itemMatchesFilters('metro', t.levels);
+        else if (t.layer === 'routes') on = showRoutes && itemMatchesFilters(t.media, t.levels);
+        else if (t.layer === 'poi') on = showPoi;
+        else if (t.layer === 'districts') on = showDistricts;
+        if (typeof t.overlay.show === 'function' && typeof t.overlay.hide === 'function') {
+          if (on) t.overlay.show(); else t.overlay.hide();
+        } else {
+          try {
+            if (on) map.add(t.overlay); else map.remove(t.overlay);
+          } catch { /* ignore */ }
+        }
+      });
+      if (AMAP_HEAT) {
+        if (showHeat) {
+          const pts = HEAT_POINTS
+            .filter((p) => itemMatchesFilters(p.media, p.levels))
+            .map((p) => ({ lng: p.lng, lat: p.lat, count: p.count }));
+          try {
+            AMAP_HEAT.setDataSet({ data: pts, max: Math.max(10, ...pts.map((x) => x.count)) });
+            AMAP_HEAT.show();
+          } catch { /* ignore */ }
+        } else {
+          try { AMAP_HEAT.hide(); } catch { /* ignore */ }
+        }
+      }
+    }
+
+    // 2) Sync dark SVG StaticMap fallback layers (always kept in sync!)
+    const svg = $$('#media-map .map-fallback svg');
+    if (svg) {
+      const toggleLayer = (sel: string, on: boolean) => {
+        const el = svg.querySelector<SVGElement>(sel);
+        if (el) el.style.display = on ? '' : 'none';
+      };
+      toggleLayer('[data-map-layer="districts"]', showDistricts);
+      toggleLayer('[data-map-layer="metro"]', showMetro && (media === 'all' || media === 'metro'));
+      toggleLayer('[data-map-layer="poi"]', showPoi);
+      toggleLayer('[data-map-layer="dynamic-bigdata-poi"]', showPoi);
+      toggleLayer('[data-map-layer="dynamic-heatmap"]', showHeat);
+      toggleLayer('[data-map-layer="dynamic-routes"]', showRoutes);
+      toggleLayer('[data-map-layer="dynamic-points"]', showMetro);
+
+      // Filter individual SVG routes & selected points by level + media
+      svg.querySelectorAll<SVGElement>('[data-svg-media]').forEach((el) => {
+        const m = el.getAttribute('data-svg-media') || undefined;
+        const lvRaw = el.getAttribute('data-svg-levels') || '';
+        const lvs = lvRaw ? lvRaw.split(',') : undefined;
+        el.style.display = itemMatchesFilters(m, lvs) ? '' : 'none';
+      });
+    }
+
+    // Update badge with active layer count
+    const onCount = [showHeat, showRoutes, showMetro, showPoi, showDistricts].filter(Boolean).length;
+    const badge = $$('[data-k="map-filter-badge"]');
+    if (badge) badge.textContent = `${onCount}/5 图层 · ${level === 'all' ? '全等级' : level}`;
+  }
+
+  function buildHeatmapPoints(): { lng: number; lat: number; count: number; media?: string; levels?: string[] }[] {
+    const pts: { lng: number; lat: number; count: number; media?: string; levels?: string[] }[] = [];
+    const ml = PLAN.coverage?.map_layers || {};
+    const vCoords = PLAN.venue?.coords;
+    if (vCoords?.lng && vCoords?.lat) {
+      const [gLng, gLat] = wgsToGcj(Number(vCoords.lng), Number(vCoords.lat));
+      pts.push({ lng: gLng, lat: gLat, count: 100 });
+    }
+    // Weight bus routes by real xinyun PV (when available) or estimated exposure
+    for (const r of (ml.bus_routes || [])) {
+      const path = r.geometry?.path || [];
+      if (path.length < 2) continue;
+      const linked = (r.items || []).map((id: string) => ITEM_BY_ID[id]).filter(Boolean);
+      const levels = [...new Set(linked.map((x: any) => String(x.level || '')))] as string[];
+      const portrait = findPortraitForLine(r.lineName || r.line);
+      const pv = Number(portrait?.summary?.cover_pv || 0);
+      const weight = pv > 0 ? Math.min(95, Math.max(28, Math.round(pv / 20000))) : 45;
+      const step = Math.max(1, Math.floor(path.length / 10));
+      for (let i = 0; i < path.length; i += step) {
+        const [lng, lat] = wgsToGcj(Number(path[i][0]), Number(path[i][1]));
+        if (Number.isFinite(lng) && Number.isFinite(lat)) {
+          pts.push({ lng, lat, count: weight, media: 'bus', levels });
+        }
+      }
+    }
+    // Selected metro hubs
+    for (const m of (PLAN.plan?.metro || [])) {
+      if (!m.geo?.coords?.lng) continue;
+      const [lng, lat] = wgsToGcj(Number(m.geo.coords.lng), Number(m.geo.coords.lat));
+      const weight = m.level === 'A++' ? 88 : 60;
+      pts.push({ lng, lat, count: weight, media: 'metro', levels: [String(m.level || '')] });
+    }
+    return pts;
+  }
+
+  function renderSvgLayers() {
+    const svg = $$('#media-map .map-fallback svg');
+    if (!svg) return;
+    const NS = 'http://www.w3.org/2000/svg';
+    const staticVenues = svg.querySelector<SVGGElement>('[data-map-layer="venues"]');
+    if (staticVenues) staticVenues.style.display = 'none';
+
+    const heatG = svg.querySelector<SVGGElement>('[data-map-layer="dynamic-heatmap"]');
+    const routeG = svg.querySelector<SVGGElement>('[data-map-layer="dynamic-routes"]');
+    const poiG = svg.querySelector<SVGGElement>('[data-map-layer="dynamic-bigdata-poi"]');
+    const ptsG = svg.querySelector<SVGGElement>('[data-map-layer="dynamic-points"]');
+    const tgtG = svg.querySelector<SVGGElement>('[data-map-layer="dynamic-target"]');
+    heatG?.replaceChildren();
+    routeG?.replaceChildren();
+    poiG?.replaceChildren();
+    ptsG?.replaceChildren();
+    tgtG?.replaceChildren();
+
+    // 1) Crowd density heatmap circles
+    HEAT_POINTS.forEach((p) => {
+      if (!heatG) return;
+      const [x, y] = projectSvg(p.lng, p.lat);
+      const r = Math.max(18, Math.min(48, (p.count / 100) * 44));
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', x.toFixed(1));
+      c.setAttribute('cy', y.toFixed(1));
+      c.setAttribute('r', r.toFixed(1));
+      c.setAttribute('fill', p.media === 'bus' ? 'url(#ps-heat-emerald)' : 'url(#ps-heat-gold)');
+      c.setAttribute('opacity', '0.55');
+      if (p.media) c.setAttribute('data-svg-media', p.media);
+      if (p.levels?.length) c.setAttribute('data-svg-levels', p.levels.join(','));
+      heatG.append(c);
     });
-    // xinyun AI-route geometry: the plan's selected bus/metro lines, 2023-05 approximate tracks.
-    const routeToggle = document.querySelector<HTMLInputElement>('[data-layer="routes"]');
+
+    // 2) Routes (clickable!)
     const ml = PLAN.coverage?.map_layers || {};
     const routeGroups: { r: any; media: 'bus' | 'metro' }[] = [
       ...(ml.bus_routes || []).map((r: any) => ({ r, media: 'bus' as const })),
       ...(ml.metro_routes || []).map((r: any) => ({ r, media: 'metro' as const })),
-      ...(ml.routes || []).map((r: any) => ({ r, media: r.media === 'metro' ? 'metro' as const : 'bus' as const })),
     ];
-    const seenRoutes = new Set<string>();
-    const routeList = routeGroups.filter(({ r }) => {
-      const key = String(r.lineId ?? r.line ?? r.lineName ?? '');
-      if (!key || seenRoutes.has(key)) return false;
-      seenRoutes.add(key);
-      return true;
+    routeGroups.forEach(({ r, media: mType }) => {
+      if (!routeG) return;
+      const path = (r.geometry?.path || []) as number[][];
+      if (path.length < 2) return;
+      const linked = (r.items || []).map((id: string) => ITEM_BY_ID[id]).filter(Boolean);
+      const levels = [...new Set(linked.map((x: any) => String(x.level || '')))] as string[];
+      const d = path.map(([lng, lat], i) => {
+        const [gLng, gLat] = wgsToGcj(Number(lng), Number(lat));
+        const [x, y] = projectSvg(gLng, gLat);
+        return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+      }).join(' ');
+      const el = document.createElementNS(NS, 'path');
+      el.setAttribute('d', d);
+      el.setAttribute('fill', 'none');
+      el.setAttribute('stroke', mType === 'metro' ? '#d4a36a' : '#34d399');
+      el.setAttribute('stroke-width', '3.2');
+      el.setAttribute('stroke-opacity', '0.88');
+      if (mType === 'metro') el.setAttribute('stroke-dasharray', '6 4');
+      el.style.cursor = 'pointer';
+      el.setAttribute('data-svg-media', mType);
+      if (levels.length) el.setAttribute('data-svg-levels', levels.join(','));
+      el.addEventListener('click', () => openRouteDrawer(r, mType));
+      routeG.append(el);
     });
-    const routeFitPts: [number, number][] = [];
-    ROUTE_OVERLAYS = [];
-    if (routeToggle?.checked !== false) {
-      routeList.forEach(({ r, media }) => {
-        const isMetro = media === 'metro';
-        const path = (r.geometry?.path || [])
-          .map(([lng, lat]: number[]) => wgsToGcj(Number(lng), Number(lat)))
-          .filter((p: [number, number]) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
-        if (path.length < 2) return;
-        routeFitPts.push(...path);
-        const line = new AMap.Polyline({
-          path,
-          strokeColor: isMetro ? '#d4a36a' : '#34d399',
-          strokeWeight: 3.8,
-          strokeOpacity: 0.88,
-          strokeStyle: isMetro ? 'dashed' : 'solid',
-          lineJoin: 'round',
-          lineCap: 'round',
-          zIndex: 120,
-          cursor: 'pointer',
-        });
-        line.on('click', () => openRouteDrawer(r, media));
-        map.add(line);
-        ROUTE_OVERLAYS.push(line);
-        // a small selected-point dot on the route; the line name appears on hover, details on click
-        const mid = path[Math.floor(path.length / 2)];
-        if (mid) {
-          const dot = new AMap.Marker({
-            position: mid,
-            content: `<div class="amap-route-dot${isMetro ? ' is-metro' : ''}" role="img" aria-label="${isMetro ? '地铁' : '公交'}线路选点"></div>`,
-            offset: new AMap.Pixel(-5, -5),
-            zIndex: 150,
-          });
-          dot.on('click', () => openRouteDrawer(r, media));
-          map.add(dot);
-          ROUTE_OVERLAYS.push(dot);
-          const safeName = String(r.lineName || r.line || '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c] || c));
-          const itemCount = (r.items || []).length;
-          const label = new AMap.Marker({
-            position: mid,
-            content: `<div class="amap-route-label${isMetro ? ' is-metro' : ''}">${isMetro ? '地铁' : '公交'} · ${safeName}${itemCount ? ` · ${itemCount} 点` : ''}</div>`,
-            offset: new AMap.Pixel(-28, -30),
-            zIndex: 160,
-          });
-          map.add(label);
-          label.hide();
-          line.on('mouseover', () => label.show());
-          line.on('mouseout', () => label.hide());
-          dot.on('mouseover', () => label.show());
-          dot.on('mouseout', () => label.hide());
-          ROUTE_OVERLAYS.push(label);
-        }
+
+    // 3) Real xinyun-bigdata POIs (clickable!)
+    const bdPois = (ml.bigdata_poi || RUN?.data?.bigdata?.poi?.items || []) as any[];
+    bdPois.slice(0, 60).forEach((p) => {
+      if (!poiG || !p.lng || !p.lat) return;
+      const [x, y] = projectSvg(Number(p.lng), Number(p.lat));
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', x.toFixed(1));
+      c.setAttribute('cy', y.toFixed(1));
+      c.setAttribute('r', '3.6');
+      c.setAttribute('fill', '#34d399');
+      c.setAttribute('stroke', '#0a0c12');
+      c.setAttribute('stroke-width', '1.2');
+      c.style.cursor = 'pointer';
+      c.addEventListener('click', () => openPoiDrawer(p));
+      poiG.append(c);
+    });
+
+    // 4) Selected metro markers (clickable!)
+    (PLAN.plan?.metro || []).forEach((m: any) => {
+      if (!ptsG || !m.geo?.coords?.lng) return;
+      const [gLng, gLat] = wgsToGcj(Number(m.geo.coords.lng), Number(m.geo.coords.lat));
+      const [x, y] = projectSvg(gLng, gLat);
+      const g = document.createElementNS(NS, 'g');
+      g.style.cursor = 'pointer';
+      g.setAttribute('data-svg-media', 'metro');
+      g.setAttribute('data-svg-levels', String(m.level || ''));
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', '5.5');
+      c.setAttribute('fill', '#d4a36a'); c.setAttribute('stroke', '#0a0c12'); c.setAttribute('stroke-width', '2');
+      g.append(c);
+      g.addEventListener('click', () => openDrawer(m));
+      ptsG.append(g);
+    });
+
+    // 5) Target venue / company marker & rings
+    const vc = PLAN.venue?.coords;
+    if (tgtG && vc?.lng && vc?.lat) {
+      const [gLng, gLat] = wgsToGcj(Number(vc.lng), Number(vc.lat));
+      const [x, y] = projectSvg(gLng, gLat);
+      (PLAN.venue?.rings_km || [6, 20]).slice(0, 2).forEach((km: number, idx: number) => {
+        const ring = document.createElementNS(NS, 'circle');
+        ring.setAttribute('cx', x.toFixed(1)); ring.setAttribute('cy', y.toFixed(1));
+        ring.setAttribute('r', Math.max(18, km * SVG_SCALE).toFixed(1));
+        ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#d4a36a');
+        ring.setAttribute('stroke-opacity', idx === 0 ? '0.62' : '0.3');
+        ring.setAttribute('stroke-dasharray', '6 6'); ring.setAttribute('stroke-width', '1.8');
+        tgtG.append(ring);
       });
+      const pin = document.createElementNS(NS, 'circle');
+      pin.setAttribute('cx', x.toFixed(1)); pin.setAttribute('cy', y.toFixed(1)); pin.setAttribute('r', '7');
+      pin.setAttribute('fill', '#e7c08e'); pin.setAttribute('stroke', '#0a0c12'); pin.setAttribute('stroke-width', '2.2');
+      tgtG.append(pin);
+      const lbl = document.createElementNS(NS, 'text');
+      lbl.setAttribute('x', (x > 740 ? x - 12 : x + 12).toFixed(1));
+      lbl.setAttribute('y', (y + 5).toFixed(1));
+      lbl.setAttribute('text-anchor', x > 740 ? 'end' : 'start');
+      lbl.setAttribute('class', 'ps-map-venue-label');
+      lbl.textContent = String(PLAN.venue?.name || PLAN.inputs?.venue_name || '目标地点').slice(0, 14);
+      tgtG.append(lbl);
     }
-    const metroFitPts = metroPts.map((x) => {
-      const p = x.getPosition();
-      return [p.lng, p.lat] as [number, number];
-    });
-    fitMarkers(
-      map,
-      [...metroFitPts, ...routeFitPts].length
-        ? [...metroFitPts, ...routeFitPts]
-        : venueCoords?.lng ? [wgsToGcj(venueCoords.lng, venueCoords.lat)] : [],
-    );
-    // POI layer (heat)
-    try {
-      const heat = new AMap.HeatMap(map, { radius: 26, opacity: [0, 0.5], gradient: { 0.4: 'rgba(46,91,68,0)', 0.7: 'rgba(46,91,68,.22)', 1: 'rgba(46,91,68,.5)' } });
-      heat.setDataSet({ data: data.poi.map((p: any) => { const [lng, lat] = wgsToGcj(p.lng, p.lat); return [lng, lat, 1]; }), max: 2 });
-    } catch { /* optional */ }
-    // district boundaries
-    fetch('/data/shanghai_districts.geojson').then((r) => r.json()).then((geo) => {
-      const P = AMap.Polygon;
-      const dist = new AMap.GeoJSON({ geoJSON: geo, getPolygon: (_g: any, lnglats: number[][]) => new P({ path: lnglats, strokeColor: '#d4a36a', strokeWeight: 1, strokeOpacity: 0.28, fillColor: '#161b26', fillOpacity: 0.24 }) });
-      map.add(dist);
-    }).catch(() => {});
   }
 
-  initResult((plan) => {
+  async function drawMap(data: any) {
+    HEAT_POINTS = buildHeatmapPoints();
+    renderSvgLayers();
+
+    const frame = $$('#media-map')!;
+    const kit = await loadAmap('amap');
+    if (!kit) {
+      frame.setAttribute('data-mode', 'fallback');
+      $$('[data-map-note]')!.textContent = `暗色矢量地图 · ${PLAN.venue?.name || '方案覆盖'} · 支持点击点位与热力图层`;
+      syncMapFilters();
+      return;
+    }
+    amapKit = kit;
+    frame.setAttribute('data-mode', 'live');
+    $$('[data-map-note]')!.textContent = `高德在线 · ${PLAN.venue?.name || '方案覆盖'} · 点击线路/点位查新云明细`;
+    const { AMap, map } = kit;
+    TRACKED = [];
+
+    // Venue / custom company target & rings
+    const venueCoords = PLAN.venue?.coords;
+    const fitPts: [number, number][] = [];
+    if (venueCoords?.lng && venueCoords?.lat) {
+      const c = wgsToGcj(Number(venueCoords.lng), Number(venueCoords.lat));
+      fitPts.push(c);
+      (PLAN.venue?.rings_km || [6, 20]).slice(0, 2).forEach((km: number) => {
+        map.add(new AMap.Circle({ center: c, radius: km * 1000, strokeColor: '#d4a36a', strokeOpacity: 0.55, strokeWeight: 1.4, strokeStyle: 'dashed', fillOpacity: 0 }));
+      });
+      map.add(new AMap.Marker({
+        position: c,
+        content: `<div class="amap-venue-marker is-selected"><i class="amap-pin amap-pin--venue"></i><span class="amap-venue">${String(PLAN.venue?.name || '目标')}</span></div>`,
+        offset: new AMap.Pixel(-9, -9),
+        zIndex: 260,
+      }));
+    }
+
+    // 1) Selected metro exits (tracked by layer='metro' + level)
+    (PLAN.plan?.metro || []).forEach((m: any) => {
+      if (!m.geo?.coords?.lng) return;
+      const c = wgsToGcj(Number(m.geo.coords.lng), Number(m.geo.coords.lat));
+      fitPts.push(c);
+      const mk = new AMap.Marker({ position: c, content: '<div class="amap-pin"></div>', offset: new AMap.Pixel(-7, -7), zIndex: 210 });
+      mk.on('click', () => openDrawer(m));
+      map.add(mk);
+      TRACKED.push({ overlay: mk, layer: 'metro', media: 'metro', levels: [String(m.level || '')] });
+    });
+
+    // 2) Routes (tracked by layer='routes' + media + levels)
+    const ml = PLAN.coverage?.map_layers || {};
+    const routeGroups: { r: any; media: 'bus' | 'metro' }[] = [
+      ...(ml.bus_routes || []).map((r: any) => ({ r, media: 'bus' as const })),
+      ...(ml.metro_routes || []).map((r: any) => ({ r, media: 'metro' as const })),
+    ];
+    routeGroups.forEach(({ r, media: mType }) => {
+      const isMetro = mType === 'metro';
+      const linked = (r.items || []).map((id: string) => ITEM_BY_ID[id]).filter(Boolean);
+      const levels = [...new Set(linked.map((x: any) => String(x.level || '')))] as string[];
+      const path = (r.geometry?.path || [])
+        .map(([lng, lat]: number[]) => wgsToGcj(Number(lng), Number(lat)))
+        .filter((p: [number, number]) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
+      if (path.length < 2) return;
+      fitPts.push(path[0], path[Math.floor(path.length / 2)], path[path.length - 1]);
+      const line = new AMap.Polyline({
+        path,
+        strokeColor: isMetro ? '#d4a36a' : '#34d399',
+        strokeWeight: 3.8,
+        strokeOpacity: 0.88,
+        strokeStyle: isMetro ? 'dashed' : 'solid',
+        lineJoin: 'round',
+        lineCap: 'round',
+        zIndex: 120,
+        cursor: 'pointer',
+      });
+      line.on('click', () => openRouteDrawer(r, mType));
+      map.add(line);
+      TRACKED.push({ overlay: line, layer: 'routes', media: mType, levels });
+
+      const mid = path[Math.floor(path.length / 2)];
+      if (mid) {
+        const dot = new AMap.Marker({
+          position: mid,
+          content: `<div class="amap-route-dot${isMetro ? ' is-metro' : ''}"></div>`,
+          offset: new AMap.Pixel(-5, -5),
+          zIndex: 150,
+        });
+        dot.on('click', () => openRouteDrawer(r, mType));
+        map.add(dot);
+        TRACKED.push({ overlay: dot, layer: 'routes', media: mType, levels });
+      }
+    });
+
+    // 3) POI markers (tracked by layer='poi', combining real xinyun bigdata POIs + plan POI hits)
+    const bdPois = (ml.bigdata_poi || RUN?.data?.bigdata?.poi?.items || []) as any[];
+    bdPois.slice(0, 50).forEach((p: any) => {
+      if (!p.lng || !p.lat) return;
+      const mk = new AMap.Marker({
+        position: [Number(p.lng), Number(p.lat)],
+        content: `<div class="amap-point-marker"><i class="amap-pin amap-pin--metro" style="background:#34d399"></i></div>`,
+        offset: new AMap.Pixel(-4, -4),
+        zIndex: 140,
+      });
+      mk.on('click', () => openPoiDrawer(p));
+      map.add(mk);
+      TRACKED.push({ overlay: mk, layer: 'poi' });
+    });
+
+    // 4) Crowd density heatmap (tracked via AMAP_HEAT)
+    try {
+      AMAP_HEAT = new AMap.HeatMap(map, {
+        radius: 34,
+        opacity: [0, 0.72],
+        gradient: { 0.2: 'rgba(46,91,68,0.1)', 0.5: 'rgba(52,211,153,0.48)', 0.78: 'rgba(212,163,106,0.75)', 1.0: 'rgba(244,210,152,0.95)' },
+      });
+      AMAP_HEAT.setDataSet({ data: HEAT_POINTS, max: 100 });
+    } catch { AMAP_HEAT = null; }
+
+    // 5) District boundaries (tracked by layer='districts')
+    fetch('/data/shanghai_districts.geojson').then((r) => r.json()).then((geo) => {
+      const P = AMap.Polygon;
+      const dist = new AMap.GeoJSON({
+        geoJSON: geo,
+        getPolygon: (_g: any, lnglats: number[][]) => new P({
+          path: lnglats, strokeColor: '#d4a36a', strokeWeight: 1, strokeOpacity: 0.28, fillColor: '#161b26', fillOpacity: 0.22,
+        }),
+      });
+      map.add(dist);
+      TRACKED.push({ overlay: dist, layer: 'districts' });
+      syncMapFilters();
+    }).catch(() => {});
+
+    fitMarkers(map, fitPts);
+    syncMapFilters();
+  }
+
+  function renderBigdataStrip() {
+    const portrait = RUN?.data?.portrait;
+    const agg = portrait?.aggregate;
+    const flowBars = $$('[data-k="flow-bars"]')!;
+    const pvChip = $$('[data-k="flow-pv-chip"]')!;
+    flowBars.replaceChildren();
+
+    if (agg?.flow_periods) {
+      const fp = agg.flow_periods;
+      const entries: [string, number][] = [
+        ['早高峰', Number(fp.morning || 0)],
+        ['午间', Number(fp.midday || 0)],
+        ['晚高峰', Number(fp.evening || 0)],
+        ['夜间', Number(fp.night || 0)],
+      ];
+      const maxV = Math.max(1, ...entries.map((e) => e[1]));
+      entries.forEach(([lbl, val]) => {
+        const r = document.createElement('div');
+        r.className = 'bar-row';
+        r.innerHTML = `<span class="bar-row__lbl">${lbl}</span><span class="bar-row__track"><span class="bar-row__fill" style="width:${Math.round((val / maxV) * 100)}%"></span></span><span class="bar-row__val">${fmtInt(val)}</span>`;
+        flowBars.append(r);
+      });
+      pvChip.textContent = agg.cover_pv ? `月PV ${fmtWan(agg.cover_pv / 10000, 1)}万 · UV ${fmtWan((agg.cover_uv || 0) / 10000, 1)}万` : '2023-05 实测';
+      const hs = $$('[data-k="heat-source"]');
+      if (hs) hs.textContent = `新云实测 (${portrait.matched?.length || 0}线)`;
+    } else {
+      flowBars.innerHTML = '<p class="muted t-xs">当前 run 未含新云 2023-05 组合画像（热力图已按引擎曝光模型与线路轨迹加权生成）。</p>';
+      pvChip.textContent = '模型加权';
+    }
+
+    // Surrounding coverage chips (clickable!)
+    const bd = RUN?.data?.bigdata;
+    const cov = bd?.coverage;
+    const bdPoi = bd?.poi;
+    const covChips = $$('[data-k="cov-chips"]')!;
+    const covChipHead = $$('[data-k="cov-summary-chip"]')!;
+    covChips.replaceChildren();
+    const busCnt = cov?.summary?.bus || 0;
+    const metroCnt = cov?.summary?.metro || 0;
+    const poiCnt = bdPoi?.total || 0;
+    covChipHead.textContent = `公交 ${busCnt} · 地铁 ${metroCnt} · POI ${poiCnt}`;
+
+    const poiItems = (bdPoi?.items || []) as any[];
+    if (poiItems.length) {
+      poiItems.slice(0, 18).forEach((p: any) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'q-chip';
+        btn.innerHTML = `${p.keyword || 'POI'} · ${p.name} <span class="mono" style="color:var(--accent)">${Math.round(p.distance || 0)}m</span>`;
+        btn.addEventListener('click', () => openPoiDrawer(p));
+        covChips.append(btn);
+      });
+    } else if (cov?.items?.length) {
+      cov.items.slice(0, 18).forEach((c: any) => {
+        const s = document.createElement('span');
+        s.className = 'poi-chip';
+        s.innerHTML = `${c.mediaType === 'metro' ? '地铁' : '公交'} ${c.nearestStaName || c.lineName} <b>${Math.round(c.minDistance || 0)}m</b>`;
+        covChips.append(s);
+      });
+    } else {
+      covChips.innerHTML = '<span class="muted t-xs">本次运行未拉取到周边实测覆盖明细。</span>';
+    }
+  }
+
+  initResult((plan, run) => {
     PLAN = plan;
-    // Largest spend first, so the first page mixes bus and metro instead of showing only bus.
+    RUN = run;
     ITEMS = [...(plan.plan?.bus || []), ...(plan.plan?.metro || [])]
       .sort((a: any, b: any) => (Number(b.total_wan) || 0) - (Number(a.total_wan) || 0));
+    ITEM_BY_ID = Object.fromEntries(ITEMS.map((it) => [it.id, it]));
     renderTable();
+    renderBigdataStrip();
 
-    // Route layer status: only lines with real 2023-05 geometry are drawn; missing lines stay district-level.
     const ml = plan.coverage?.map_layers || {};
-    const busRoutes = (ml.bus_routes || []) as any[];
-    const metroRoutes = (ml.metro_routes || []) as any[];
-    const genericRoutes = (ml.routes || []) as any[];
-    const busCount = busRoutes.length + genericRoutes.filter((r: any) => r.media !== 'metro').length;
-    const metroCount = metroRoutes.length + genericRoutes.filter((r: any) => r.media === 'metro').length;
-    const totalRoutes = busCount + metroCount;
-    const selectedMetro = (plan.plan?.metro || []).length;
-    const routesMeta = ml.bus_routes_meta || {};
-    const routesHelp = document.querySelector<HTMLElement>('[data-k="routes-help"]');
+    const busCount = (ml.bus_routes || []).length;
+    const metroCount = (ml.metro_routes || []).length;
+    const routesHelp = $$('[data-k="routes-help"]');
     if (routesHelp) {
-      routesHelp.textContent = totalRoutes
-        ? `新云 AI线路 · 2023-05 · 公交 ${busCount} / 地铁 ${metroCount} 条有几何${selectedMetro && metroCount === 0 ? ' · 地铁线路几何未返回' : ''}${routesMeta.status && routesMeta.status !== 'ready' ? '（其余按区县示意）' : ''}`
-        : '无 2023-05 线路几何；缺失线路按区县示意（需人工登录新云一次）';
+      routesHelp.textContent = (busCount + metroCount)
+        ? `新云 AI线路 2023-05 · 公交 ${busCount} 条 / 地铁 ${metroCount} 条真实轨迹 · 点击任意线路或表格行可查看完整新云实测画像`
+        : '点击任意地铁点位、POI 或表格行查看详细证据；新云登录后可叠加 2023-05 真实线路轨迹。';
     }
-    const routeToggle = document.querySelector<HTMLInputElement>('[data-layer="routes"]');
-    if (routeToggle) {
-      routeToggle.disabled = totalRoutes === 0;
-      routeToggle.checked = totalRoutes > 0;
-      if (!totalRoutes) routeToggle.parentElement!.style.opacity = '0.5';
-    }
-    const busLegend = document.querySelector<HTMLElement>('[data-k="routes-legend-bus"]');
-    if (busLegend) busLegend.hidden = busCount === 0;
-    const metroLegend = document.querySelector<HTMLElement>('[data-k="routes-legend-metro"]');
-    if (metroLegend) metroLegend.hidden = metroCount === 0;
 
-    // POI hits (all of them; the count chip states the total)
-    const poiHits = plan.coverage?.poi_hits || [];
+    // POI hits (clickable!)
+    const poiHits = [...(plan.coverage?.poi_hits || []), ...((RUN?.data?.bigdata?.poi?.items || []).slice(0, 20).map((x: any) => ({
+      name: x.name, type: x.keyword, distance: x.distance, address: x.address, region: x.region, lng: x.lng, lat: x.lat, source: '新云周边实测',
+    })))];
     $$('[data-k="poi-n"]')!.textContent = String(poiHits.length);
     const ph = $$('[data-k="poi-hits"]')!;
     ph.replaceChildren();
     poiHits.forEach((p: any) => {
-      const r = document.createElement('div'); r.className = 'row';
+      const r = document.createElement('div'); r.className = 'row'; r.style.cursor = 'pointer';
       const mark = document.createElement('span'); mark.className = 'row__mark'; mark.textContent = 'P';
       const main = document.createElement('div');
       const b = document.createElement('b'); b.textContent = p.name;
-      const small = document.createElement('small'); small.textContent = `${p.type || ''}${p.weight != null ? ' · 权重 ' + p.weight : ''}`;
+      const small = document.createElement('small');
+      small.textContent = `${p.type || ''}${p.distance != null ? ' · 距目标 ' + Math.round(p.distance) + 'm' : ''}${p.source ? ' · ' + p.source : ''}`;
       main.append(b, small);
       r.append(mark, main, document.createTextNode(''));
+      r.addEventListener('click', () => openPoiDrawer(p));
       ph.append(r);
     });
 
@@ -444,45 +939,32 @@ import StaticMap from '../../components/StaticMap.astro';
     dm.replaceChildren();
     const mix = plan.plan?.summary?.district_mix || {};
     Object.entries(mix).sort((a, b) => (b[1] as number) - (a[1] as number)).forEach(([k, v]) => {
-      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; dm.append(d);
+      const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v} 单元</b>`; dm.append(d);
     });
 
-    // xinyun coverage supplement
-    loadMapData().then((data) => {
-      const cov = plan.data?.coverage_context || plan.plan?.coverage_context;
-      const hasCov = cov && (cov.poi || cov.districts);
-      const chk = document.querySelector<HTMLInputElement>('[data-layer="coverage"]');
-      if (chk) {
-        chk.disabled = !hasCov;
-        if (!hasCov) chk.parentElement!.style.opacity = '0.5';
-      }
-      if (data) drawMap(data);
-    });
+    loadMapData().then((data) => drawMap(data));
   });
 
-  // filters
+  // Wire ALL 5 layer checkboxes + level + media filters so EVERY control genuinely updates map + table!
+  document.querySelectorAll<HTMLInputElement>('[data-layer]').forEach((chk) => {
+    chk.addEventListener('change', () => syncMapFilters());
+  });
   document.querySelectorAll<HTMLButtonElement>('[data-level]').forEach((b) => b.addEventListener('click', () => {
     level = b.dataset.level!;
     document.querySelectorAll<HTMLButtonElement>('[data-level]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    page = 0; renderTable();
+    page = 0;
+    renderTable();
+    syncMapFilters();
   }));
   document.querySelectorAll<HTMLButtonElement>('[data-media]').forEach((b) => b.addEventListener('click', () => {
     media = b.dataset.media!;
     document.querySelectorAll<HTMLButtonElement>('[data-media]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    page = 0; renderTable();
+    page = 0;
+    renderTable();
+    syncMapFilters();
   }));
   $$('#prev-page')!.addEventListener('click', () => { page--; renderTable(); });
   $$('#next-page')!.addEventListener('click', () => { page++; renderTable(); });
   $$('#drawer-close')!.addEventListener('click', closeDrawer);
   $$('#drawer-scrim')!.addEventListener('click', closeDrawer);
-
-  // route layer on/off (only lines with real geometry are in ROUTE_OVERLAYS)
-  const routesToggle = document.querySelector<HTMLInputElement>('[data-layer="routes"]');
-  routesToggle?.addEventListener('change', () => {
-    if (!amapKit) return;
-    ROUTE_OVERLAYS.forEach((l) => {
-      if (routesToggle.checked) amapKit.map.add(l);
-      else amapKit.map.remove(l);
-    });
-  });
 </script>

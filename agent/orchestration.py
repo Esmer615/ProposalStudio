@@ -458,10 +458,28 @@ class ProposalRunner:
         data_bigdata: Optional[Dict[str, Any]] = None
         mark("data_bigdata")
         t0 = time.perf_counter()
-        venue_name = (catalog.get("venue_profiles") or {}).get(request.get("venue"), {}).get("name") \
-            or {"lego_shanghai": "上海乐高乐园", "disney_shanghai": "上海迪士尼度假区", "haichang_shanghai": "上海海昌海洋公园"}.get(request.get("venue"), str(request.get("venue")))
-        cov = self.data.bigdata_coverage(venue_name, radius=1000)
-        poi = self.data.bigdata_poi(venue_name, radius=1000, types="商场,幼儿园")
+        custom_venue = request.get("custom_venue") if isinstance(request.get("custom_venue"), dict) else None
+        if custom_venue and custom_venue.get("name"):
+            venue_name = str(custom_venue["name"])
+            c_coords = custom_venue.get("coords") or {}
+            t_lng = float(c_coords["lng"]) if c_coords.get("lng") is not None else None
+            t_lat = float(c_coords["lat"]) if c_coords.get("lat") is not None else None
+        else:
+            v_prof = (catalog.get("venue_profiles") or {}).get(request.get("venue"), {}) or {}
+            venue_name = v_prof.get("name") \
+                or {"lego_shanghai": "上海乐高乐园", "disney_shanghai": "上海迪士尼度假区", "haichang_shanghai": "上海海昌海洋公园"}.get(request.get("venue"), str(request.get("venue")))
+            v_coords = v_prof.get("coords") or {}
+            t_lng = float(v_coords["lng"]) if v_coords.get("lng") is not None else None
+            t_lat = float(v_coords["lat"]) if v_coords.get("lat") is not None else None
+
+        try:
+            from engine.skill_loader import get_industry_profile
+            poi_types = get_industry_profile(str(request.get("industry") or "乐园")).get("poi_types") or "商场,写字楼,小区"
+        except Exception:
+            poi_types = "商场,写字楼,小区"
+
+        cov = self.data.bigdata_coverage(venue_name, radius=1500, lng=t_lng, lat=t_lat)
+        poi = self.data.bigdata_poi(venue_name, radius=1500, types=poi_types, mode="detail", lng=t_lng, lat=t_lat)
         cov_status = cov.get("status") or ("ready" if cov.get("ok") else "degraded")
         poi_status = poi.get("status") or ("ready" if poi.get("ok") else "degraded")
         overall_bi = "ready" if cov_status == "ready" and poi_status == "ready" else (
@@ -472,26 +490,36 @@ class ProposalRunner:
         elif overall_bi == "degraded":
             warnings.append("新云 2023-05 补充数据部分不可用（degraded）")
         stage("data_bigdata", overall_bi,
-              summary=f"coverage={cov.get('summary')} poi={poi.get('summary')}", extra={"ms": int((time.perf_counter() - t0) * 1000)})
+              summary=f"周边覆盖 公交 {cov.get('summary', {}).get('bus', 0)} 条 / 地铁 {cov.get('summary', {}).get('metro', 0)} 条 · POI {poi.get('total', 0)} 个",
+              extra={"ms": int((time.perf_counter() - t0) * 1000)})
         data_bigdata = {
             "status": overall_bi,
             "reason": cov.get("reason") or poi.get("reason"),
+            "target_name": venue_name,
+            "radius": 1500,
             "coverage": cov,
             "poi": poi,
             "data_month": "202305",
         }
 
-        # ---- 4. engine ---------------------------------------------------
+        # ---- 4. engine（一次求解 3 套差异化确定性方案） -------------------
         mark("engine")
         t0 = time.perf_counter()
         plan_resp: Optional[Dict[str, Any]] = None
+        variants_bundle: Optional[Dict[str, Any]] = None
         engine_status = "done"
+        preferred_mode = str(request.get("strategy_mode") or "balanced")
         try:
-            from engine.orchestrator import generate_plan, generate_elasticity
-            plan_resp = generate_plan(request, include_elasticity=False)
+            from engine.orchestrator import generate_plan_variants, generate_elasticity
+            variants_bundle = generate_plan_variants(request, bigdata_context=data_bigdata)
+            v_plans = variants_bundle.get("plans") or {}
+            active_mode = preferred_mode if preferred_mode in v_plans else variants_bundle.get("default_mode", "balanced")
+            variants_bundle["selected_mode"] = active_mode
+            plan_resp = v_plans.get(active_mode)
         except Exception as exc:
             engine_status = "failed"
             plan_resp = None
+            variants_bundle = None
             err = self._engine_error(exc)
             warnings.append(f"引擎失败：{redact(err.get('message') or exc)}")
 
@@ -499,36 +527,86 @@ class ProposalRunner:
         if engine_status == "done" and include_elasticity:
             try:
                 from engine.orchestrator import generate_elasticity
-                elasticity = generate_elasticity(request)
+                elasticity = generate_elasticity(request, bigdata_context=data_bigdata)
             except Exception as exc:  # 弹性失败不阻塞
                 warnings.append(f"弹性计算失败（不阻塞）：{redact(exc)}")
                 elasticity = None
         stage("engine", engine_status,
-              summary="生成完整 PlanResponse" if plan_resp else "引擎失败", extra={"ms": int((time.perf_counter() - t0) * 1000)})
+              summary=f"CP-SAT 凹边际递减模型已生成 {len((variants_bundle or {}).get('plans') or {})} 套策略方案" if plan_resp else "引擎失败",
+              extra={"ms": int((time.perf_counter() - t0) * 1000)})
 
-        # ---- 5. data_routes ---------------------------------------------
-        # 方案线路只有引擎跑完才知道；由 Agent 调 xinyun AI线路 取真实几何。
+        # ---- 5. data_routes + data_portrait（真实线路几何 + 新云 2023-05 受众画像与时段人流）
         routes_payload: Optional[Dict[str, Any]] = None
         routes_data: Optional[Dict[str, Any]] = None
+        portrait_data: Optional[Dict[str, Any]] = None
         if plan_resp and options.get("include_routes", True):
             mark("data_routes")
             t0 = time.perf_counter()
-            bus_lines, _bus_items = _lines_from_plan(plan_resp)
-            metro_lines, _metro_items = _metro_lines_from_plan(plan_resp)
-            route_lines = bus_lines + metro_lines
+            all_variant_plans = list(((variants_bundle or {}).get("plans") or {}).values()) or [plan_resp]
+            union_bus: List[str] = []
+            union_metro: List[str] = []
+            for vp in all_variant_plans:
+                bl, _ = _lines_from_plan(vp)
+                ml, _ = _metro_lines_from_plan(vp)
+                for x in bl:
+                    if x not in union_bus:
+                        union_bus.append(x)
+                for x in ml:
+                    if x not in union_metro:
+                        union_metro.append(x)
+            route_lines = union_bus + union_metro
             routes_payload = self.data.bigdata_routes(
                 route_lines,
                 force=bool(options.get("routes_force")),
-                max_lines=int(options.get("routes_max_lines") or 40),
+                max_lines=int(options.get("routes_max_lines") or 50),
             )
-            plan_resp, routes_data = _enrich_routes(plan_resp, routes_payload, run_id)
+            # 同步把真实线路几何 + 新云实测 POI 注入所有 3 套策略方案
+            bigdata_poi_items = (poi.get("items") or []) if isinstance(poi, dict) else []
+            if variants_bundle and isinstance(variants_bundle.get("plans"), dict):
+                for mode_key, vp in list(variants_bundle["plans"].items()):
+                    vp_enriched, vp_rs = _enrich_routes(vp, routes_payload, run_id)
+                    if bigdata_poi_items:
+                        mlayers = (vp_enriched.setdefault("coverage", {})).setdefault("map_layers", {})
+                        mlayers["bigdata_poi"] = bigdata_poi_items
+                    variants_bundle["plans"][mode_key] = vp_enriched
+                    if mode_key == variants_bundle.get("selected_mode"):
+                        plan_resp = vp_enriched
+                        routes_data = vp_rs
+            else:
+                plan_resp, routes_data = _enrich_routes(plan_resp, routes_payload, run_id)
+                if bigdata_poi_items:
+                    ((plan_resp.setdefault("coverage", {})).setdefault("map_layers", {}))["bigdata_poi"] = bigdata_poi_items
+
+            # 拉取方案核心公交线路的 2023-05 真实人群画像与时段人流密度（单次会话 + 本地缓存）
+            top_portrait_lines = [
+                (ln if ln.endswith("路") else f"{ln}路")
+                for ln in union_bus[:10]
+            ]
+            if top_portrait_lines:
+                portrait_data = self.data.bigdata_portrait(top_portrait_lines, media="公交", max_per_line=6)
+                per_line_map = (portrait_data or {}).get("per_line") or {}
+                # 注入到每套方案对应公交条目上，供点击地图/表格抽屉查看详细实测数据
+                if per_line_map:
+                    norm_pl = {}
+                    for k, v in per_line_map.items():
+                        nk = _norm_line(k)
+                        if nk:
+                            norm_pl[nk] = v
+                    target_plans = list(((variants_bundle or {}).get("plans") or {}).values()) or [plan_resp]
+                    for vp in target_plans:
+                        for item in ((vp.get("plan") or {}).get("bus") or []):
+                            nk = _norm_line(item.get("line"))
+                            if nk and nk in norm_pl:
+                                item["xinyun_portrait"] = norm_pl[nk]
+
             summary = routes_payload.get("summary") or {}
             resolved = int(summary.get("resolved") or 0)
             requested = int(summary.get("requested") or len(route_lines))
             route_status = str(routes_payload.get("status") or "degraded")
+            p_matched = len((portrait_data or {}).get("matched") or [])
             stage("data_routes", route_status,
-                  summary=(f"方案线路 {len(bus_lines)} 条公交 + {len(metro_lines)} 条地铁，"
-                           f"真实几何 {resolved}/{requested} 条"),
+                  summary=(f"三套方案合并线路 {len(union_bus)} 条公交 + {len(union_metro)} 条地铁，"
+                           f"真实几何 {resolved}/{requested} 条；新云画像 {p_matched} 条"),
                   extra={"ms": int((time.perf_counter() - t0) * 1000)})
             if route_status != "ready" and requested:
                 warnings.append(
@@ -542,13 +620,13 @@ class ProposalRunner:
         route_resolved = len(((routes_data or {}).get("lines")) or [])
         route_requested = int((((routes_data or {}).get("summary")) or {}).get("requested") or 0)
         stage("visualize", "done" if plan_resp else "skipped",
-              summary=(f"地图图层已注入 {route_resolved}/{route_requested} 条真实线路（map_layers.bus_routes + metro_routes）"
+              summary=(f"地图图层已注入 {route_resolved}/{route_requested} 条真实线路 + 人流密度热力与受众画像数据"
                        if plan_resp else "地图/图表图层由前端基于计划渲染"))
 
         # ---- 7. narrative ------------------------------------------------
         mark("narrative")
         stage("narrative", "done" if plan_resp else "skipped",
-              summary="话术与口径由确定性 narrative 组装")
+              summary="话术与三套策略对比口径由确定性 narrative 组装")
 
         status = "done" if plan_resp else "degraded"
         if engine_status == "failed":
@@ -563,7 +641,13 @@ class ProposalRunner:
             run_id=run_id, started_at=started_at, status=status,
             request=request, brief=brief.to_dict(), stages=stages, warnings=warnings,
             plan=plan_resp,
-            data={"inventory": data_inventory, "bigdata": data_bigdata, "routes": routes_data},
+            variants=variants_bundle,
+            data={
+                "inventory": data_inventory,
+                "bigdata": data_bigdata,
+                "routes": routes_data,
+                "portrait": portrait_data,
+            },
             elasticity=elasticity, error=(None if plan_resp else self._engine_error(None) if engine_status == "failed" else None),
         )
         return result
@@ -593,6 +677,7 @@ class ProposalRunner:
         plan: Optional[Dict[str, Any]],
         data: Dict[str, Any],
         elasticity: Optional[Dict[str, Any]],
+        variants: Optional[Dict[str, Any]] = None,
         error: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         finished_at = _now_iso()
@@ -611,6 +696,7 @@ class ProposalRunner:
             },
             "data": data,
             "plan": plan,
+            "variants": variants,
             "elasticity": elasticity,
             "warnings": warnings,
             "error": error,

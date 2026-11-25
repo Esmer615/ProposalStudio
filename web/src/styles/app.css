@@ -1427,7 +1427,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.14); }
   inset: 0;
   background: rgba(4, 5, 8, 0.65);
   backdrop-filter: blur(4px);
-  z-index: 100;
+  z-index: 900;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--dur-med) var(--ease);
@@ -1442,7 +1442,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.14); }
   background: #12141b;
   border: 1px solid var(--line-strong);
   border-radius: var(--r-lg);
-  z-index: 110;
+  z-index: 910;
   transform: translateX(calc(100% + 24px));
   transition: transform 360ms var(--ease);
   box-shadow: -24px 0 64px -20px rgba(0, 0, 0, 0.85), var(--specular);
@@ -1551,3 +1551,239 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.14); }
   .grail { position: static; }
   .closing-card { flex-direction: column; align-items: flex-start; }
 }
+
+/* ==========================================================================
+   Custom Location Presets, Agent Chat Composer, 3-Plan Strategy Cards &
+   Xinyun Bigdata Portrait / Crowd-Density Visualizations
+   ========================================================================== */
+.loc-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.agent-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.q-chip--primary {
+  border-color: rgba(212, 163, 106, 0.55);
+  background: var(--accent-dim);
+  color: var(--accent-bright);
+  font-weight: 600;
+}
+.q-chip--primary:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.agent-composer {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.agent-composer input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 13px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-strong);
+  background: #0b0d12;
+  color: var(--ink);
+  font: 400 13px/1.4 var(--font-text);
+}
+.agent-composer input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+/* 3-Strategy Plan Comparison & Switcher */
+.variant-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.variant-card {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--line);
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.variant-card:hover {
+  border-color: rgba(212, 163, 106, 0.45);
+  background: rgba(212, 163, 106, 0.05);
+  transform: translateY(-2px);
+}
+.variant-card.is-active {
+  border-color: var(--accent);
+  background: linear-gradient(160deg, rgba(212, 163, 106, 0.12), rgba(16, 18, 24, 0.92));
+  box-shadow: var(--specular), 0 12px 32px -18px rgba(212, 163, 106, 0.35);
+}
+.variant-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.variant-card__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.variant-card__tag {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--muted);
+}
+.variant-card__kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.variant-card__kpis span {
+  display: block;
+  font-size: 11px;
+  color: var(--faint);
+}
+.variant-card__kpis b {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 2px;
+}
+.variant-card.is-active .variant-card__kpis b {
+  color: var(--accent-bright);
+}
+.variant-card__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+/* Header Variant Pills */
+.variant-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.variant-pill {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font: 500 12px/1 var(--font-text);
+  padding: 7px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+}
+.variant-pill:hover {
+  border-color: rgba(212, 163, 106, 0.45);
+  color: var(--ink);
+}
+.variant-pill.is-active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent-bright);
+}
+
+/* Xinyun Bigdata Portrait & Crowd Density Visuals */
+.portrait-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.bar-list {
+  display: grid;
+  gap: 10px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) 58px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.bar-row__lbl {
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-row__track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.bar-row__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #b88750, #e7c08e);
+  transition: width 420ms var(--ease);
+}
+.bar-row__fill--emerald {
+  background: linear-gradient(90deg, #2e6f52, #48c78e);
+}
+.bar-row__val {
+  text-align: right;
+  font-family: var(--font-mono);
+  color: var(--ink);
+}
+.gender-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 8px 0 10px;
+}
+.gender-bar__male { background: linear-gradient(90deg, #4b86d4, #6aa6f0); }
+.gender-bar__female { background: linear-gradient(90deg, #c9886b, #e7b58e); }
+.drawer-portrait {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: var(--r-md);
+  background: rgba(212, 163, 106, 0.05);
+  border: 1px solid rgba(212, 163, 106, 0.25);
+  display: grid;
+  gap: 10px;
+}
+.drawer-portrait__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-bright);
+}
+.poi-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.poi-chip {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+.poi-chip b { color: var(--accent-bright); font-family: var(--font-mono); margin-left: 4px; }

@@ -211,13 +211,39 @@ def _discount_tiers(rate: Dict[str, Any]) -> List[Dict[str, Any]]:
     return out
 
 
+def _xinyun_session_summary() -> Dict[str, Any]:
+    try:
+        from agent.data_skills import default_data_runtime  # type: ignore
+        return default_data_runtime().bigdata_session_status()
+    except Exception:
+        return {"authenticated": False, "session_file_exists": False, "reason": "UNAVAILABLE"}
+
+
 def meta() -> Dict[str, Any]:
     rate = _cfg("rate_card_2027.json") or {}
     schedule = _cfg("schedule_rules.json") or {}
     date_opts = _date_options()
+    try:
+        from engine.models import INDUSTRIES, STRATEGY_MODES  # type: ignore
+        industries = list(INDUSTRIES)
+        strategy_modes = STRATEGY_MODES
+    except Exception:
+        industries = ["乐园", "银行保险", "食品饮料", "保健品", "私立医院", "其他"]
+        strategy_modes = {}
     return {
         "industry": "乐园",
+        "industries": industries,
+        "strategy_modes": strategy_modes,
         "venues": _venue_options(),
+        "preset_locations": [
+            {"id": "lego_shanghai", "name": "上海乐高乐园", "district": "金山区", "industry": "乐园", "preset": True, "coords": {"lng": 121.104, "lat": 30.880}},
+            {"id": "disney_shanghai", "name": "上海迪士尼度假区", "district": "浦东新区", "industry": "乐园", "preset": True, "coords": {"lng": 121.657, "lat": 31.141}},
+            {"id": "haichang_shanghai", "name": "上海海昌海洋公园", "district": "浦东新区", "industry": "乐园", "preset": True, "coords": {"lng": 121.908, "lat": 30.910}},
+            {"id": "custom_pingan", "name": "中国平安金融中心（陆家嘴）", "district": "浦东新区", "industry": "银行保险", "preset": False, "coords": {"lng": 121.5016, "lat": 31.2397}},
+            {"id": "custom_jingan", "name": "静安寺商圈", "district": "静安区", "industry": "食品饮料", "preset": False, "coords": {"lng": 121.4465, "lat": 31.2238}},
+            {"id": "custom_xujiahui", "name": "徐家汇港汇恒隆", "district": "徐汇区", "industry": "私立医院", "preset": False, "coords": {"lng": 121.4375, "lat": 31.1945}},
+            {"id": "custom_peoplesq", "name": "人民广场核心商圈", "district": "黄浦区", "industry": "保健品", "preset": False, "coords": {"lng": 121.4737, "lat": 31.2304}},
+        ],
         "media": [
             {"id": "bus", "name": "公交车身"},
             {"id": "metro", "name": "地铁出入口"},
@@ -237,6 +263,7 @@ def meta() -> Dict[str, Any]:
         "schedule_rules": schedule,
         "manifest": _manifest(),
         "data_ready": bool(_manifest()),
+        "xinyun_session": _xinyun_session_summary(),
     }
 
 
@@ -621,8 +648,35 @@ def _demo_run_payload() -> Optional[Dict[str, Any]]:
     return None
 
 
-def proposal_pdf(run_id: str, doc_type: str = "proposal") -> Tuple[int, Any, Dict[str, str]]:
-    """生成本地模板 PDF（支持销售提案 + 3 份合同模板），返回缓存文件路径。"""
+def geocode(query: str) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """地理编码：优先新云大数据 /nearby/geocode（带本地缓存），离线兜底上海地标库。"""
+    q = str(query or "").strip()
+    if not q:
+        return 422, {"ok": False, "error": {"code": "VALIDATION_ERROR", "message": "请输入公司名称或上海地点"}}, {}
+    try:
+        from agent.data_skills import default_data_runtime  # type: ignore
+        res = default_data_runtime().bigdata_geocode(q)
+        return 200, res, {}
+    except Exception as exc:
+        return 500, {"ok": False, "error": {"code": "GEOCODE_ERROR", "message": f"{type(exc).__name__}: {exc}"}}, {}
+
+
+def agent_consult(body: Optional[Dict[str, Any]]) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
+    """POST /api/agent/consult：多轮交互需求顾问（解析公司/地点、行业、预算、目标与追问）。"""
+    payload = dict(body or {})
+    message = str(payload.get("message") or payload.get("text") or "").strip()
+    draft = payload.get("draft") if isinstance(payload.get("draft"), dict) else {}
+    history = payload.get("history") if isinstance(payload.get("history"), list) else []
+    try:
+        from agent.consult import consult_turn  # type: ignore
+        res = consult_turn(message, draft=draft, history=history)
+        return 200, res, {}
+    except Exception as exc:
+        return 500, {"ok": False, "error": {"code": "CONSULT_ERROR", "message": f"{type(exc).__name__}: {exc}"}}, {}
+
+
+def proposal_pdf(run_id: str, doc_type: str = "proposal", variant: Optional[str] = None) -> Tuple[int, Any, Dict[str, str]]:
+    """生成本地模板 PDF（支持销售提案 + 3 份合同模板 + 3 策略变体），返回缓存文件路径。"""
     if run_id == "demo":
         result = _demo_run_payload()
     else:
@@ -634,19 +688,27 @@ def proposal_pdf(run_id: str, doc_type: str = "proposal") -> Tuple[int, Any, Dic
 
     if result is None:
         return 404, {"error": {"code": "RUN_NOT_FOUND", "message": f"未知 run_id：{run_id}", "suggestions": [], "recoverable": False}}, {}
+    effective_result = result
+    vkey = str(variant or "").strip().lower()
+    vplans = ((result.get("variants") or {}).get("plans") or {}) if isinstance(result.get("variants"), dict) else {}
+    if vkey and vkey in vplans:
+        effective_result = dict(result)
+        effective_result["run_id"] = f"{run_id}-{vkey}"
+        effective_result["plan"] = vplans[vkey]
     try:
         from server.proposal_pdf import generate_document_pdf, normalize_doc_type  # type: ignore
         key = normalize_doc_type(doc_type)
-        path = generate_document_pdf(result, key)
+        path = generate_document_pdf(effective_result, key)
     except ValueError as exc:
         return 404, {"error": {"code": "UNKNOWN_DOC_TYPE", "message": str(exc), "suggestions": [], "recoverable": False}}, {}
     except Exception as exc:
         return 500, {"error": {"code": "PDF_GENERATION_FAILED", "message": f"{type(exc).__name__}: {exc}", "suggestions": ["确认本机 Chrome/Edge 可用后重试"], "recoverable": True}}, {}
-    return 200, str(path), {"X-Data-Version": str((result.get("plan") or {}).get("meta", {}).get("data_version") or _data_version())}
+    return 200, str(path), {"X-Data-Version": str((effective_result.get("plan") or {}).get("meta", {}).get("data_version") or _data_version())}
 
 
 __all__ = [
     "health", "meta", "plan", "batch", "elasticity", "manifest",
+    "geocode", "agent_consult",
     "agent_analyze", "agent_skills", "proposal_submit", "proposal_get", "proposal_events",
     "proposal_routes", "routes_lookup", "proposal_pdf",
     "ROOT", "WEB_DIST",

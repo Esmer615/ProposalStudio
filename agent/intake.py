@@ -319,7 +319,10 @@ def _audience_notes(text: str) -> List[str]:
 
 def _request_from_structured(structured: Dict[str, Any]) -> Dict[str, Any]:
     out: Dict[str, Any] = {}
-    for key in ("venue", "budget_wan", "media", "start_date", "weeks", "customer_type", "industry", "locks"):
+    for key in (
+        "venue", "custom_venue", "budget_wan", "media", "start_date", "weeks",
+        "customer_type", "industry", "strategy_mode", "locks",
+    ):
         if key in structured and structured[key] is not None:
             out[key] = structured[key]
     return out
@@ -487,8 +490,10 @@ def resolve_brief(
 
     # ---- 结构化请求优先 ----------------------------------------------------
     structured_values = _request_from_structured(structured)
+    custom_venue = structured_values.get("custom_venue") if isinstance(structured_values.get("custom_venue"), dict) else None
+    has_custom_venue = bool(custom_venue and custom_venue.get("name"))
     for key, value in structured_values.items():
-        if key == "industry" or key == "locks":
+        if key in ("industry", "locks", "custom_venue", "strategy_mode"):
             continue
         if key == "media":
             value = [str(x).strip().lower() for x in (value if isinstance(value, list) else [value])]
@@ -496,6 +501,8 @@ def resolve_brief(
             value = str(value).strip().lower()
         confidence = "high"
         slots[key] = _slot(value, SOURCE_STRUCTURED, confidence, "显式结构化输入")
+    if has_custom_venue and "venue" not in slots:
+        slots["venue"] = _slot("custom", SOURCE_STRUCTURED, "high", f"自定义地点：{custom_venue['name']}")
     structured_objective = str(structured.get("objective") or "").strip().lower()
     if structured_objective in ("balanced", "reach", "precision", "efficiency", "brand"):
         slots["objective"] = _slot(structured_objective, SOURCE_STRUCTURED, "high", "显式结构化输入")
@@ -554,11 +561,11 @@ def resolve_brief(
                 "lego_shanghai",
                 True,
             )
-    elif venue.value not in valid_venues:
+    elif venue.value not in valid_venues and not has_custom_venue:
         add_question(
             "venue",
-            f"暂不支持场馆「{venue.value}」，请从现有场馆中选择。",
-            "当前引擎只覆盖上海三个乐园，不能拿别的场地套库存。",
+            f"暂不支持场馆「{venue.value}」，请从现有场馆中选择或指定自定义地点坐标。",
+            "需要确定有效上海地理坐标与行政区才能匹配周边线路与库存。",
             [{"value": v["id"], "label": v["name"]} for v in catalog.get("venues", [])],
             "lego_shanghai",
             True,
@@ -729,15 +736,18 @@ def resolve_brief(
 
     # ---- 构造引擎请求 ------------------------------------------------------
     request: Dict[str, Any] = {
-        "industry": "乐园",
+        "industry": str(structured_values.get("industry") or "乐园"),
         "venue": (slots.get("venue").value if slots.get("venue") else defaults.get("venue", "lego_shanghai")),
         "budget_wan": (float(slots["budget_wan"].value) if slots.get("budget_wan") and not slots["budget_wan"].missing else default_budget),
         "media": (list(slots["media"].value) if slots.get("media") and not slots["media"].missing else ["bus", "metro"]),
         "start_date": (str(slots["start_date"].value) if slots.get("start_date") and not slots["start_date"].missing else "2027-07-01"),
         "weeks": (int(slots["weeks"].value) if slots.get("weeks") and not slots["weeks"].missing else 8),
         "customer_type": (str(slots["customer_type"].value) if slots.get("customer_type") and not slots["customer_type"].missing else "direct"),
+        "strategy_mode": str(structured_values.get("strategy_mode") or "balanced"),
         "locks": structured.get("locks") or {"include": [], "exclude": []},
     }
+    if has_custom_venue:
+        request["custom_venue"] = custom_venue
     if structured.get("brief_text") and not raw_text:
         request["brief_text"] = str(structured["brief_text"])
 

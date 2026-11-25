@@ -34,6 +34,7 @@ node .claude\skills\xinyun-bigdata\scripts\login.mjs
 | 条件查询 `/conditionQuery` | 条件查询 | [modules/condition.md](modules/condition.md) | `scripts/condition_options.mjs` | `scripts/condition.mjs` | 2023-05 人群/区域筛选→命中媒体→平台导出 Excel（建议小范围） |
 | 定制查询 `/looseMultiQuery` | 地址查询 | [modules/address.md](modules/address.md) | `scripts/address_options.mjs` | `scripts/address.mjs` | 地址/坐标+半径→命中媒体→导出 Excel |
 | AI线路 `/busLineShowSolution`、AI线路-站点 `/busLineShowSolutionStation` | AI线路 | [modules/ai-route.md](modules/ai-route.md) | `scripts/ai_route_options.mjs` | `scripts/ai_route.mjs`（单条只读）<br>`scripts/ai_route_batch.mjs`（批量/缓存/会话探测）<br>`scripts/ai_share.mjs`（分享/导出） | 线路树/线路几何 GeoJSON；批量取方案线路 + 30 天缓存；分享百度地图 HTML + 导出 xls |
+| Agent 工作流集成接口 | 地理编码 / 批量画像 | 本文件 | — | `scripts/geocode.mjs`（`--json` + 本地缓存）<br>`scripts/portrait_batch.mjs`（单次会话批量拉取组合+单线画像与时段人流 `--json` + 缓存） | 供 AI 工作流直接调用：任意公司/地标编码、`coverage.mjs --json`、`coverage_poi.mjs --mode detail --json`、`portrait_batch.mjs --json` |
 
 > `scripts/query.mjs` 是组合查询的兼容别名，实际执行 `compare.mjs`。
 

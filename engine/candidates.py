@@ -175,19 +175,141 @@ def _level_weight(skill: Skill, level: str) -> float:
     return float(skill.level_weights.get(level, 1.0))
 
 
-def _zone_score(skill: Skill, cand: Candidate) -> float:
-    """场馆亲和 / 区域权重：无真实距离时用区县 / 运营公司代理。"""
-    # 乐高（金山）与市中心距离远；这里用启发式：区县越接近金山/浦东枢纽权重越高。
-    # 简化：区内与场馆同区 -> 高；否则中等。真实版应接 geo。
+# 上海 16 区县近似几何中心（用于公交线路区县代理的 Haversine 空间亲和计算）
+_DISTRICT_CENTROIDS: Dict[str, Tuple[float, float]] = {
+    "黄浦区": (121.484, 31.231),
+    "静安区": (121.448, 31.229),
+    "徐汇区": (121.437, 31.188),
+    "长宁区": (121.424, 31.220),
+    "普陀区": (121.397, 31.249),
+    "虹口区": (121.505, 31.265),
+    "杨浦区": (121.526, 31.259),
+    "浦东新区": (121.544, 31.222),
+    "闵行区": (121.382, 31.112),
+    "宝山区": (121.490, 31.404),
+    "嘉定区": (121.265, 31.375),
+    "金山区": (121.342, 30.742),
+    "松江区": (121.228, 31.032),
+    "青浦区": (121.124, 31.150),
+    "奉贤区": (121.474, 30.918),
+    "崇明区": (121.397, 31.623),
+}
+
+
+def _norm_bus_line(name: Any) -> str:
+    s = str(name or "").strip()
+    if s.endswith("路"):
+        s = s[:-1]
+    return s.strip()
+
+
+def _parse_bigdata_context(bigdata_context: Optional[Dict[str, Any]]) -> Tuple[Dict[str, float], Dict[str, float]]:
+    """从 xinyun-bigdata coverage 提取 {规范公交线名: 最小距离m} 和 {地铁站名: 最小距离m}。"""
+    bus_map: Dict[str, float] = {}
+    metro_map: Dict[str, float] = {}
+    if not isinstance(bigdata_context, dict):
+        return bus_map, metro_map
+    cov = bigdata_context.get("coverage") if isinstance(bigdata_context.get("coverage"), dict) else bigdata_context
+    for item in cov.get("items") or []:
+        if not isinstance(item, dict):
+            continue
+        dist = float(item.get("minDistance") or 0.0)
+        mt = str(item.get("mediaType") or "")
+        if mt == "bus":
+            key = _norm_bus_line(item.get("lineName"))
+            if key and (key not in bus_map or dist < bus_map[key]):
+                bus_map[key] = dist
+        elif mt == "metro":
+            st = str(item.get("nearestStaName") or "").replace("站", "").strip()
+            if st and (st not in metro_map or dist < metro_map[st]):
+                metro_map[st] = dist
+    for ln in cov.get("bus_lines") or []:
+        key = _norm_bus_line(ln)
+        if key and key not in bus_map:
+            bus_map[key] = 1000.0
+    for st in cov.get("metro_stations") or []:
+        key = str(st or "").replace("站", "").strip()
+        if key and key not in metro_map:
+            metro_map[key] = 800.0
+    return bus_map, metro_map
+
+
+def _ring_decay(dist_km: float, rings_km: List[int]) -> float:
+    """平滑空间衰减：距离目标地点越近分越高，落在核心圈内获高亲和分。"""
+    r0 = float(rings_km[0]) if rings_km else 5.0
+    r1 = float(rings_km[1]) if len(rings_km) > 1 else max(15.0, r0 * 2.5)
+    r2 = float(rings_km[2]) if len(rings_km) > 2 else max(35.0, r1 * 2.0)
+    if dist_km <= r0:
+        return round(0.95 - 0.08 * (dist_km / max(r0, 0.5)), 3)
+    if dist_km <= r1:
+        return round(0.87 - 0.17 * ((dist_km - r0) / max(r1 - r0, 1.0)), 3)
+    if dist_km <= r2:
+        return round(0.70 - 0.18 * ((dist_km - r1) / max(r2 - r1, 1.0)), 3)
+    return 0.45
+
+
+def _zone_score(
+    skill: Skill,
+    cand: Candidate,
+    bus_cov_map: Optional[Dict[str, float]] = None,
+    metro_cov_map: Optional[Dict[str, float]] = None,
+) -> Tuple[float, Optional[float], Optional[float]]:
+    """场馆/公司空间亲和度：
+    1) 优先命中新云大数据实测周边覆盖线路/地铁站（0.94–1.00）；
+    2) 其次用真实 Haversine 距离（地铁站点坐标 / 公交区县中心）按圈层衰减；
+    3) 无坐标时回退同区/核心城区代理。
+
+    返回 (zone_score, dist_km, xinyun_cov_dist_m)。
+    """
+    # 1) 新云大数据实测覆盖直hit
+    if cand.kind == "bus" and bus_cov_map:
+        key = _norm_bus_line(cand.line_name)
+        if key in bus_cov_map:
+            dm = bus_cov_map[key]
+            z = 1.00 if dm <= 350 else (0.97 if dm <= 900 else 0.94)
+            return z, round(dm / 1000.0, 2), dm
+    if cand.kind == "metro" and metro_cov_map:
+        st = str(cand.line_name or "").replace("站", "").strip()
+        if st in metro_cov_map:
+            dm = metro_cov_map[st]
+            z = 1.00 if dm <= 500 else 0.96
+            return z, round(dm / 1000.0, 2), dm
+
+    v_lng = float((skill.coords or {}).get("lng") or 0.0)
+    v_lat = float((skill.coords or {}).get("lat") or 0.0)
+    has_target = bool(v_lng and v_lat)
+
+    # 2) 地铁：真实站点坐标 Haversine
+    if cand.kind == "metro" and has_target:
+        sc = _station_coords(cand)
+        if sc:
+            dkm = _haversine_km(v_lat, v_lng, sc["lat"], sc["lng"])
+            return _ring_decay(dkm, skill.rings_km), round(dkm, 2), None
+
+    # 3) 公交：匹配区县/复合区域中心 Haversine
     district = cand.district or ""
     venue_district = skill.district or ""
-    if district and venue_district and district == venue_district:
-        return 0.95
-    # 家庭客源核心区（市中心 + 浦东）
+    if has_target and district:
+        import re
+        parts = [x.strip() for x in re.split(r"[-/、]", district) if x.strip()]
+        best_dkm: Optional[float] = None
+        for dname, (dlng, dlat) in _DISTRICT_CENTROIDS.items():
+            if any(p in dname or dname[:-1] in p for p in parts):
+                dkm = _haversine_km(v_lat, v_lng, dlat, dlng)
+                if best_dkm is None or dkm < best_dkm:
+                    best_dkm = dkm
+        if best_dkm is not None:
+            z = _ring_decay(best_dkm, skill.rings_km)
+            if venue_district and any(p in venue_district for p in parts):
+                z = max(z, 0.92)
+            return round(z, 3), round(best_dkm, 2), None
+
+    if district and venue_district and (district == venue_district or venue_district[:-1] in district):
+        return 0.93, None, None
     core = ("黄浦区", "静安区", "徐汇区", "浦东新区", "长宁区", "虹口区", "杨浦区", "普陀区", "闵行区")
-    if any(c in district for c in core):
-        return 0.70
-    return 0.45
+    if any(c in district or c[:-1] in district for c in core):
+        return 0.68, None, None
+    return 0.45, None, None
 
 
 def _poi_score(cand: Candidate, skill: Skill, pois: List[Dict[str, Any]]) -> Tuple[float, int, List[Dict[str, Any]]]:
@@ -279,42 +401,49 @@ def enrich(
     skill: Skill,
     rc: RateCard,
     pois: Optional[List[Dict[str, Any]]] = None,
+    bigdata_context: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
     """把 Candidate 富化成带评分/理由/证据的 dict 列表（solver 与解释层共用）。"""
     pois = pois if pois is not None else load_pois()
+    bus_cov_map, metro_cov_map = _parse_bigdata_context(bigdata_context)
     out: List[Dict[str, Any]] = []
     for c in cands:
         exp = _exposure_proxy(c.kind, c.level)
         lv_w = _level_weight(skill, c.level)
-        zone = _zone_score(skill, c)
+        zone, dist_km, cov_dist_m = _zone_score(skill, c, bus_cov_map, metro_cov_map)
         poi_s, poi_n, poi_ev = _poi_score(c, skill, pois)
         corridor = _corridor_score(c)
         ceff = _cost_efficiency(c.kind, c.level, rc)
 
-        # 综合评分（PRD §6 加权参照，乐园行业 audienceW=0.5 已并入 poi 维度）
+        # 综合评分：空间区位（含新云实测周边命中）36% + 廊道换乘 24% + 性价比 16% + POI 14% + 等级 10%
         score = round((
-            0.34 * zone
-            + 0.10 * min(1.0, (lv_w - 0.65) / 0.65)  # 等级权重归一
-            + 0.28 * corridor
-            + 0.15 * ceff
-            + 0.13 * poi_s
+            0.36 * zone
+            + 0.10 * min(1.0, (lv_w - 0.65) / 0.65)
+            + 0.24 * corridor
+            + 0.16 * ceff
+            + 0.14 * poi_s
         ) * 100.0, 1)
 
         reasons: List[str] = []
         evidence: List[Dict[str, Any]] = []
-        # 曝光理由
+        if cov_dist_m is not None:
+            reasons.append(f"新云大数据实测命中：距「{skill.name}」约 {int(round(cov_dist_m))}m")
+            evidence.append({
+                "type": "xinyun_coverage",
+                "text": f"新云周边覆盖实测命中（距目标 {int(round(cov_dist_m))}m）",
+                "source": "新云传媒大数据可视化平台",
+            })
         if exp:
             reasons.append(f"{c.level} 级，日均曝光按 {int(exp):,} 人次估算，曝光效率{'高' if exp >= 48000 else '中'}")
-        # 区县理由
-        reasons.append(f"覆盖 {c.district or '未知区县'}" + ("（场馆同区，亲和度高）" if zone >= 0.9 else ""))
-        # 库存证据
+        dist_tag = f"（距目标约 {dist_km:.1f}km）" if dist_km is not None and cov_dist_m is None else ("（目标同区，亲和度高）" if zone >= 0.9 else "")
+        reasons.append(f"覆盖 {c.district or '未知区县'}{dist_tag}")
         evidence.append({"type": "inventory", "text": f"红豆 min_free={c.free_count}", "source": "红豆 API"})
         if c.kind == "metro" and c.station_attr:
-            reasons.append(f"{c.station_attr} 换乘，家庭出行拦截强")
+            reasons.append(f"{c.station_attr} 换乘，客流拦截强")
             evidence.append({"type": "transfer", "text": c.station_attr, "source": "红豆 stationAttr"})
         if poi_n:
             names = "、".join(str(p.get("name")) for p in poi_ev[:3] if p.get("name"))
-            reasons.append(f"周边命中 {poi_n} 个亲子/家庭 POI" + (f"（{names}）" if names else ""))
+            reasons.append(f"周边命中 {poi_n} 个重点商圈/社区 POI" + (f"（{names}）" if names else ""))
             evidence.append({
                 "type": "poi",
                 "text": f"周边 800m/区县代理命中 {poi_n} 个 POI" + (f"：{names}" if names else ""),
@@ -363,6 +492,9 @@ def enrich(
             "geo": geo,
             "poi_hits": poi_ev,
             "poi_count": poi_n,
+            "distance_km": dist_km,
+            "xinyun_matched": cov_dist_m is not None,
+            "xinyun_distance_m": round(cov_dist_m, 1) if cov_dist_m is not None else None,
             "raw": c.raw,
         })
     return out

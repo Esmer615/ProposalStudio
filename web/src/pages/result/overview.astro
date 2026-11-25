@@ -47,6 +47,15 @@ import ResultHeader from '../../components/ResultHeader.astro';
         </div>
       </section>
 
+      <!-- 3 套确定性策略方案横向对比与一键切换 -->
+      <section aria-labelledby="ov-var-h" data-variant-section hidden>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4);flex-wrap:wrap">
+          <h2 id="ov-var-h" class="heading-5">三套 CP-SAT 差异化方案对比</h2>
+          <span class="faint t-xs mono">基于凹边际递减模型同库求解 · 点击任意方案卡片实时切换全站数据与导出 PDF</span>
+        </div>
+        <div class="variant-grid" data-k="variant-cards"></div>
+      </section>
+
       <!-- 官方模板交付中心（4 张可点击 Bento 卡片，去除重复下载按钮） -->
       <section aria-labelledby="ov-docs-h" data-doc-panel>
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4);flex-wrap:wrap">
@@ -202,10 +211,10 @@ import ResultHeader from '../../components/ResultHeader.astro';
 </main>
 </Base>
 <script>
-  import { initResult } from '../../scripts/result';
+  import { initResult, buildPdfUrl, navigateVariant } from '../../scripts/result';
   import { fmtWan, pctReadable, ratioPct } from '../../lib/format';
 
-  initResult((plan, run) => {
+  initResult((plan, run, activeVariant = 'balanced') => {
     const inputs = plan.inputs || {};
     const effects = plan.effects || {};
     const hyp = plan.hypothesis || {};
@@ -217,19 +226,53 @@ import ResultHeader from '../../components/ResultHeader.astro';
     const title = document.querySelector('[data-result-title]');
     if (title) title.textContent = h1;
     document.querySelector('[data-k="inputs-line"]')!.textContent =
-      `${(inputs.media || []).map((m: string) => (m === 'bus' ? '公交车身' : '地铁出入口')).join(' + ')} · ${inputs.weeks ?? '—'} 周 · ${inputs.customer_type_label || (inputs.customer_type === '4a' ? '4A 代理' : '直客')} · 档期 ${inputs.start_date ?? '—'} → ${inputs.end_date ?? '—'}`;
+      `${inputs.industry || '乐园'} · ${(inputs.media || []).map((m: string) => (m === 'bus' ? '公交车身' : '地铁出入口')).join(' + ')} · ${inputs.weeks ?? '—'} 周 · ${inputs.customer_type_label || (inputs.customer_type === '4a' ? '4A 代理' : '直客')} · 档期 ${inputs.start_date ?? '—'} → ${inputs.end_date ?? '—'}`;
 
-    // Wire 4 official PDF tiles + highlight matched customer contract
+    // Render 3-strategy comparison cards if present
+    const variants = (run as any)?.variants;
+    const varSec = document.querySelector<HTMLElement>('[data-variant-section]');
+    const varGrid = document.querySelector<HTMLElement>('[data-k="variant-cards"]');
+    if (varSec && varGrid && variants?.comparison?.length > 1) {
+      varSec.hidden = false;
+      varGrid.replaceChildren();
+      variants.comparison.forEach((v: any) => {
+        const isAct = v.mode === activeVariant;
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'variant-card' + (isAct ? ' is-active' : '');
+        card.innerHTML = `
+          <div class="variant-card__head">
+            <span class="variant-card__title">${v.title || v.short}</span>
+            <span class="chip ${isAct ? 'chip--accent' : 'chip--quiet'}">${isAct ? '当前查看' : '切换'}</span>
+          </div>
+          <p class="variant-card__tag">${v.tagline || ''}</p>
+          <div class="variant-card__kpis">
+            <div><span>有效曝光</span><b>${fmtWan((v.impressions || 0) / 10000, 0)}万</b></div>
+            <div><span>Reach</span><b>${pctReadable(v.reach_pct ?? v.reach)}</b></div>
+            <div><span>CPM</span><b>¥${fmtWan(v.cpm_yuan, 1)}</b></div>
+          </div>
+          <div class="variant-card__meta">
+            <span>公交 ${v.bus_lines}线/${v.bus_units}辆 · 地铁 ${v.metro_stations}站</span>
+            <span>实付 ¥${fmtWan(v.total_paid_wan, 1)}万</span>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          if (v.mode !== activeVariant) navigateVariant(v.mode);
+        });
+        varGrid.append(card);
+      });
+    }
+
+    // Wire 4 official PDF tiles + highlight matched customer contract (preserving ?variant=)
     const runId = (run as any)?.run_id;
     const is4a = inputs.customer_type === '4a';
     const docPanel = document.querySelector<HTMLElement>('[data-doc-panel]');
     if (runId) {
-      const enc = encodeURIComponent(runId);
       const urlMap: Record<string, string> = {
-        'proposal': `/proposals/${enc}.pdf`,
-        'contract-direct': `/proposals/${enc}/contract-direct.pdf`,
-        'contract-4a-order': `/proposals/${enc}/contract-4a-order.pdf`,
-        'contract-4a-framework': `/proposals/${enc}/contract-4a-framework.pdf`,
+        'proposal': buildPdfUrl(runId, 'proposal', activeVariant),
+        'contract-direct': buildPdfUrl(runId, 'contract-direct', activeVariant),
+        'contract-4a-order': buildPdfUrl(runId, 'contract-4a-order', activeVariant),
+        'contract-4a-framework': buildPdfUrl(runId, 'contract-4a-framework', activeVariant),
       };
       document.querySelectorAll<HTMLAnchorElement>('[data-doc-link]').forEach((el) => {
         const key = el.dataset.docLink || '';

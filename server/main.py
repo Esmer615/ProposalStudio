@@ -134,6 +134,33 @@ async def api_routes(request: Request) -> JSONResponse:
     return _json(payload, code, headers)
 
 
+@app.get("/api/geocode")
+def api_geocode_get(q: str = "") -> JSONResponse:
+    code, payload, headers = core.geocode(q)
+    return _json(payload, code, headers)
+
+
+@app.post("/api/geocode")
+async def api_geocode_post(request: Request) -> JSONResponse:
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    q = (body.get("q") or body.get("address") or "") if isinstance(body, dict) else ""
+    code, payload, headers = core.geocode(q)
+    return _json(payload, code, headers)
+
+
+@app.post("/api/agent/consult")
+async def api_agent_consult(request: Request) -> JSONResponse:
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    code, payload, headers = core.agent_consult(body if isinstance(body, dict) else {})
+    return _json(payload, code, headers)
+
+
 @app.post("/api/agent/analyze")
 async def api_agent_analyze(request: Request) -> JSONResponse:
     try:
@@ -144,8 +171,8 @@ async def api_agent_analyze(request: Request) -> JSONResponse:
     return _json(payload, code, headers)
 
 
-def _serve_pdf(run_id: str, doc_type: str, download_name: str) -> Response:
-    code, payload, headers = core.proposal_pdf(run_id, doc_type)
+def _serve_pdf(run_id: str, doc_type: str, download_name: str, variant: Optional[str] = None) -> Response:
+    code, payload, headers = core.proposal_pdf(run_id, doc_type, variant=variant)
     if code != 200:
         return _json(payload if isinstance(payload, dict) else {"error": {"code": "PDF_GENERATION_FAILED", "message": str(payload)}}, code, headers)
     path = Path(payload)
@@ -164,16 +191,18 @@ def _serve_pdf(run_id: str, doc_type: str, download_name: str) -> Response:
 
 
 @app.get("/proposals/{run_id}.pdf")
-def api_proposal_pdf(run_id: str) -> Response:
-    """本地下载：16:9 新云历史提案样本模板 PDF（懒生成并缓存）。"""
-    return _serve_pdf(run_id, "proposal", f"proposal-{run_id}.pdf")
+def api_proposal_pdf(run_id: str, variant: Optional[str] = None) -> Response:
+    """本地下载：16:9 新云历史提案样本模板 PDF（懒生成并缓存，支持 ?variant=balanced|max_reach|precision）。"""
+    suffix = f"-{variant}" if variant in ("balanced", "max_reach", "precision") else ""
+    return _serve_pdf(run_id, "proposal", f"proposal-{run_id}{suffix}.pdf", variant=variant)
 
 
 @app.get("/proposals/{run_id}/{doc_slug}.pdf")
-def api_proposal_document_pdf(run_id: str, doc_slug: str) -> Response:
+def api_proposal_document_pdf(run_id: str, doc_slug: str, variant: Optional[str] = None) -> Response:
     """本地下载：按模板下载销售提案 / 直客合同 / 4A排期订单 / 4A框架合同 PDF。"""
     safe_slug = doc_slug.strip().lower()
-    return _serve_pdf(run_id, safe_slug, f"{safe_slug}-{run_id}.pdf")
+    suffix = f"-{variant}" if variant in ("balanced", "max_reach", "precision") else ""
+    return _serve_pdf(run_id, safe_slug, f"{safe_slug}-{run_id}{suffix}.pdf", variant=variant)
 
 
 # --------------------------------------------------------------------------- #

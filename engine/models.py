@@ -8,9 +8,36 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 INDUSTRY = "乐园"
+
+INDUSTRIES: Tuple[str, ...] = (
+    "乐园",
+    "银行保险",
+    "食品饮料",
+    "保健品",
+    "私立医院",
+    "其他",
+)
+
+STRATEGY_MODES: Dict[str, Dict[str, str]] = {
+    "balanced": {
+        "title": "均衡首选方案",
+        "short": "均衡首选",
+        "tagline": "曝光广度 × 目标区位浓度平衡，兼顾 Reach 与地标心智",
+    },
+    "max_reach": {
+        "title": "全域广度覆盖方案",
+        "short": "全域广度",
+        "tagline": "严控单线重复并分散跨区线路，最大化去重 Reach 与最低 CPM",
+    },
+    "precision": {
+        "title": "核心地标聚焦方案",
+        "short": "地标聚焦",
+        "tagline": "高配目标周边实测线路与 S/A++ 枢纽，拉高核心客群触达频次",
+    },
+}
 
 VENUES: Dict[str, Dict[str, Any]] = {
     "lego_shanghai": {
@@ -88,6 +115,8 @@ class PlanRequest:
     industry: str = INDUSTRY
     locks: Dict[str, List[str]] = field(default_factory=lambda: {"include": [], "exclude": []})
     brief_text: Optional[str] = None
+    custom_venue: Optional[Dict[str, Any]] = None
+    strategy_mode: str = "balanced"
 
     # ------------------------------------------------------------------ #
     # 构造 / 校验
@@ -96,19 +125,42 @@ class PlanRequest:
     def from_dict(cls, raw: Optional[Dict[str, Any]]) -> "PlanRequest":
         raw = raw or {}
         locks = raw.get("locks") or {}
+        cv_raw = raw.get("custom_venue")
+        custom_venue: Optional[Dict[str, Any]] = None
+        if isinstance(cv_raw, dict) and cv_raw.get("name"):
+            coords_raw = cv_raw.get("coords") or {}
+            lng = coords_raw.get("lng", cv_raw.get("lng"))
+            lat = coords_raw.get("lat", cv_raw.get("lat"))
+            try:
+                lng_f = float(lng)
+                lat_f = float(lat)
+                custom_venue = {
+                    "id": str(cv_raw.get("id") or "custom"),
+                    "name": str(cv_raw["name"]).strip(),
+                    "district": str(cv_raw.get("district") or "").strip(),
+                    "address": str(cv_raw.get("address") or cv_raw["name"]).strip(),
+                    "coords": {"lng": round(lng_f, 6), "lat": round(lat_f, 6)},
+                    "rings_km": [int(x) for x in (cv_raw.get("rings_km") or [3, 8, 20])],
+                }
+            except (TypeError, ValueError):
+                custom_venue = None
+        venue_raw = str(raw.get("venue") or ("custom" if custom_venue else "lego_shanghai"))
+        strategy_mode = str(raw.get("strategy_mode") or "balanced").strip().lower()
         req = cls(
-            venue=str(raw.get("venue") or "lego_shanghai"),
+            venue=venue_raw,
             budget_wan=float(raw.get("budget_wan", DEFAULT_BUDGET_WAN)),
             media=list(raw.get("media") or ["bus", "metro"]),
             start_date=str(raw.get("start_date") or DEFAULT_START_DATE),
             weeks=int(raw.get("weeks", DEFAULT_WEEKS)),
             customer_type=str(raw.get("customer_type") or "direct"),
-            industry=str(raw.get("industry") or INDUSTRY),
+            industry=str(raw.get("industry") or INDUSTRY).strip(),
             locks={
                 "include": [str(x) for x in (locks.get("include") or [])],
                 "exclude": [str(x) for x in (locks.get("exclude") or [])],
             },
             brief_text=(str(raw["brief_text"]) if raw.get("brief_text") else None),
+            custom_venue=custom_venue,
+            strategy_mode=strategy_mode,
         )
         req.normalize()
         req.validate()
@@ -123,16 +175,19 @@ class PlanRequest:
                 seen.append(m)
         order = {m: i for i, m in enumerate(MEDIA_TYPES)}
         self.media = sorted(seen, key=lambda m: order.get(m, 99))
+        if self.strategy_mode not in STRATEGY_MODES:
+            self.strategy_mode = "balanced"
 
     def validate(self) -> None:
-        if self.industry != INDUSTRY:
+        if not self.industry:
             raise PlanError(
                 "VALIDATION_ERROR",
-                f"当前版本仅支持行业：{INDUSTRY}",
+                "行业不能为空",
                 field="industry",
-                suggestions=[INDUSTRY],
+                suggestions=list(INDUSTRIES),
             )
-        if self.venue not in VENUES:
+        has_custom = isinstance(self.custom_venue, dict) and bool(self.custom_venue.get("name"))
+        if self.venue not in VENUES and not has_custom:
             raise PlanError(
                 "VALIDATION_ERROR",
                 f"未知场馆：{self.venue}",
@@ -209,10 +264,12 @@ class PlanRequest:
 
     @property
     def venue_name(self) -> str:
-        return VENUES[self.venue]["name"]
+        if isinstance(self.custom_venue, dict) and self.custom_venue.get("name"):
+            return str(self.custom_venue["name"])
+        return (VENUES.get(self.venue) or {}).get("name", self.venue)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        out: Dict[str, Any] = {
             "industry": self.industry,
             "venue": self.venue,
             "venue_name": self.venue_name,
@@ -224,15 +281,22 @@ class PlanRequest:
             "months": self.months,
             "customer_type": self.customer_type,
             "customer_type_label": CUSTOMER_TYPES[self.customer_type],
+            "strategy_mode": self.strategy_mode,
             "locks": {"include": list(self.locks["include"]), "exclude": list(self.locks["exclude"])},
         }
+        if self.custom_venue:
+            out["custom_venue"] = dict(self.custom_venue)
+        return out
 
     def cache_key(self) -> str:
         import json
 
         payload = {
-            "v": 1,
+            "v": 2,
+            "industry": self.industry,
             "venue": self.venue,
+            "custom_venue": self.custom_venue,
+            "strategy_mode": self.strategy_mode,
             "budget": round(self.budget_wan, 2),
             "media": self.media,
             "start": self.start_date,
@@ -245,6 +309,8 @@ class PlanRequest:
 
 __all__ = [
     "INDUSTRY",
+    "INDUSTRIES",
+    "STRATEGY_MODES",
     "VENUES",
     "MEDIA_LABELS",
     "MEDIA_TYPES",

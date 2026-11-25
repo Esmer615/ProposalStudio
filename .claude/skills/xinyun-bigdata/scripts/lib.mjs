@@ -232,7 +232,7 @@ export async function getThirdLabels(page, firstLabel) {
   return data
 }
 
-const norm = (s) => String(s ?? '').replace(/路$/g, '').trim()
+const norm = (s) => String(s ?? '').replace(/路$/g, '').replace(/\s+/g, '').trim()
 
 export function matchLabels(allLabels, tags) {
   const found = []
@@ -240,17 +240,25 @@ export function matchLabels(allLabels, tags) {
   for (const tag of tags) {
     const t = String(tag).trim()
     if (!t) continue
-    const hit = allLabels.find((x) =>
-      String(x.thirdLabel) === t ||
-      norm(x.thirdLabel) === norm(t) ||
-      norm(x.ext1) === norm(t) ||
-      String(x.thirdLabel).includes(t)
-    )
-    if (hit) found.push(hit)
+    const nt = norm(t)
+    // Tiered exact-first matching so "71路" never falsely matches "1671路"
+    const hit =
+      allLabels.find((x) => String(x.thirdLabel).trim() === t) ||
+      allLabels.find((x) => norm(x.thirdLabel) === nt) ||
+      allLabels.find((x) => norm(x.ext1) === nt) ||
+      allLabels.find((x) => String(x.thirdLabel).startsWith(t) && !/^\d/.test(String(x.thirdLabel).slice(t.length))) ||
+      allLabels.find((x) => !/^\d+$/.test(nt) && String(x.thirdLabel).includes(t))
+    if (hit) found.push({ requested: t, label: hit })
     else missing.push(t)
   }
-  // de-dupe by id
-  const byId = new Map(found.map((x) => [String(x.id), x]))
+  // de-dupe by id while keeping requested tag mapping
+  const byId = new Map()
+  for (const item of found) {
+    const key = String(item.label.id)
+    if (!byId.has(key)) {
+      byId.set(key, { ...item.label, _requested: item.requested })
+    }
+  }
   return { labels: [...byId.values()], missing }
 }
 
@@ -293,12 +301,27 @@ export function buildSummary(indicators) {
   const age = indicators.crowdAge?.data?.[0] || {}
   const gender = indicators.crowdGender?.data?.[0] || {}
   const house = indicators.crowdHouse?.data?.[0] || {}
+  const consumption = indicators.crowdConsumption?.data?.[0] || {}
+  const regionAttr = Array.isArray(indicators.regionAttribute?.data) ? indicators.regionAttribute.data : []
   const phones = Array.isArray(indicators.crowdPhoneNew?.data) ? indicators.crowdPhoneNew.data : []
   const flow = Array.isArray(indicators.visitorsFlowrateAndcrowdSpeed?.data)
     ? indicators.visitorsFlowrateAndcrowdSpeed.data
     : []
-  const topPhones = [...phones].sort((a, b) => (b.num || 0) - (a.num || 0)).slice(0, 5)
+  const topPhones = [...phones].sort((a, b) => (b.num || 0) - (a.num || 0)).slice(0, 8)
   const flowValues = flow.flatMap((x) => [x.time1, x.time2, x.time3, x.time4]).filter((v) => typeof v === 'number')
+  const byType = (t) => flow.find((x) => x && x.type === t) || null
+  const vf = byType('visitorsFlowrate')
+  const pvRow = byType('coverPeoplesPV')
+  const uvRow = byType('coverPeoplesUV')
+  const pvAccRow = byType('coverPeoplesPVAccurate')
+  const flowPeriods = vf
+    ? {
+        morning: Number(vf.time1 || 0),
+        midday: Number(vf.time2 || 0),
+        evening: Number(vf.time3 || 0),
+        night: Number(vf.time4 || 0),
+      }
+    : null
   const pct = (v) => (typeof v === 'number' ? Math.round(v * 10000) / 100 : null)
   return {
     under20_pct: age.age1 ?? null,
@@ -315,7 +338,25 @@ export function buildSummary(indicators) {
       two: pct(house.two),
       more: pct(house.more),
     },
+    consumption: Object.keys(consumption).length
+      ? {
+          low: Math.round(((Number(consumption.ilow1 || 0) + Number(consumption.ilow2 || 0) + Number(consumption.ilow3 || 0)) * 100)) / 100,
+          ilow1: consumption.ilow1 ?? null,
+          ilow2: consumption.ilow2 ?? null,
+          ilow3: consumption.ilow3 ?? null,
+          middle: consumption.imiddle ?? null,
+          high: consumption.ihigh ?? null,
+          family_low: consumption.flow ?? null,
+          family_middle: consumption.fmiddle ?? null,
+          family_high: consumption.fhigh ?? null,
+        }
+      : null,
+    region_attribute: regionAttr,
     top_phones: topPhones,
+    flow_periods: flowPeriods,
+    cover_pv: pvRow ? Number(pvRow.time1 || 0) : null,
+    cover_uv: uvRow ? Number(uvRow.time1 || 0) : null,
+    cover_pv_accurate: pvAccRow ? Number(pvAccRow.time1 || 0) : null,
     flow_points: flow.length,
     flow_nonzero_points: flowValues.filter((v) => v !== 0).length,
     flow_max: flowValues.length ? Math.max(...flowValues) : null,

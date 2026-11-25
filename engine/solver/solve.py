@@ -27,6 +27,85 @@ SCALE = 10000  # 钱放大倍数（0.0001 万 = 1 单位，覆盖 4 位小数）
 DEFAULT_PROD_BUS = 0.75
 DEFAULT_PROD_METRO = 0.03
 
+# 三种确定性优化策略参数（在同一 CP-SAT 凹边际递减模型上求解差异化组合）
+STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
+    "balanced": {
+        "w_exp": 0.55,
+        "w_qual": 0.45,
+        "w_div_line": 120,
+        "w_div_dist": 180,
+        "bus_max_units": 3,
+        "metro_max_units": 2,
+        "bus_high_lo": config.BUS_HIGH_SHARE_LO,
+        "bus_mix_delta": 0.0,
+        "metro_mix_delta": 0.0,
+        "zone_boost": 1.0,
+        "xinyun_bonus": 160,
+    },
+    "max_reach": {
+        "w_exp": 0.74,
+        "w_qual": 0.18,
+        "w_div_line": 280,
+        "w_div_dist": 360,
+        "bus_max_units": 2,
+        "metro_max_units": 1,
+        "bus_high_lo": 0.25,
+        "bus_mix_delta": 0.12,
+        "metro_mix_delta": -0.12,
+        "zone_boost": 0.85,
+        "xinyun_bonus": 90,
+    },
+    "precision": {
+        "w_exp": 0.24,
+        "w_qual": 0.76,
+        "w_div_line": 50,
+        "w_div_dist": 80,
+        "bus_max_units": 4,
+        "metro_max_units": 2,
+        "bus_high_lo": 0.52,
+        "bus_mix_delta": -0.10,
+        "metro_mix_delta": 0.12,
+        "zone_boost": 1.45,
+        "xinyun_bonus": 340,
+    },
+}
+
+
+def _strategy_profile(mode: str) -> Dict[str, Any]:
+    return STRATEGY_PROFILES.get(str(mode or "balanced").lower(), STRATEGY_PROFILES["balanced"])
+
+
+def _adjust_mix_bounds(bounds: Tuple[float, float], delta: float) -> Tuple[float, float]:
+    lo, hi = bounds
+    if delta == 0.0:
+        return (lo, hi)
+    new_lo = max(0.0, min(0.85, lo + delta))
+    new_hi = max(new_lo + 0.10, min(1.0, hi + delta))
+    return (round(new_lo, 2), round(new_hi, 2))
+
+
+def _slot_marginal_value(item: Dict[str, Any], slot_k: int, prof: Dict[str, Any]) -> int:
+    """计算单个点位第 slot_k 个新增投放单元的边际目标分（精确建模 SLOT_DECAY 边际递减）。
+
+    将「有效日均曝光」与「空间/POI/廊道综合质量分」归一化到同一 [0, 1000] 尺度，
+    彻底解决旧版线性模型中 exposure*100 淹没 score 且忽略同线重复递减的问题。
+    """
+    view_rate = config.VIEW_RATE_BUS if item["kind"] == "bus" else config.VIEW_RATE_METRO
+    raw_exp = float(item.get("exposure") or 0.0) * view_rate
+    # 归一化曝光分（以地铁 A++ 有效日曝光 45,000 为基准 1000 分）
+    exp_norm = min(1000.0, (raw_exp / 45000.0) * 1000.0)
+    # 综合质量分（0..1000），在 precision 策略下强化空间亲和与 POI 浓度
+    base_score = float(item.get("score") or 50.0) * 10.0
+    sb = item.get("score_breakdown") or {}
+    zone_val = float(sb.get("zone") or 0.5) * 1000.0
+    qual_norm = min(1000.0, base_score * 0.65 + zone_val * 0.35 * prof["zone_boost"])
+    decay = config.SLOT_DECAY ** slot_k
+    val = (prof["w_exp"] * exp_norm + prof["w_qual"] * qual_norm) * decay
+    # 若该线路/站点被新云大数据实测命中（目标地点周边），首车/首口加策略亲和分
+    if slot_k == 0 and item.get("xinyun_matched"):
+        val += prof["xinyun_bonus"]
+    return max(1, int(round(val)))
+
 
 def _build_cost_unit(item: Dict[str, Any], months: int, discount: float, agency_factor: float,
                      prod_bus: float = DEFAULT_PROD_BUS, prod_metro: float = DEFAULT_PROD_METRO) -> int:
@@ -180,6 +259,7 @@ def solve(
     nights: int = config.BUS_INSTALL_NIGHTS,
     prod_bus: float = DEFAULT_PROD_BUS,
     prod_metro: float = DEFAULT_PROD_METRO,
+    strategy_mode: str = "balanced",
 ) -> Dict[str, Any]:
     agency_factor = config.AGENCY_FEE_RATE if customer_type == "4a" else 0.0
     _validate_locks(locks, bus_items, metro_items)
@@ -189,7 +269,7 @@ def solve(
     metro_items = [it for it in metro_items if it["id"] not in excl]
 
     result = _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_factor, locks, nights,
-                          skill_bus_mix, skill_metro_mix, prod_bus, prod_metro)
+                          skill_bus_mix, skill_metro_mix, prod_bus, prod_metro, strategy_mode=strategy_mode)
     if result is not None:
         return result
 
@@ -209,14 +289,19 @@ def solve(
 
 
 # --------------------------------------------------------------------------- #
-# CP-SAT
+# CP-SAT（凹边际递减槽位建模 + 多策略目标）
 # --------------------------------------------------------------------------- #
 def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_factor, locks, nights,
-                 skill_bus_mix, skill_metro_mix, prod_bus=DEFAULT_PROD_BUS, prod_metro=DEFAULT_PROD_METRO):
+                 skill_bus_mix, skill_metro_mix, prod_bus=DEFAULT_PROD_BUS, prod_metro=DEFAULT_PROD_METRO,
+                 strategy_mode: str = "balanced"):
     try:
         from ortools.sat.python import cp_model
     except Exception:
         return None
+
+    prof = _strategy_profile(strategy_mode)
+    eff_bus_mix = _adjust_mix_bounds(skill_bus_mix, prof["bus_mix_delta"])
+    eff_metro_mix = _adjust_mix_bounds(skill_metro_mix, prof["metro_mix_delta"])
 
     budget_int = int(round(budget_wan * SCALE))
     nb = len(bus_items)
@@ -230,21 +315,20 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
     metro_station_ids = sorted({it.get("line_name") or it["id"] for it in metro_items})
 
     # 逐级松弛顺序（文档化，绝不放松预算/库存）：
-    #   relax=0 全约束
+    #   relax=0 全约束（含策略化配比与单线上限）
     #   relax=1 放松媒体配比下限（media_mix_min）——最先松，因地铁单价高、额小难凑
-    #   relax=2 再松等级配比下限（level_share_lo）
+    #   relax=2 再松等级配比下限（level_share_lo）与策略单线紧上限
     #   relax=3 最后松线路/站点数下限 + 单公司上限（line_count_min/company_cap）
     for relax in range(4):
         m = cp_model.CpModel()
 
         bus_cost = [_build_cost_unit(it, months, discount, agency_factor, prod_bus, prod_metro) for it in bus_items]
         metro_cost = [_build_cost_unit(it, months, discount, agency_factor, prod_bus, prod_metro) for it in metro_items]
-        # 目标权重：以曝光（日均客流代理）为主，保证“预算↑ 曝光不降”的单调性；
-        # 再叠加综合评分（含 POI/区县/廊道）作为二级偏好。
-        bus_score = [int(round(it.get("exposure", it["score"]) * 100 + it["score"])) for it in bus_items]
-        metro_score = [int(round(it.get("exposure", it["score"]) * 100 + it["score"])) for it in metro_items]
-        bus_ub = [max(0, min(int(it["free_count"]), config.BUS_MAX_UNITS_PER_LINE)) for it in bus_items]
-        metro_ub = [max(0, min(int(it["free_count"]), config.METRO_MAX_UNITS_PER_EXIT)) for it in metro_items]
+
+        max_bus_u = prof["bus_max_units"] if relax < 2 else config.BUS_MAX_UNITS_PER_LINE
+        max_metro_u = prof["metro_max_units"] if relax < 2 else config.METRO_MAX_UNITS_PER_EXIT
+        bus_ub = [max(0, min(int(it["free_count"]), max_bus_u)) for it in bus_items]
+        metro_ub = [max(0, min(int(it["free_count"]), max_metro_u)) for it in metro_items]
         # 锁定项至少 1 且可分配
         bus_ub = [max(u, 1) if bus_items[i]["id"] in lock_bus and bus_items[i]["free_count"] >= 1 else u for i, u in enumerate(bus_ub)]
         metro_ub = [max(u, 1) if metro_items[i]["id"] in lock_metro and metro_items[i]["free_count"] >= 1 else u for i, u in enumerate(metro_ub)]
@@ -254,20 +338,34 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
         mx = [m.NewIntVar(0, metro_ub[i], f"mx{i}") for i in range(nm)]
         mb = [m.NewBoolVar(f"mb{i}") for i in range(nm)]
 
+        # 凹边际递减槽位二元变量：s[i][k] 表示第 k+1 个投放单元是否启用，满足 s[k] >= s[k+1]
+        b_slots: List[List[Any]] = []
         for i in range(nb):
             if bus_ub[i] > 0:
-                m.Add(bx[i] <= bus_ub[i] * bb[i])
-                m.Add(bx[i] >= bb[i])
+                slots = [m.NewBoolVar(f"bs_{i}_{k}") for k in range(bus_ub[i])]
+                for k in range(len(slots) - 1):
+                    m.Add(slots[k] >= slots[k + 1])
+                m.Add(bx[i] == sum(slots))
+                m.Add(bb[i] == slots[0])
+                b_slots.append(slots)
             else:
                 m.Add(bx[i] == 0)
                 m.Add(bb[i] == 0)
+                b_slots.append([])
+
+        m_slots: List[List[Any]] = []
         for i in range(nm):
             if metro_ub[i] > 0:
-                m.Add(mx[i] <= metro_ub[i] * mb[i])
-                m.Add(mx[i] >= mb[i])
+                slots = [m.NewBoolVar(f"ms_{i}_{k}") for k in range(metro_ub[i])]
+                for k in range(len(slots) - 1):
+                    m.Add(slots[k] >= slots[k + 1])
+                m.Add(mx[i] == sum(slots))
+                m.Add(mb[i] == slots[0])
+                m_slots.append(slots)
             else:
                 m.Add(mx[i] == 0)
                 m.Add(mb[i] == 0)
+                m_slots.append([])
 
         # 预算（硬，绝不放松）
         m.Add(
@@ -281,13 +379,12 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
         bus_lines_sum = sum(bb)
 
         # 地铁站点数 = 去重线路（每个被选中出入口的线路）计数，非出入口数。
-        # 每个站点 s 的“被选”指示器 = OR(该站所有出入口的 mb)。
         metro_station_bool: List[Any] = []
         for sid in metro_station_ids:
             member_idx = [i for i in range(nm) if (metro_items[i].get("line_name") or metro_items[i]["id"]) == sid]
             if not member_idx:
                 continue
-            sb = m.NewBoolVar(f"ms_{sid[:8]}")
+            sb = m.NewBoolVar(f"mst_{sid[:8]}")
             m.Add(sb <= sum(mb[i] for i in member_idx))
             m.Add(sum(mb[i] for i in member_idx) <= len(member_idx) * sb)
             metro_station_bool.append(sb)
@@ -305,9 +402,7 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
             if relax < 3 and len(metro_station_bool) >= lo_st and lo_st > 0:
                 m.Add(metro_stations_sum >= lo_st)
 
-        # 媒体配比（按折后媒体净额口径 net = 单价 × units × months × discount）。
-        # 整数缩放系数 100000（万元 × 1e5），避免 1000 缩放溢出。
-        # relax>=1 时放松“下限”约束（media_mix_min），上界始终保留。
+        # 媒体配比（按折后媒体净额口径）
         MP = 100000
         if bus_items and metro_items:
             bus_net = sum(
@@ -319,19 +414,16 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
                 for i in range(nm)
             )
             total_net = bus_net + metro_net
-            bmin, bmax = skill_bus_mix
-            mmin, mmax = skill_metro_mix
-            # bus 上下界（bus 为主媒体）
+            bmin, bmax = eff_bus_mix if relax == 0 else skill_bus_mix
+            mmin, mmax = eff_metro_mix if relax == 0 else skill_metro_mix
             m.Add(bus_net * 100 <= int(round(bmax * 100)) * total_net)
             if relax < 1 and bmin > 0:
                 m.Add(bus_net * 100 >= int(round(bmin * 100)) * total_net)
-            # metro 上下界
             m.Add(metro_net * 100 <= int(round(mmax * 100)) * total_net)
             if relax < 1 and mmin > 0:
                 m.Add(metro_net * 100 >= int(round(mmin * 100)) * total_net)
 
         # 等级配比（relax>=2 松下限，relax>=3 跳过）
-        # 阈值：units 太小时下限约束无意义（契约：units 太小则禁用）
         MIN_UNITS_FOR_SHARE = 3
         if relax < 3:
             hi_bus = config.BUS_HIGH_SHARE_HI
@@ -341,11 +433,10 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
                 top_units = sum(bx[i] for i in top_bus)
                 m.Add(top_units * 100 <= int(round(hi_bus * 100)) * bus_units_sum)
                 if relax < 2:
-                    # 下界在总 units >= threshold 时绑定；用布尔指示器
                     en = m.NewBoolVar("bus_share_en")
                     m.Add(bus_units_sum >= MIN_UNITS_FOR_SHARE).OnlyEnforceIf(en)
                     m.Add(bus_units_sum <= MIN_UNITS_FOR_SHARE - 1).OnlyEnforceIf(en.Not())
-                    lo_bus = int(round(config.BUS_HIGH_SHARE_LO * 100))
+                    lo_bus = int(round(prof["bus_high_lo"] * 100))
                     m.Add(top_units * 100 >= lo_bus * bus_units_sum).OnlyEnforceIf(en)
             if top_metro and nm > 0:
                 top_units = sum(mx[i] for i in top_metro)
@@ -379,35 +470,34 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
                 m.Add(mb[i] == 1)
                 m.Add(mx[i] >= 1)
 
-        # 媒体配比（软：目标不惩罚，仅作为约束在 relax==0 时按花费比例上下限）
-        # 目标函数
+        # 目标函数：精确凹边际递减槽位收益 + 线路多样性 + 区域覆盖多样性
         obj_terms = []
         for i in range(nb):
-            obj_terms.append(bus_score[i] * bx[i])
-            obj_terms.append(10 * bb[i])  # 覆盖 tie-break
+            for k, slot_var in enumerate(b_slots[i]):
+                obj_terms.append(_slot_marginal_value(bus_items[i], k, prof) * slot_var)
+            obj_terms.append(prof["w_div_line"] * bb[i])
         for i in range(nm):
-            obj_terms.append(metro_score[i] * mx[i])
-            obj_terms.append(10 * mb[i])
+            for k, slot_var in enumerate(m_slots[i]):
+                obj_terms.append(_slot_marginal_value(metro_items[i], k, prof) * slot_var)
+            obj_terms.append(prof["w_div_line"] * mb[i])
 
-        # 区域覆盖 z[d]（软加分，鼓励分散）
-        districts = {}
+        # 区域覆盖 z[d]（软加分，鼓励跨区覆盖）
+        districts: Dict[str, List[Tuple[str, int]]] = {}
         for i in range(nb):
             districts.setdefault(bus_items[i]["district"], []).append(("b", i))
         for i in range(nm):
             districts.setdefault(metro_items[i]["district"], []).append(("m", i))
-        for d, members in districts.items():
+        for idx_d, (_d, members) in enumerate(districts.items()):
             if not members:
                 continue
-            zd = m.NewBoolVar(f"z")
-            exprs = []
-            for kind, i in members:
-                exprs.append(bb[i] if kind == "b" else mb[i])
+            zd = m.NewBoolVar(f"z_{idx_d}")
+            exprs = [bb[i] if kind == "b" else mb[i] for kind, i in members]
             m.Add(zd <= sum(exprs))
-            obj_terms.append(50 * zd)
+            obj_terms.append(prof["w_div_dist"] * zd)
 
         m.Maximize(sum(obj_terms))
 
-        # 确定性 warm-start：用贪心解作为 hint，保证超时时的 incumbent 稳定可复现
+        # 确定性 warm-start
         _add_greedy_hint(m, bus_items, metro_items, budget_wan, months, discount, agency_factor,
                          lock_bus, lock_metro, nights, bx, bb, mx, mb, bus_ub, metro_ub,
                          prod_bus, prod_metro)
@@ -443,6 +533,7 @@ def _solve_cpsat(bus_items, metro_items, budget_wan, months, discount, agency_fa
             return {
                 "status": "OPTIMAL" if status == cp_model.OPTIMAL else "FEASIBLE",
                 "solver": "CP-SAT",
+                "strategy_mode": strategy_mode,
                 "fallback_chain": [],
                 "bus": bus_units,
                 "metro": metro_units,

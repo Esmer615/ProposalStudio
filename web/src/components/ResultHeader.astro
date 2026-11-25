@@ -74,26 +74,31 @@ const tabs: { key: string; label: string }[] = [
           <a href={`/result/${t.key}.html`} data-tab={t.key} aria-current={active === t.key ? 'page' : undefined}>{t.label}</a>
         ))}
       </nav>
+      <div class="variant-pills" data-variant-pills aria-label="切换策略方案" hidden></div>
     </div>
   </div>
 </header>
 <script>
-  const runId = new URLSearchParams(location.search).get('run');
+  const sp = new URLSearchParams(location.search);
+  const runId = sp.get('run');
+  const variant = sp.get('variant');
   if (runId) {
     const enc = encodeURIComponent(runId);
+    const vq = variant && ['balanced', 'max_reach', 'precision'].includes(variant) ? `?variant=${encodeURIComponent(variant)}` : '';
     document.querySelectorAll<HTMLAnchorElement>('[data-tab]').forEach((a) => {
       const u = new URL(a.href, location.origin);
       u.searchParams.set('run', runId);
+      if (variant) u.searchParams.set('variant', variant);
       a.href = u.toString();
     });
     const exp = document.querySelector<HTMLElement>('[data-header-export]');
     if (exp) {
       exp.hidden = false;
       const map: Record<string, string> = {
-        'proposal': `/proposals/${enc}.pdf`,
-        'contract-direct': `/proposals/${enc}/contract-direct.pdf`,
-        'contract-4a-order': `/proposals/${enc}/contract-4a-order.pdf`,
-        'contract-4a-framework': `/proposals/${enc}/contract-4a-framework.pdf`,
+        'proposal': `/proposals/${enc}.pdf${vq}`,
+        'contract-direct': `/proposals/${enc}/contract-direct.pdf${vq}`,
+        'contract-4a-order': `/proposals/${enc}/contract-4a-order.pdf${vq}`,
+        'contract-4a-framework': `/proposals/${enc}/contract-4a-framework.pdf${vq}`,
       };
       exp.querySelectorAll<HTMLAnchorElement>('[data-hdr-doc]').forEach((a) => {
         const key = a.dataset.hdrDoc || '';

@@ -80,6 +80,82 @@ def _clean_path(raw: Any, *, max_points: int = 600) -> Tuple[List[List[float]], 
     return sampled, True
 
 
+# 常见上海地标/商圈/区县坐标兜底表（GCJ02 近似；仅在离线或平台地理编码不可用时使用）
+_SHANGHAI_LANDMARKS: List[Dict[str, Any]] = [
+    {"name": "上海乐高乐园", "aliases": ["乐高乐园", "乐高", "枫泾"], "district": "金山区", "lng": 121.104, "lat": 30.880},
+    {"name": "上海迪士尼度假区", "aliases": ["迪士尼", "迪斯尼", "川沙"], "district": "浦东新区", "lng": 121.657, "lat": 31.141},
+    {"name": "上海海昌海洋公园", "aliases": ["海昌", "临港", "滴水湖"], "district": "浦东新区", "lng": 121.908, "lat": 30.910},
+    {"name": "陆家嘴金融中心", "aliases": ["陆家嘴", "上海中心", "环球金融", "东方明珠", "中国平安", "平安金融", "国金中心"], "district": "浦东新区", "lng": 121.5016, "lat": 31.2397},
+    {"name": "静安寺商圈", "aliases": ["静安寺", "静安嘉里", "久光", "芮欧", "南京西路"], "district": "静安区", "lng": 121.4465, "lat": 31.2238},
+    {"name": "徐家汇商圈", "aliases": ["徐家汇", "港汇", "美罗城", "徐汇", "腾讯大厦", "漕河泾"], "district": "徐汇区", "lng": 121.4375, "lat": 31.1945},
+    {"name": "人民广场", "aliases": ["人民广场", "南京东路", "来福士", "黄浦"], "district": "黄浦区", "lng": 121.4737, "lat": 31.2304},
+    {"name": "外滩", "aliases": ["外滩", "豫园", "新天地", "淮海路", "淮海中路"], "district": "黄浦区", "lng": 121.4903, "lat": 31.2363},
+    {"name": "五角场商圈", "aliases": ["五角场", "合生汇", "杨浦", "复旦", "同济"], "district": "杨浦区", "lng": 121.5145, "lat": 31.3005},
+    {"name": "中山公园商圈", "aliases": ["中山公园", "龙之梦", "长宁", "虹桥开发区", "古北"], "district": "长宁区", "lng": 121.4167, "lat": 31.2185},
+    {"name": "虹桥商务区", "aliases": ["虹桥", "虹桥枢纽", "国家会展中心", "闵行"], "district": "闵行区", "lng": 121.3189, "lat": 31.1943},
+    {"name": "张江高科技园区", "aliases": ["张江", "张江科学城", "金桥", "世纪公园"], "district": "浦东新区", "lng": 121.5890, "lat": 31.2047},
+    {"name": "前滩太古里", "aliases": ["前滩", "世博", "三林", "太古里"], "district": "浦东新区", "lng": 121.4792, "lat": 31.1520},
+    {"name": "环球港", "aliases": ["环球港", "普陀", "真如", "长风"], "district": "普陀区", "lng": 121.4125, "lat": 31.2335},
+    {"name": "北外滩", "aliases": ["北外滩", "虹口", "四川北路", "瑞虹"], "district": "虹口区", "lng": 121.4978, "lat": 31.2518},
+    {"name": "大宁国际", "aliases": ["大宁", "彭浦", "闸北"], "district": "静安区", "lng": 121.4525, "lat": 31.2785},
+    {"name": "上海天文馆", "aliases": ["天文馆"], "district": "浦东新区", "lng": 121.9225, "lat": 30.9163},
+    {"name": "宝山万达", "aliases": ["宝山", "顾村", "吴淞"], "district": "宝山区", "lng": 121.4896, "lat": 31.3989},
+    {"name": "松江万达", "aliases": ["松江", "佘山", "松江大学城"], "district": "松江区", "lng": 121.2278, "lat": 31.0322},
+    {"name": "嘉定新城", "aliases": ["嘉定", "南翔", "安亭"], "district": "嘉定区", "lng": 121.2655, "lat": 31.3747},
+    {"name": "青浦奥特莱斯", "aliases": ["青浦", "朱家角", "蟠龙天地"], "district": "青浦区", "lng": 121.1242, "lat": 31.1497},
+    {"name": "奉贤南桥", "aliases": ["奉贤", "南桥"], "district": "奉贤区", "lng": 121.4741, "lat": 30.9179},
+    {"name": "金山万达", "aliases": ["金山", "金山卫"], "district": "金山区", "lng": 121.3416, "lat": 30.7417},
+]
+
+
+def infer_shanghai_district(lng: float, lat: float, text: str = "") -> str:
+    """按文本关键词或最近上海地标推断行政区。"""
+    for d in (
+        "浦东新区", "黄浦区", "静安区", "徐汇区", "长宁区", "普陀区",
+        "虹口区", "杨浦区", "闵行区", "宝山区", "嘉定区", "金山区",
+        "松江区", "青浦区", "奉贤区", "崇明区",
+    ):
+        if d in text or d[:-1] in text:
+            return d
+    best_dist = 1e9
+    best_d = "黄浦区"
+    for lm in _SHANGHAI_LANDMARKS:
+        dist = (lm["lng"] - lng) ** 2 + (lm["lat"] - lat) ** 2
+        if dist < best_dist:
+            best_dist = dist
+            best_d = lm["district"]
+    return best_d
+
+
+def fallback_geocode_shanghai(query: str) -> Dict[str, Any]:
+    """离线/兜底地理编码：匹配内置上海地标与区县中心。"""
+    q = (query or "").strip()
+    ql = q.lower()
+    for lm in _SHANGHAI_LANDMARKS:
+        if lm["name"].lower() in ql or ql in lm["name"].lower():
+            return {
+                "ok": True, "name": q or lm["name"], "matched_name": lm["name"],
+                "address": f"上海市{lm['district']}{lm['name']}",
+                "district": lm["district"], "lng": lm["lng"], "lat": lm["lat"],
+                "source": "本地上海地标库（离线兜底）", "cached": True,
+            }
+        for alias in lm["aliases"]:
+            if alias.lower() in ql:
+                return {
+                    "ok": True, "name": q or lm["name"], "matched_name": lm["name"],
+                    "address": f"上海市{lm['district']}{q}",
+                    "district": lm["district"], "lng": lm["lng"], "lat": lm["lat"],
+                    "source": "本地上海地标库（离线兜底）", "cached": True,
+                }
+    # 默认落上海市中心人民广场（保证任何自定义公司名都有合理上海坐标）
+    return {
+        "ok": True, "name": q or "上海市中心", "matched_name": "人民广场",
+        "address": f"上海市{q}", "district": "黄浦区",
+        "lng": 121.4737, "lat": 31.2304,
+        "source": "上海市中心默认定位（离线兜底）", "cached": True, "approx": True,
+    }
+
+
 class DataSkillRuntime:
     """数据阶段的子进程运行时（只读脚本白名单 + 参数白名单 + 单飞锁）。"""
 
@@ -246,50 +322,220 @@ class DataSkillRuntime:
         self._session_cache = (now, ok)
         return ok
 
-    def _xinyun_run(self, script: str, args: List[str]) -> Dict[str, Any]:
+    def bigdata_session_status(self, *, force: bool = False) -> Dict[str, Any]:
+        """返回新云大数据会话状态（轻量探测，不启动浏览器）。"""
+        exists = self._xinyun_session_available()
+        if not exists:
+            return {"authenticated": False, "session_file_exists": False, "reason": "MANUAL_LOGIN_REQUIRED"}
+        ok = self._xinyun_session_ok(force=force)
+        return {
+            "authenticated": ok,
+            "session_file_exists": True,
+            "reason": None if ok else "SESSION_EXPIRED",
+            "data_month": "2023-05",
+        }
+
+    def _xinyun_run(self, script: str, args: List[str], *, timeout_sec: int = 120) -> Dict[str, Any]:
         """通用 xinyun 只读脚本执行；无会话返回 MANUAL_LOGIN_REQUIRED。"""
-        if script not in ("coverage.mjs", "coverage_poi.mjs"):
+        if script not in ("coverage.mjs", "coverage_poi.mjs", "geocode.mjs", "portrait_batch.mjs"):
             return {"ok": False, "status": "skipped", "reason": "FORBIDDEN_SCRIPT", "summary": ""}
         if not self._xinyun_session_ok():
             return {"ok": False, "status": "skipped", "reason": "MANUAL_LOGIN_REQUIRED", "summary": "缺少登录会话或会话已过期：先人工运行 login.mjs 过验证码一次"}
 
         full = [self._node, os.path.join(self._xinyun_dir, script)] + args
         with _FLIGHT_LOCK:
-            code, out, err = self._run(full, cwd=PROJECT_ROOT, timeout_sec=120)
-        # 脚本主要用人类可读 stdout，不是 JSON；这里解析关键摘要
+            code, out, err = self._run(full, cwd=PROJECT_ROOT, timeout_sec=timeout_sec)
+        parsed = self._parse_stdout_json(out)
         if code != 0:
             summary = _summarize_stderr(err)
             if "缺少登录会话" in (err or out) or "MANUAL_LOGIN" in (err or out):
                 return {"ok": False, "status": "skipped", "reason": "MANUAL_LOGIN_REQUIRED", "summary": summary}
-            return {"ok": False, "status": "degraded", "reason": "BIGDATA_UNAVAILABLE", "summary": summary}
-        return {"ok": True, "status": "ready", "reason": None, "stdout": redact(out), "summary": _summarize_stderr(err)}
+            return {"ok": False, "status": "degraded", "reason": "BIGDATA_UNAVAILABLE", "summary": summary, "parsed": parsed}
+        return {"ok": True, "status": "ready", "reason": None, "stdout": redact(out), "parsed": parsed, "summary": _summarize_stderr(err)}
 
-    def bigdata_coverage(self, address: str, radius: int = 1000) -> Dict[str, Any]:
-        r = self._xinyun_run("coverage.mjs", ["--address", address, "--radius", str(radius)])
-        # 从 stdout 提取公交/地铁计数
-        out = r.get("stdout") or ""
-        bus = metro = 0
-        m = re.search(r"共\s*(\d+)\s*条（公交\s*(\d+)\s*/\s*地铁\s*(\d+)）", out)
-        if m:
-            bus, metro = int(m.group(2)), int(m.group(3))
-        r["summary"] = {"bus": bus, "metro": metro}
-        r.pop("stdout", None)
-        return r
+    def bigdata_geocode(self, address: str, *, city: str = "上海市", force: bool = False) -> Dict[str, Any]:
+        """对任意上海公司/品牌/地标做地理编码（优先新云平台 /nearby/geocode + 缓存，离线兜底本地地标库）。"""
+        addr = str(address or "").strip()
+        if not addr:
+            return {"ok": False, "error": "EMPTY_ADDRESS", "message": "地址不能为空"}
+        args = ["--address", addr, "--city", city, "--out", self._xinyun_out, "--json"]
+        if force:
+            args.append("--force")
+        r = self._xinyun_run("geocode.mjs", args, timeout_sec=60)
+        parsed = r.get("parsed") if isinstance(r.get("parsed"), dict) else None
+        if r.get("ok") and parsed and parsed.get("ok") and parsed.get("lng") and parsed.get("lat"):
+            lng, lat = float(parsed["lng"]), float(parsed["lat"])
+            district = parsed.get("district") or infer_shanghai_district(lng, lat, f"{addr} {parsed.get('address') or ''}")
+            return {
+                "ok": True,
+                "name": addr,
+                "matched_name": parsed.get("name") or addr,
+                "address": parsed.get("address") or addr,
+                "district": district,
+                "lng": lng,
+                "lat": lat,
+                "source": parsed.get("source") or "新云传媒大数据可视化平台 · /nearby/geocode",
+                "cached": bool(parsed.get("cached")),
+            }
+        return fallback_geocode_shanghai(addr)
 
-    def bigdata_poi(self, address: str, radius: int = 1000, types: str = "商场,幼儿园") -> Dict[str, Any]:
-        r = self._xinyun_run("coverage_poi.mjs", [
-            "--address", address, "--radius", str(radius),
-            "--types", types, "--mode", "count",
-        ])
-        out = r.get("stdout") or ""
-        counts: Dict[str, int] = {}
-        for line in out.splitlines():
-            m = re.match(r"^\s*([^:：]+)[:：]\s*(\d+)\s*$", line.strip())
+    def bigdata_coverage(
+        self,
+        address: str,
+        radius: int = 1500,
+        *,
+        lng: Optional[float] = None,
+        lat: Optional[float] = None,
+    ) -> Dict[str, Any]:
+        args = ["--address", address, "--radius", str(radius), "--out", self._xinyun_out, "--json"]
+        if lng is not None and lat is not None:
+            args += ["--lng", str(lng), "--lat", str(lat)]
+        r = self._xinyun_run("coverage.mjs", args)
+        parsed = r.get("parsed") if isinstance(r.get("parsed"), dict) else None
+        if parsed and isinstance(parsed.get("summary"), dict):
+            s = parsed["summary"]
+            bus_lines = list(s.get("bus_lines") or [])
+            metro_stations = list(s.get("metro_stations") or [])
+            raw_items = parsed.get("items") or []
+            clean_items = [
+                {
+                    "mediaType": x.get("mediaType"),
+                    "lineName": x.get("lineName"),
+                    "nearestStaName": x.get("nearestStaName"),
+                    "minDistance": round(float(x.get("minDistance") or 0), 1),
+                    "lng": x.get("nearestStaLng") or x.get("nearestLng"),
+                    "lat": x.get("nearestStaLat") or x.get("nearestLat"),
+                    "lineId": x.get("lineId"),
+                }
+                for x in raw_items[:80]
+                if isinstance(x, dict)
+            ]
+            r["summary"] = {
+                "bus": int(s.get("bus") or len(bus_lines)),
+                "metro": int(s.get("metro") or len(metro_stations)),
+                "total": int(s.get("total") or len(raw_items)),
+            }
+            r["center"] = (parsed.get("meta") or {}).get("center")
+            r["radius"] = radius
+            r["bus_lines"] = bus_lines
+            r["metro_stations"] = metro_stations
+            r["items"] = clean_items
+            r["cached"] = bool(parsed.get("cached"))
+        else:
+            out = r.get("stdout") or ""
+            bus = metro = 0
+            m = re.search(r"共\s*(\d+)\s*条（公交\s*(\d+)\s*/\s*地铁\s*(\d+)）", out)
             if m:
-                counts[m.group(1).strip()] = int(m.group(2))
-        r["summary"] = counts
+                bus, metro = int(m.group(2)), int(m.group(3))
+            r["summary"] = {"bus": bus, "metro": metro}
+            r["bus_lines"] = []
+            r["metro_stations"] = []
+            r["items"] = []
         r.pop("stdout", None)
+        r.pop("parsed", None)
         return r
+
+    def bigdata_poi(
+        self,
+        address: str,
+        radius: int = 1500,
+        types: str = "商场,幼儿园,写字楼,小区",
+        *,
+        mode: str = "detail",
+        lng: Optional[float] = None,
+        lat: Optional[float] = None,
+    ) -> Dict[str, Any]:
+        safe_mode = "detail" if mode == "detail" else "count"
+        args = [
+            "--address", address, "--radius", str(radius),
+            "--types", types, "--mode", safe_mode, "--out", self._xinyun_out, "--json",
+        ]
+        if lng is not None and lat is not None:
+            args += ["--lng", str(lng), "--lat", str(lat)]
+        r = self._xinyun_run("coverage_poi.mjs", args)
+        parsed = r.get("parsed") if isinstance(r.get("parsed"), dict) else None
+        if parsed and parsed.get("ok"):
+            r["summary"] = dict(parsed.get("counts") or {})
+            r["total"] = int(parsed.get("total") or 0)
+            r["items"] = list(parsed.get("items") or [])[:80]
+            r["center"] = (parsed.get("meta") or {}).get("center")
+            r["radius"] = radius
+            r["types"] = (parsed.get("meta") or {}).get("types") or []
+            r["cached"] = bool(parsed.get("cached"))
+        else:
+            out = r.get("stdout") or ""
+            counts: Dict[str, int] = {}
+            for line in out.splitlines():
+                m = re.match(r"^\s*([^:：]+)[:：]\s*(\d+)\s*$", line.strip())
+                if m:
+                    counts[m.group(1).strip()] = int(m.group(2))
+            r["summary"] = counts
+            r["items"] = []
+            r["total"] = sum(counts.values())
+        r.pop("stdout", None)
+        r.pop("parsed", None)
+        return r
+
+    def bigdata_portrait(
+        self,
+        lines: List[str],
+        *,
+        media: str = "公交",
+        max_per_line: int = 6,
+        force: bool = False,
+    ) -> Dict[str, Any]:
+        """批量拉取选中线路的新云 2023-05 组合画像 + 单线画像（含年龄/性别/消费/房产/终端/时段人流/PV/UV）。"""
+        safe_lines: List[str] = []
+        for raw in lines or []:
+            s = str(raw).strip()
+            if s and re.fullmatch(r"[\w一-龥()\-]{1,32}", s) and s not in safe_lines:
+                safe_lines.append(s)
+        safe_lines = safe_lines[:15]
+        if not safe_lines:
+            return {
+                "ok": False, "status": "skipped", "reason": "NO_LINES",
+                "aggregate": None, "per_line": {}, "matched": [], "missing": [],
+                "data_month": "202305", "source": "新云传媒大数据可视化平台 · 组合查询（2023-05）",
+            }
+        args = [
+            "--lines", ",".join(safe_lines),
+            "--media", media,
+            "--max-per-line", str(max(0, min(10, int(max_per_line)))),
+            "--out", self._xinyun_out,
+            "--json",
+        ]
+        if force:
+            args.append("--force")
+        r = self._xinyun_run("portrait_batch.mjs", args, timeout_sec=180)
+        parsed = r.get("parsed") if isinstance(r.get("parsed"), dict) else None
+        if parsed and parsed.get("ok"):
+            return {
+                "ok": True,
+                "status": parsed.get("status") or "ready",
+                "reason": parsed.get("reason"),
+                "cached": bool(parsed.get("cached")),
+                "source": parsed.get("source") or "新云传媒大数据可视化平台 · 组合查询（2023-05）",
+                "data_month": parsed.get("data_month") or "202305",
+                "media": media,
+                "requested": parsed.get("requested") or safe_lines,
+                "matched": parsed.get("matched") or [],
+                "missing": parsed.get("missing") or [],
+                "aggregate": parsed.get("aggregate"),
+                "per_line": parsed.get("per_line") or {},
+                "fetched_at": parsed.get("fetched_at"),
+            }
+        return {
+            "ok": False,
+            "status": r.get("status") or "degraded",
+            "reason": r.get("reason") or "PORTRAIT_UNAVAILABLE",
+            "aggregate": None,
+            "per_line": {},
+            "matched": [],
+            "missing": safe_lines,
+            "data_month": "202305",
+            "source": "新云传媒大数据可视化平台 · 组合查询（2023-05）",
+            "summary": r.get("summary") or "",
+        }
 
     def bigdata_routes(
         self,

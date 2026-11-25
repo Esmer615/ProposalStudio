@@ -1,22 +1,47 @@
-// Result pages: read `?run=` and load one shared plan. Four tabs reuse the same run id;
-// no result page re-solves — numbers come only from the run payload.
-// Fallback: ?run=demo or a network/service failure loads the frozen lego-500 fixture (static demo only).
+// Result pages: read `?run=` and optional `?variant=` and load the shared run payload.
+// Four tabs reuse the same run id and active strategy variant (balanced | max_reach | precision).
+// No result page re-solves — numbers come strictly from the persisted run payload.
 
 import type { Plan, ProposalRun } from '../lib/plan';
 
-export type RenderFn = (plan: Plan, run: Partial<ProposalRun>) => void;
+export type RenderFn = (plan: Plan, run: Partial<ProposalRun>, activeVariant?: string) => void;
+
+const VARIANT_LABELS: Record<string, string> = {
+  balanced: '均衡首选',
+  max_reach: '全域广度',
+  precision: '地标聚焦',
+};
 
 export function getRunId(): string | null {
   const p = new URLSearchParams(location.search);
   return p.get('run');
 }
 
+export function getVariant(): string | null {
+  const p = new URLSearchParams(location.search);
+  const v = p.get('variant');
+  return v && ['balanced', 'max_reach', 'precision'].includes(v) ? v : null;
+}
+
 export function isDemo(): boolean {
   return getRunId() === 'demo';
 }
 
-function fixtureUrl(runId: string | null): string {
-  // Only lego-500 exists as a complete fixture; everything else fails back to it.
+export function buildPdfUrl(runId: string, docKey: string, variant?: string | null): string {
+  const enc = encodeURIComponent(runId);
+  const base = docKey === 'proposal' ? `/proposals/${enc}.pdf` : `/proposals/${enc}/${docKey}.pdf`;
+  return variant && ['balanced', 'max_reach', 'precision'].includes(variant)
+    ? `${base}?variant=${encodeURIComponent(variant)}`
+    : base;
+}
+
+export function navigateVariant(mode: string) {
+  const u = new URL(location.href);
+  u.searchParams.set('variant', mode);
+  location.href = u.toString();
+}
+
+function fixtureUrl(): string {
   return '/data/fixtures/plan-lego-500.json';
 }
 
@@ -26,46 +51,52 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/** Load the plan for the current ?run=. Resolves null on no-run/404 (caller shows empty state). */
-export async function loadRun(): Promise<{ plan: Plan; run: Partial<ProposalRun>; source: 'api' | 'fixture' } | null> {
+/** Load the plan (and selected strategy variant if present) for the current ?run=. */
+export async function loadRun(): Promise<{
+  plan: Plan;
+  run: Partial<ProposalRun>;
+  source: 'api' | 'fixture';
+  activeVariant: string;
+} | null> {
   const runId = getRunId();
   if (!runId) return null;
 
   if (runId === 'demo') {
-    const plan = await fetchJson<Plan>(fixtureUrl(runId)).catch(() => null);
+    const plan = await fetchJson<Plan>(fixtureUrl()).catch(() => null);
     if (!plan) return null;
-    return { plan, run: { run_id: 'demo', status: 'degraded' }, source: 'fixture' };
+    return { plan, run: { run_id: 'demo', status: 'degraded' }, source: 'fixture', activeVariant: 'balanced' };
   }
 
-  let run: ProposalRun;
+  let run: any;
   try {
     const res = await fetch(`/api/proposals/${encodeURIComponent(runId)}`);
-    if (!res.ok) return null; // real run id that 404s -> empty state, never a wrong fixture
+    if (!res.ok) return null;
     run = await res.json();
   } catch {
-    return null; // endpoint unreachable -> empty state (handoff: 无服务时结果页显示清晰空态)
+    return null;
   }
 
   if (run.status === 'done' || run.status === 'degraded') {
-    return run.plan ? { plan: run.plan, run, source: 'api' } : null;
+    const variants = run.variants;
+    const requestedVariant = getVariant();
+    const defaultVariant = variants?.selected_mode || variants?.default_mode || 'balanced';
+    const activeVariant =
+      requestedVariant && variants?.plans?.[requestedVariant]
+        ? requestedVariant
+        : (variants?.plans?.[defaultVariant] ? defaultVariant : 'balanced');
+    const chosenPlan: Plan | null =
+      (variants?.plans && variants.plans[activeVariant]) || run.plan || null;
+    return chosenPlan ? { plan: chosenPlan, run, source: 'api', activeVariant } : null;
   }
-  // queued / running / needs_input / failed -> no plan to render on a result page.
   return null;
 }
 
-/** Update the footer data version/timestamp from the loaded plan. */
 export function setFooterData(plan: Plan) {
   const m = plan.meta || {};
-  const set = (sel: string, v: string) => {
-    const el = document.querySelector(sel);
-    if (el) el.textContent = v;
-  };
-  // footer inputs are plain <span class="mono"> — match by position via data attrs if present
   document.querySelectorAll<HTMLElement>('[data-meta-version]').forEach((el) => (el.textContent = m.data_version || '—'));
   document.querySelectorAll<HTMLElement>('[data-meta-ts]').forEach((el) => (el.textContent = String(m.inventory_ts || '—').replace('T', ' ').slice(0, 16)));
 }
 
-/** Show the empty state and hide the content root (no run / not found). */
 export function showEmpty(message?: string) {
   const empty = document.querySelector<HTMLElement>('[data-result-empty]');
   const content = document.querySelector<HTMLElement>('[data-result-content]');
@@ -77,7 +108,6 @@ export function showEmpty(message?: string) {
   if (content) content.hidden = true;
 }
 
-/** Show a simple status bar (queued/running/failed) and hide content. */
 export function showStatus(status: string) {
   const bar = document.querySelector<HTMLElement>('[data-result-status]');
   if (bar) {
@@ -98,28 +128,60 @@ export async function initResult(render: RenderFn) {
     showEmpty(runId ? `方案 ${runId} 未生成或运行服务未就绪。请返回输入页重新生成。` : undefined);
     return;
   }
-  const { plan, run, source } = loaded;
+  const { plan, run, source, activeVariant } = loaded;
   content.hidden = false;
   setFooterData(plan);
-
-  // status bar header
-  renderStatus(plan, run, source);
-  render(plan, run);
+  renderStatus(plan, run, source, activeVariant);
+  render(plan, run, activeVariant);
 }
 
-export function renderStatus(plan: Plan, run: Partial<ProposalRun>, source: 'api' | 'fixture') {
+export function renderStatus(plan: Plan, run: Partial<ProposalRun>, source: 'api' | 'fixture', activeVariant = 'balanced') {
   const m = plan.meta || {};
   const set = (sel: string, v: string) => document.querySelectorAll<HTMLElement>(sel).forEach((el) => (el.textContent = v));
-  set('[data-run-id]', run.run_id || '—');
+  const runId = run.run_id || getRunId() || '—';
+  set('[data-run-id]', runId);
   set('[data-run-status]', source === 'fixture' ? '降级（离线演示）' : (run.status === 'degraded' ? '降级' : '完成'));
-  set('[data-solver]', m.solver || '—');
+  set('[data-solver]', `${m.solver || 'CP-SAT'} · ${VARIANT_LABELS[activeVariant] || activeVariant}`);
   set('[data-data-version]', m.data_version || '—');
   set('[data-inventory-ts]', String(m.inventory_ts || '—').replace('T', ' ').slice(0, 16));
 
-  // Data-source status (红豆 inventory + 新云/xinyun supplement), straight from run.data.
-  // Degraded/skipped must be shown as "补充数据不可用" and must NOT block the plan.
+  // Keep all tab links + header PDF links synced with activeVariant
+  if (runId && runId !== '—') {
+    document.querySelectorAll<HTMLAnchorElement>('[data-tab]').forEach((a) => {
+      const u = new URL(a.href, location.origin);
+      u.searchParams.set('run', runId);
+      if (activeVariant) u.searchParams.set('variant', activeVariant);
+      a.href = u.toString();
+    });
+    document.querySelectorAll<HTMLAnchorElement>('[data-hdr-doc]').forEach((a) => {
+      const key = a.dataset.hdrDoc || '';
+      if (key) a.href = buildPdfUrl(runId, key, activeVariant);
+    });
+  }
+
+  // Render header variant switcher pills when run has multiple strategy plans
+  const variants = (run as any)?.variants;
+  const pillBox = document.querySelector<HTMLElement>('[data-variant-pills]');
+  if (pillBox && variants?.comparison?.length > 1) {
+    pillBox.hidden = false;
+    pillBox.replaceChildren();
+    variants.comparison.forEach((v: any) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'variant-pill' + (v.mode === activeVariant ? ' is-active' : '');
+      btn.textContent = v.short || VARIANT_LABELS[v.mode] || v.mode;
+      btn.title = v.tagline || '';
+      btn.addEventListener('click', () => {
+        if (v.mode !== activeVariant) navigateVariant(v.mode);
+      });
+      pillBox.append(btn);
+    });
+  }
+
+  // Data-source status chips
   const inv = (run.data as any)?.inventory;
   const bd = (run.data as any)?.bigdata;
+  const portrait = (run.data as any)?.portrait;
   const invChip = document.querySelector<HTMLElement>('[data-src-inventory]');
   const bdChip = document.querySelector<HTMLElement>('[data-src-bigdata]');
   if (invChip) {
@@ -130,10 +192,13 @@ export function renderStatus(plan: Plan, run: Partial<ProposalRun>, source: 'api
   }
   if (bdChip) {
     const bdState = bd?.status ?? '—';
-    const skipped = bdState === 'skipped' || bdState === 'degraded';
-    bdChip.textContent = `新云补充 · ${skipped ? '不可用' : bd?.data_month ? String(bd.data_month).slice(0, 7) : bdState}`;
+    const skipped = bdState === 'skipped';
+    const hasPortrait = portrait?.status === 'ready';
+    bdChip.textContent = skipped
+      ? '新云大数据 · 未登录'
+      : `新云实测 · ${bd?.data_month ? String(bd.data_month).slice(0, 7) : '2023-05'}${hasPortrait ? ' +画像' : ''}`;
     bdChip.className = 'chip mono ' + (skipped ? 'chip--quiet' : 'chip--accent');
-    if (bd?.reason) bdChip.title = bd.reason; // e.g. MANUAL_LOGIN_REQUIRED
+    if (bd?.reason) bdChip.title = bd.reason;
   }
 
   const degradedFlag = document.querySelector<HTMLElement>('[data-degraded-flag]');

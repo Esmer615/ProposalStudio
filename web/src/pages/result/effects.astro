@@ -40,6 +40,68 @@ import ResultHeader from '../../components/ResultHeader.astro';
         </div>
       </section>
 
+      <!-- 新云大数据实测洞察：全天人流密度与受众四维画像（2023-05） -->
+      <section aria-labelledby="fx-portrait-h" data-portrait-section hidden>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4);flex-wrap:wrap">
+          <h2 id="fx-portrait-h" class="heading-5">新云大数据实测洞察 · 人流密度与受众画像</h2>
+          <span class="chip chip--accent mono" data-k="portrait-meta">2023-05 平台实测</span>
+        </div>
+
+        <div class="kpi-grid" style="margin-bottom:var(--s-4)">
+          <div class="kpi"><span class="kpi__label">实测覆盖 PV</span><span class="kpi__value gold" data-k="p-pv">—</span><span class="kpi__sub">选中线路聚合月 PV</span></div>
+          <div class="kpi"><span class="kpi__label">去重覆盖 UV</span><span class="kpi__value" style="color:var(--emerald)" data-k="p-uv">—</span><span class="kpi__sub">选中线路去重触达人数</span></div>
+          <div class="kpi"><span class="kpi__label">精准覆盖 PV</span><span class="kpi__value" data-k="p-acc">—</span><span class="kpi__sub">高有效视线覆盖</span></div>
+          <div class="kpi"><span class="kpi__label">实测匹配线路</span><span class="kpi__value" data-k="p-lines">—</span><span class="kpi__sub">含单线画像明细</span></div>
+        </div>
+
+        <div class="portrait-grid">
+          <div class="card">
+            <div class="card-head"><span>全天时段人流密度（人次）</span><span class="chip chip--quiet mono">早 / 午 / 晚 / 夜</span></div>
+            <div class="card-body"><div class="bar-list" data-k="p-flow"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span>受众年龄结构分布</span><span class="chip chip--quiet mono">%</span></div>
+            <div class="card-body"><div class="bar-list" data-k="p-age"></div></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span>性别构成与房产拥有结构</span><span class="chip chip--quiet mono">中产家庭指标</span></div>
+            <div class="card-body" style="display:grid;gap:14px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px">
+                  <span data-k="p-male">男性 —</span>
+                  <span data-k="p-female">女性 —</span>
+                </div>
+                <div class="gender-bar">
+                  <div class="gender-bar__male" data-k="p-male-bar" style="width:50%"></div>
+                  <div class="gender-bar__female" data-k="p-female-bar" style="width:50%"></div>
+                </div>
+              </div>
+              <div class="bar-list" data-k="p-house"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span>消费能力分层与终端品牌 Top</span><span class="chip chip--quiet mono">2023-05</span></div>
+            <div class="card-body" style="display:grid;gap:14px">
+              <div class="bar-list" data-k="p-cons"></div>
+              <div class="poi-chips" data-k="p-phones"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-shell" style="margin-top:var(--s-4)" data-per-line-shell hidden>
+          <div class="table-scroll">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>实测线路</th><th class="num">覆盖 PV(万)</th><th class="num">去重 UV(万)</th><th class="num">午间峰值人流</th><th class="num">男 / 女(%)</th><th>30–50岁占比</th><th>Top 手机品牌</th>
+                </tr>
+              </thead>
+              <tbody data-k="p-perline-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- elasticity dual-axis + 9-budget table -->
       <section aria-labelledby="fx-elast-h">
         <h2 id="fx-elast-h" class="heading-5" style="margin-bottom:var(--s-4)">预算弹性曲线（100–500 万）</h2>
@@ -136,6 +198,112 @@ import ResultHeader from '../../components/ResultHeader.astro';
       byMedia.append(s);
     });
     if (!(e.by_media || []).length) byMedia.textContent = '—';
+
+    // Render xinyun-bigdata real portrait & crowd density dashboard
+    const portrait = (run as any)?.data?.portrait;
+    const agg = portrait?.aggregate;
+    const pSec = document.querySelector<HTMLElement>('[data-portrait-section]');
+    if (pSec && agg) {
+      pSec.hidden = false;
+      set('[data-k="portrait-meta"]', `${portrait.data_month || '202305'} 实测 · 匹配 ${portrait.matched?.length || 0} 条公交线`);
+      set('[data-k="p-pv"]', agg.cover_pv != null ? `${fmtWan(agg.cover_pv / 10000, 1)} 万` : '—');
+      set('[data-k="p-uv"]', agg.cover_uv != null ? `${fmtWan(agg.cover_uv / 10000, 1)} 万` : '—');
+      set('[data-k="p-acc"]', agg.cover_pv_accurate != null ? `${fmtWan(agg.cover_pv_accurate / 10000, 1)} 万` : '—');
+      set('[data-k="p-lines"]', `${portrait.matched?.length || 0} 条`);
+
+      const renderBars = (sel: string, items: [string, number, string][], emerald = false) => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        el.replaceChildren();
+        const mx = Math.max(1, ...items.map((x) => x[1]));
+        items.forEach(([lbl, val, txt]) => {
+          const r = document.createElement('div');
+          r.className = 'bar-row';
+          r.innerHTML = `<span class="bar-row__lbl">${lbl}</span><span class="bar-row__track"><span class="bar-row__fill${emerald ? ' bar-row__fill--emerald' : ''}" style="width:${Math.min(100, Math.round((val / mx) * 100))}%"></span></span><span class="bar-row__val">${txt}</span>`;
+          el.append(r);
+        });
+      };
+
+      if (agg.flow_periods) {
+        const fp = agg.flow_periods;
+        renderBars('[data-k="p-flow"]', [
+          ['早高峰', Number(fp.morning || 0), fmtInt(fp.morning || 0)],
+          ['午间时段', Number(fp.midday || 0), fmtInt(fp.midday || 0)],
+          ['晚高峰', Number(fp.evening || 0), fmtInt(fp.evening || 0)],
+          ['夜间时段', Number(fp.night || 0), fmtInt(fp.night || 0)],
+        ]);
+      }
+      renderBars('[data-k="p-age"]', [
+        ['20岁以下', Number(agg.under20_pct || 0), `${agg.under20_pct ?? 0}%`],
+        ['20–30岁', Number(agg.age_20_30_pct || 0), `${agg.age_20_30_pct ?? 0}%`],
+        ['30–40岁', Number(agg.age_30_40_pct || 0), `${agg.age_30_40_pct ?? 0}%`],
+        ['40–50岁', Number(agg.age_40_50_pct || 0), `${agg.age_40_50_pct ?? 0}%`],
+        ['50岁以上', Number(agg.age_50plus_pct || 0), `${agg.age_50plus_pct ?? 0}%`],
+      ], true);
+
+      const mPct = Number(agg.male_pct ?? 50);
+      const fPct = Number(agg.female_pct ?? 50);
+      set('[data-k="p-male"]', `男性 ${mPct}%`);
+      set('[data-k="p-female"]', `女性 ${fPct}%`);
+      const mb = document.querySelector<HTMLElement>('[data-k="p-male-bar"]');
+      const fb = document.querySelector<HTMLElement>('[data-k="p-female-bar"]');
+      if (mb) mb.style.width = `${mPct}%`;
+      if (fb) fb.style.width = `${fPct}%`;
+
+      if (agg.house_pct) {
+        renderBars('[data-k="p-house"]', [
+          ['一套房产', Number(agg.house_pct.one || 0), `${agg.house_pct.one ?? 0}%`],
+          ['无房租住', Number(agg.house_pct.zero || 0), `${agg.house_pct.zero ?? 0}%`],
+          ['两套房产', Number(agg.house_pct.two || 0), `${agg.house_pct.two ?? 0}%`],
+          ['多套房产', Number(agg.house_pct.more || 0), `${agg.house_pct.more ?? 0}%`],
+        ]);
+      }
+
+      if (agg.consumption) {
+        renderBars('[data-k="p-cons"]', [
+          ['中等消费', Number(agg.consumption.middle || 0), `${agg.consumption.middle ?? 0}%`],
+          ['高消费力', Number(agg.consumption.high || 0), `${agg.consumption.high ?? 0}%`],
+          ['大众消费', Number(agg.consumption.low || 0), `${agg.consumption.low ?? 0}%`],
+        ], true);
+      }
+
+      const phonesEl = document.querySelector('[data-k="p-phones"]');
+      if (phonesEl && Array.isArray(agg.top_phones)) {
+        phonesEl.replaceChildren();
+        agg.top_phones.slice(0, 8).forEach((p: any) => {
+          const s = document.createElement('span');
+          s.className = 'poi-chip';
+          s.innerHTML = `${p.phone_name}<b>${p.num}</b>`;
+          phonesEl.append(s);
+        });
+      }
+
+      // Per-line real portrait table
+      const perLine = portrait.per_line || {};
+      const plEntries = Object.entries(perLine);
+      const plShell = document.querySelector<HTMLElement>('[data-per-line-shell]');
+      const plTbody = document.querySelector('[data-k="p-perline-rows"]');
+      if (plShell && plTbody && plEntries.length) {
+        plShell.hidden = false;
+        plTbody.replaceChildren();
+        plEntries.forEach(([lineKey, entry]: [string, any]) => {
+          const s = entry?.summary || {};
+          const tr = document.createElement('tr');
+          const ageMid = (Number(s.age_30_40_pct || 0) + Number(s.age_40_50_pct || 0)).toFixed(1);
+          const topP = (s.top_phones || []).slice(0, 3).map((x: any) => x.phone_name).join(' / ') || '—';
+          tr.innerHTML = `
+            <td><b>${entry?.label?.thirdLabel || lineKey}</b></td>
+            <td class="num">${s.cover_pv != null ? fmtWan(s.cover_pv / 10000, 1) : '—'}</td>
+            <td class="num">${s.cover_uv != null ? fmtWan(s.cover_uv / 10000, 1) : '—'}</td>
+            <td class="num">${s.flow_periods?.midday != null ? fmtInt(s.flow_periods.midday) : '—'}</td>
+            <td class="num">${s.male_pct ?? '—'} / ${s.female_pct ?? '—'}</td>
+            <td class="mono">${ageMid}%</td>
+            <td>${topP}</td>
+          `;
+          plTbody.append(tr);
+        });
+      }
+    }
 
     // elasticity
     if (elast) drawElasticity(elast);
