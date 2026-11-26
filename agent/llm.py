@@ -137,31 +137,49 @@ class DeepSeekLLM:
         }
         if response_format:
             payload["response_format"] = response_format
-        try:
-            client = self._get_client()
-            response = client.post(
-                f"{self.base_url}/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json",
-                },
-                json=payload,
-            )
-            response.raise_for_status()
-            data = response.json()
-            choices = data.get("choices") or []
-            if not choices:
-                self.last_error = "DeepSeek 返回空 choices"
+        last_exc: Optional[Exception] = None
+        for attempt in range(3):
+            try:
+                client = self._get_client()
+                response = client.post(
+                    f"{self.base_url}/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {self.api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json=payload,
+                )
+                response.raise_for_status()
+                data = response.json()
+                choices = data.get("choices") or []
+                if not choices:
+                    self.last_error = "DeepSeek 返回空 choices"
+                    return None
+                message = choices[0].get("message") or {}
+                content = message.get("content")
+                if not isinstance(content, str) or not content.strip():
+                    self.last_error = "DeepSeek 返回空 content"
+                    return None
+                self.last_error = None
+                return content
+            except Exception as exc:  # pragma: no cover - 外部服务异常
+                last_exc = exc
+                self.last_error = f"{type(exc).__name__}: {exc}"
+                # 连接/SSL 瞬断时重置连接池并短暂重试，避免首次握手偶发 EOF
+                if attempt < 2 and type(exc).__name__ in ("ConnectError", "ReadError", "RemoteProtocolError", "WriteError", "PoolTimeout"):
+                    try:
+                        if self._client is not None:
+                            self._client.close()
+                    except Exception:
+                        pass
+                    self._client = None
+                    import time
+                    time.sleep(0.35 * (attempt + 1))
+                    continue
                 return None
-            message = choices[0].get("message") or {}
-            content = message.get("content")
-            if not isinstance(content, str) or not content.strip():
-                self.last_error = "DeepSeek 返回空 content"
-                return None
-            return content
-        except Exception as exc:  # pragma: no cover - 外部服务异常
-            self.last_error = f"{type(exc).__name__}: {exc}"
-            return None
+        if last_exc:
+            self.last_error = f"{type(last_exc).__name__}: {last_exc}"
+        return None
 
     def _get_client(self):
         if self._client is None:

@@ -1,126 +1,121 @@
-/* Design System Tokens — FLAIR MEDIA Precision Obsidian Studio
- * Dark-first luxury editorial + Linear/Vercel precision telemetry palette.
- * Spacing strictly snaps to the 4/8/12/16/24/32/40/48/64/80/96 scale.
- */
+/* ==========================================================================
+   FLAIR STUDIO · 新云媒介提案台 — Neumorphism Light Design System
+   Single top-left light source (#ffffff highlight + #b8bcc2 shadow) on #e0e5ec.
+   No solid borders, no pure-black shadows, max weight 600.
+   ========================================================================== */
+
 :root {
-  /* Core Surfaces (aligned with #000000 / #131209 / #181818 / #1F1F1F / #272727 / #313131) */
-  --bg: #08090c;
-  --bg-elevated: #111318;
-  --surface: #181818;
-  --surface-2: #1f1f1f;
-  --surface-3: #272727;
-  --card: #12141a;
-  --card-hover: #171a22;
+  /* Core Neumorphic Colors */
+  --color-base: #e0e5ec;
+  --color-shadow-grey: #b8bcc2;
+  --color-highlight: #ffffff;
+  --color-blurple: #6d5dfc;
+  --color-coral: #ff6b6b;
+  --color-mint: #4ecdc4;
+  --color-mint-ink: #249c94;
 
-  /* Borders & Specular Hairlines */
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --line-gold: rgba(212, 163, 106, 0.36);
-  --specular: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* Surfaces (strictly uniform base; depth comes only from dual shadows) */
+  --surface-base: #e0e5ec;
+  --surface-raised: #e0e5ec;
+  --bg: #e0e5ec;
+  --bg-elevated: #e0e5ec;
+  --surface: #e0e5ec;
+  --surface-2: #e0e5ec;
 
-  /* Ink Hierarchy */
-  --ink: #f4f5f7;
-  --ink-soft: #cfd4de;
-  --muted: #8c94a6;
-  --faint: #636b7d;
+  /* Dual Light/Shadow Elevation Tokens */
+  --neu-raised: 8px 8px 16px #b8bcc2, -8px -8px 16px #ffffff;
+  --neu-raised-sm: 4px 4px 8px #b8bcc2, -4px -4px 8px #ffffff;
+  --neu-hover: 4px 4px 8px #b8bcc2, -4px -4px 8px #ffffff;
+  --neu-recessed: inset 8px 8px 16px #b8bcc2, inset -8px -8px 16px #ffffff;
+  --neu-recessed-sm: inset 4px 4px 8px #b8bcc2, inset -4px -4px 8px #ffffff;
+  --neu-recessed-focus: inset 8px 8px 16px rgba(109, 93, 252, 0.28), inset -8px -8px 16px #ffffff;
 
-  /* Brand Accents — FLAIR Champagne Gold + Precision Emerald */
-  --accent: #d4a36a;
-  --accent-bright: #e7c08e;
-  --accent-dim: rgba(212, 163, 106, 0.14);
-  --accent-ink: #12100d;
+  /* Ink Hierarchy (content ink vs mid-grey UI chrome) */
+  --ink: #3d4451;
+  --ink-soft: #525b6b;
+  --muted: #6c7585;
+  --faint: #8992a2;
 
-  --action: #d4a36a;
-  --action-ink: #12100d;
+  /* Semantic Aliases */
+  --accent: #6d5dfc;
+  --accent-bright: #5b4ce8;
+  --accent-ink: #ffffff;
+  --accent-dim: rgba(109, 93, 252, 0.12);
+  --emerald: #249c94;
+  --emerald-bright: #4ecdc4;
+  --emerald-dim: rgba(78, 205, 196, 0.16);
+  --warn: #d9822b;
+  --warn-dim: rgba(217, 130, 43, 0.14);
+  --danger: #ff6b6b;
+  --danger-dim: rgba(255, 107, 107, 0.14);
+  --line: rgba(184, 188, 194, 0.45);
+  --line-strong: rgba(184, 188, 194, 0.72);
 
-  --emerald: #34d399;
-  --emerald-dim: rgba(52, 211, 153, 0.14);
-  --warn: #f0b45a;
-  --warn-dim: rgba(240, 180, 90, 0.14);
-  --danger: #f06464;
-  --danger-dim: rgba(240, 100, 100, 0.14);
+  /* Typography — Inter only, restrained weights (400 / 500 / 600) */
+  --font-sans: "Inter", "Nunito", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: var(--font-sans);
+  --font-text: var(--font-sans);
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
 
-  /* Legacy compatibility aliases (consumed by map pins / scripts) */
-  --p-bg: #08090c;
-  --p-surface: #181818;
-  --p-ink: #f4f5f7;
-  --p-muted: #8c94a6;
-  --p-accent: #d4a36a;
-  --p-accent-ink: #12100d;
-  --p-action: #d4a36a;
-  --p-action-ink: #12100d;
-  --p-inv-bg: #f4f5f7;
-  --p-inv-ink: #0c0d10;
-  --ground-bg: #111318;
-  --ground-surface: #181a20;
-  --ground-accent: #34d399;
-  --error: #f06464;
-
-  /* Typography — Clean Geometric UI + Tabular Mono (Zero italics, zero ultra-bold) */
-  --font-display: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-text: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, Consolas, monospace;
-
-  /* Tailwind Type Scale Steps */
-  --t-xs: 12px;
-  --t-sm: 14px;
-  --t-base: 16px;
-  --t-lg: 18px;
-  --t-xl: 20px;
-  --t-2xl: 24px;
-  --t-3xl: 30px;
-  --t-4xl: 36px;
-  --t-5xl: 48px;
-  --t-6xl: 60px;
-
-  /* Semantic Type Aliases */
-  --t-label: 12px;
+  --text-display: 36px;
+  --leading-display: 1.15;
+  --tracking-display: -0.01em;
+  --text-heading: 28px;
+  --leading-heading: 1.3;
+  --text-subheading: 20px;
+  --leading-subheading: 1.4;
+  --text-body-lg: 16px;
+  --leading-body-lg: 1.6;
+  --text-body: 14px;
+  --leading-body: 1.6;
+  --text-label: 12px;
+  --leading-label: 1.4;
+  --tracking-label: 0.08em;
   --t-small: 14px;
-  --t-body: 16px;
-  --t-lead: 18px;
-  --t-card: 18px;
-  --t-h3: 24px;
-  --t-h2: 36px;
-  --t-h1: 60px;
-  --t-stat: 30px;
 
-  /* Spacing Scale (strictly B2) */
-  --s-0: 0px;
-  --s-25: 2px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Spacing Scale (8px base) */
+  --spacing-unit: 8px;
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-96: 96px;
+
   --s-1: 4px;
   --s-2: 8px;
-  --s-3: 12px;
-  --s-4: 16px;
-  --s-5: 24px;
-  --s-6: 32px;
-  --s-7: 40px;
-  --s-8: 48px;
-  --s-9: 64px;
-  --s-10: 80px;
-  --s-11: 96px;
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 32px;
+  --s-6: 48px;
+  --s-7: 64px;
+  --s-8: 96px;
 
-  /* Radii (Tailwind scale, nested inner = outer - gap) */
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 16px;
-  --r-xl: 20px;
-  --r-pill: 9999px;
+  /* Border Radius */
+  --radius-cards: 24px;
+  --radius-buttons: 16px;
+  --radius-inputs: 16px;
+  --radius-pills: 999px;
+  --r-sm: 16px;
+  --r-md: 20px;
+  --r-lg: 24px;
+  --r-xl: 24px;
 
   /* Layout */
-  --nav: 84px;
-  --container: 1320px;
-  --gutter: 24px;
+  --page-max-width: 1080px;
+  --container: 1080px;
+  --section-gap: 96px;
+  --card-padding: 32px;
+  --element-gap: 16px;
+  --nav: 72px;
 
-  /* Motion — Weighted Deceleration Curve */
+  /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 220ms;
+  --dur-fast: 200ms;
   --dur-med: 320ms;
-  --dur-slow: 560ms;
-}
-
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  color-scheme: dark;
-  scroll-behavior: smooth;
 }

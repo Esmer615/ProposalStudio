@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "air-datepicker": "^3.6.0",
     "astro": "^7.4.13",
     "gcoord": "^1.0.8"
   }

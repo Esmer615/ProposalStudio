@@ -306,12 +306,19 @@ def get_industry_profile(industry: str) -> Dict[str, Any]:
 
 
 def build_custom_skill(custom_venue: Dict[str, Any], industry: str = "其他") -> Skill:
-    """为任意用户指定的上海公司/品牌/地标动态构建 Skill 对象。"""
+    """为任意全国客户公司/品牌/地标动态构建 Skill 对象。
+    若客户公司位于上海之外（如贵阳、北京、深圳等），保留真实公司地址信息用于展示，
+    同时在上海投放优化中使用上海市中心作为全域辐射锚点，确保三套上海户外方案求解稳定。
+    """
     prof = get_industry_profile(industry)
     coords = custom_venue.get("coords") or {}
-    lng = float(coords.get("lng", custom_venue.get("lng", 121.4737)))
-    lat = float(coords.get("lat", custom_venue.get("lat", 31.2304)))
-    district = str(custom_venue.get("district") or "").strip() or "黄浦区"
+    raw_lng = float(coords.get("lng", custom_venue.get("lng", 121.4737)))
+    raw_lat = float(coords.get("lat", custom_venue.get("lat", 31.2304)))
+    in_shanghai = (120.8 <= raw_lng <= 122.2) and (30.65 <= raw_lat <= 31.9)
+    lng = raw_lng if in_shanghai else 121.4737
+    lat = raw_lat if in_shanghai else 31.2304
+    raw_district = str(custom_venue.get("district") or "").strip()
+    district = (raw_district or "黄浦区") if in_shanghai else "黄浦区"
     # 判断是否中心城区（中心城区默认地铁直达高，远郊自驾占比高）
     core_districts = ("黄浦区", "静安区", "徐汇区", "长宁区", "普陀区", "虹口区", "杨浦区", "浦东新区", "闵行区")
     is_core = any(d in district for d in core_districts)
@@ -335,7 +342,14 @@ def build_custom_skill(custom_venue: Dict[str, Any], industry: str = "其他") -
         self_drive_share=0.28 if is_core else 0.58,
         rail_share=0.52 if is_core else 0.22,
         source=f"custom-geocoded:{industry}",
-        extra={"industry": industry, "industry_profile": prof, "address": custom_venue.get("address") or custom_venue.get("name")},
+        extra={
+            "industry": industry,
+            "industry_profile": prof,
+            "address": custom_venue.get("address") or custom_venue.get("name"),
+            "company_city": custom_venue.get("city") or ("上海市" if in_shanghai else ""),
+            "company_coords": {"lng": raw_lng, "lat": raw_lat},
+            "is_national_client": not in_shanghai,
+        },
     )
 
 

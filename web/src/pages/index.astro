@@ -1,58 +1,94 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const heroSlides = [
+  { src: '/images/hero-ads/ad-double-bus.jpg', tag: '陆家嘴 · 东方明珠', title: '都市观光双层全车身' },
+  { src: '/images/hero-ads/ad-swfc-led.jpg', tag: '陆家嘴 · 世纪大道', title: '金融核心地标弧形巨幕' },
+  { src: '/images/hero-ads/ad-sanxin-led.jpg', tag: '南京东路 · 第一食品', title: '核心商圈夜景地标大屏' },
+  { src: '/images/hero-ads/ad-raffles-led.jpg', tag: '人民广场 · 来福士', title: '城市枢纽户外立面巨幕' },
+  { src: '/images/hero-ads/ad-bund-bus.jpg', tag: '外滩 · 外白渡桥', title: '上海主干线公交大三侧' },
+];
 ---
 <Base
   title="新云媒介提案台 · FLAIR STUDIO"
-  description="输入场馆、预算、媒介与档期，Agent 自动核验红豆实时库存并运行确定性求解器，产出四页交互方案与四套官方模板 PDF。"
+  description="输入任意上海公司或地标、预算、媒介与档期，Agent 自动核验红豆实时库存并运行确定性求解器，产出三套差异化方案与四套官方模板 PDF。"
   active="index"
 >
 <main id="top">
-  <!-- Hero Stage -->
-  <section class="hero-stage" aria-labelledby="hero-h">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <div class="hero-badge">
-            <span class="hero-badge__dot" aria-hidden="true"></span>
-            上海新云传媒 · 确定性户外媒介提案引擎
-          </div>
+  <!-- Hero Stage: Left Neumorphic editorial column + Expansive top-right seamless blended ad reel -->
+  <section class="hero-stage hero-stage--bleed" aria-labelledby="hero-h">
+    <!-- Full-height top-right expansive rotating outdoor ad backdrop with seamless #e0e5ec feathering -->
+    <div class="hero-backdrop" id="hero-reel" aria-label="上海新云传媒户外广告实景轮播">
+      <div class="hero-backdrop__stage">
+        {heroSlides.map((s, idx) => (
+          <figure class={`hero-backdrop__slide${idx === 0 ? ' is-active' : ''}`} data-reel-slide={idx}>
+            <img src={s.src} alt={`${s.tag} · ${s.title}`} loading="eager" decoding="async" />
+          </figure>
+        ))}
+        <!-- Seamless multi-directional #e0e5ec gradient blend into surrounding Neumorphic base -->
+        <div class="hero-backdrop__blend" aria-hidden="true"></div>
+      </div>
 
-          <h1 id="hero-h" class="heading-2 hero-gradient-text" style="line-height:60px">
-            让户外媒体提案<br />当天可交付，全链可复算
-          </h1>
-
-          <p class="hero-sub">
-            输入场馆、预算、媒介与档期，Agent 自动拉取红豆 2027 实时可售库存与新云线路轨迹，由 CP-SAT 求解最优组合，一键导出 16:9 销售提案与标准合同。
-          </p>
-
-          <div class="hero-cta-row">
-            <a class="btn btn--primary btn--lg" href="/input.html">
-              进入方案工作台
-              <svg class="ico-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path d="M4.5 10H15.5M15.5 10L11 5.5M15.5 10L11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <span class="hero-proof-line">100–500 万可伸缩 · 逐行分摊零误差</span>
-          </div>
-
-          <dl class="hero-metrics">
-            <div>
-              <dt>默认 500 万方案</dt>
-              <dd><span class="m-val" data-count-to="44">44</span><span class="m-unit">个付费点位</span></dd>
-            </div>
-            <div>
-              <dt>估算有效曝光</dt>
-              <dd><span class="m-val">7,463.8</span><span class="m-unit">万人次</span></dd>
-            </div>
-            <div>
-              <dt>确定性求解耗时</dt>
-              <dd><span class="m-val" data-count-to="2">2</span><span class="m-unit">秒出方案</span></dd>
-            </div>
-          </dl>
+      <!-- Subtle floating Neumorphic caption + slide controls in bottom-right -->
+      <div class="hero-backdrop__hud">
+        <div class="hero-backdrop__meta">
+          <span class="hero-backdrop__tag" data-reel-tag>{heroSlides[0].tag}</span>
+          <strong class="hero-backdrop__title" data-reel-title>{heroSlides[0].title}</strong>
         </div>
+        <div class="hero-backdrop__dots" role="tablist" aria-label="切换实景画面">
+          {heroSlides.map((s, idx) => (
+            <button
+              type="button"
+              class={`hero-backdrop__dot${idx === 0 ? ' is-active' : ''}`}
+              data-reel-dot={idx}
+              data-slide-tag={s.tag}
+              data-slide-title={s.title}
+              aria-label={`查看实景 ${idx + 1}：${s.title}`}
+              aria-selected={idx === 0 ? 'true' : 'false'}
+            ></button>
+          ))}
+        </div>
+      </div>
+    </div>
 
-        <!-- Right Hero Showcase Bento -->
-        <div class="hero-showcase" role="img" aria-label="示例方案预览：上海乐高乐园 2027 暑期 500 万方案">
+    <div class="wrap">
+      <div class="hero-copy hero-copy--bleed">
+        <h1 id="hero-h" class="heading-2 hero-gradient-text">
+          让户外媒体提案<br />当天可交付，全链可复算
+        </h1>
+
+        <p class="hero-sub">
+          输入公司或地标、预算、媒介与档期，Agent 自动拉取红豆 2027 实时可售库存与新云线路轨迹，由 CP-SAT 求解三套策略组合，一键导出 16:9 销售提案与标准合同。
+        </p>
+
+        <div class="hero-cta-row">
+          <a class="btn btn--primary btn--lg" href="/input.html">
+            进入方案工作台
+            <svg class="ico-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4.5 10H15.5M15.5 10L11 5.5M15.5 10L11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scroll Tagline Reveal Section -->
+  <section class="tagline-section" aria-label="核心价值宣言">
+    <div class="wrap">
+      <div class="tagline-wrap">
+        <p class="tagline-reveal" data-tagline-reveal>
+          <span class="tr-seg">把数天的人工查表与手工拼图，</span><span class="tr-seg tr-seg--gold">压缩成一次可验证的确定性推演。</span><span class="tr-seg">每一条公交线路的空车数、</span><span class="tr-seg">每一个地铁出入口的落位理由、</span><span class="tr-seg tr-seg--gold">每一分折后与制作分摊，</span><span class="tr-seg">皆源自实时库存并直通签约文档。</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Below-the-fold Live Example Showcase (Card Left, Copy Right) -->
+  <section class="home-section example-section" aria-labelledby="ex-h">
+    <div class="wrap">
+      <div class="example-grid example-grid--swapped" data-reveal>
+        <div class="hero-showcase" role="region" aria-label="示例方案预览：上海乐高乐园 2027 暑期 500 万方案">
           <div class="hero-showcase__inner">
             <div class="showcase-topbar">
               <span class="win-dot win-dot--gold"></span>
@@ -114,98 +150,150 @@ import Base from '../layouts/Base.astro';
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Mandatory Scroll Tagline Reveal Section -->
-  <section class="tagline-section" aria-label="核心价值宣言">
-    <div class="wrap">
-      <div class="tagline-wrap">
-        <div class="tagline-eyebrow">01 · WHY DETERMINISTIC PROPOSAL STUDIO</div>
-        <p class="tagline-reveal" data-tagline-reveal>
-          <span class="tr-seg">把数天的人工查表与手工拼图，</span><span class="tr-seg tr-seg--gold">压缩成一次可验证的确定性推演。</span><span class="tr-seg">每一条公交线路的空车数、</span><span class="tr-seg">每一个地铁出入口的落位理由、</span><span class="tr-seg tr-seg--gold">每一分折后与制作分摊，</span><span class="tr-seg">皆源自实时库存并直通签约文档。</span>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Three-Step Bento Process -->
-  <section class="home-section" id="steps" aria-labelledby="steps-h">
-    <div class="wrap">
-      <div class="sec-head" data-reveal>
-        <div>
-          <div class="sec-eyebrow">02 · WORKFLOW ARCHITECTURE</div>
-          <h2 id="steps-h" class="heading-3">三步闭环，从一句话需求到可签单 PDF</h2>
+        <div class="example-copy">
+          <h2 id="ex-h" class="heading-3">确定性方案输出示例</h2>
+          <p class="muted t-small" style="margin-top:14px;max-width:40ch;line-height:1.75">
+            以「上海乐高乐园 · 2027 暑期 500 万」为例，所有点位均经红豆实时库存核验，并同步输出可切换的三套策略组合与四套官方 PDF 文档。
+          </p>
+          <div style="margin-top:24px">
+            <a class="btn btn--secondary" href="/result/overview.html?run=demo">查看完整示例方案 →</a>
+          </div>
         </div>
-        <p class="t-small muted" style="max-width:44ch">
-          AI 负责理解意图、编排取数与解释策略；组合优化、折扣不动点与价格分摊全部交由确定性数学模型执行。
-        </p>
-      </div>
-
-      <div class="bento-3" data-reveal>
-        <article class="card step-card">
-          <div class="step-visual" aria-hidden="true">
-            <div class="sv-row"><span>目标场馆</span><b>上海乐高乐园度假区</b></div>
-            <div class="sv-row"><span>预算规模</span><b class="gold mono">500 万</b></div>
-            <div class="sv-row"><span>媒介组合</span><span class="chip chip--accent">公交 + 地铁</span></div>
-            <div class="sv-row"><span>投放档期</span><b class="mono">2027-07-01 · 8 周</b></div>
-          </div>
-          <span class="step-num">STEP 01</span>
-          <h3>结构化输入与 Brief 解析</h3>
-          <p>支持场馆、预算、媒介、档期与直客/4A 切换，附带一句话需求解析；缺失档期绝不静默换月。</p>
-        </article>
-
-        <article class="card step-card">
-          <div class="step-visual" aria-hidden="true">
-            <div class="sv-flow">
-              <span class="sv-node">红豆库存</span>
-              <span class="muted">→</span>
-              <span class="sv-node">最小可售</span>
-              <span class="muted">→</span>
-              <span class="sv-node sv-node--gold">CP-SAT 求解</span>
-            </div>
-            <div class="sv-row" style="margin-top:8px"><span>新云 AI 线路</span><b class="mono" style="color:var(--emerald)">真实轨迹注入</b></div>
-          </div>
-          <span class="step-num">STEP 02</span>
-          <h3>双技能取数与确定性优化</h3>
-          <p>自动调度红豆实时可售库存与新云大数据平台轨迹，严格校验库存上限、夜间施工产能与预算边界。</p>
-        </article>
-
-        <article class="card step-card">
-          <div class="step-visual" aria-hidden="true">
-            <div class="sv-tabs">
-              <div class="sv-tab is-on"><span>16:9 销售提案</span><span class="mono">PPT</span></div>
-              <div class="sv-tab"><span>直客发布合同</span><span class="mono">M3</span></div>
-              <div class="sv-tab"><span>4A 排期订单</span><span class="mono">Spot</span></div>
-              <div class="sv-tab"><span>4A 框架合同</span><span class="mono">18条</span></div>
-            </div>
-          </div>
-          <span class="step-num">STEP 03</span>
-          <h3>四页工作台与官方模板导出</h3>
-          <p>概览、地图、报价排期与效果校验联动展示，一键生成新云官方 16:9 销售提案与三套标准签约合同 PDF。</p>
-        </article>
-      </div>
-
-      <div class="scope-strip" data-reveal>
-        <p>
-          <b style="color:var(--ink);font-weight:600;margin-right:8px">数据口径与透明边界</b>
-          库存数据取自红豆广告媒体管理系统 2027 月度可售快照（跨月取最小可售）；公交与地铁线路轨迹来自新云大数据可视化平台 2023-05 快照，仅用于地图可视化展示；曝光、Reach、Frequency 与 CPM 为确定性模型估算。
-        </p>
-        <span class="chip chip--quiet mono">VERSION <span data-meta-version>—</span></span>
       </div>
     </div>
   </section>
 
-  <!-- Closing CTA Band -->
-  <section class="closing-band" aria-labelledby="close-h">
+  <!-- Interactive Dynamic System Architecture Visualizer -->
+  <section class="home-section arch-section" id="steps" aria-labelledby="steps-h">
+    <!-- Soft pastel mint-cyan & periwinkle flowing aura that dissolves seamlessly on both sides -->
+    <div class="arch-aura" aria-hidden="true"></div>
     <div class="wrap">
-      <div class="closing-card" data-reveal>
-        <div>
-          <h2 id="close-h">现在就生成一份完整投放方案</h2>
-          <p>调动实时库存、确定性求解与新云官方 PDF 模板，全链路本地闭环运行。</p>
+      <div class="sec-head" data-reveal style="margin-bottom:32px">
+        <h2 id="steps-h" class="heading-3">全链路 AI 架构可视化</h2>
+      </div>
+
+      <div class="arch-stage" id="arch-stage" data-reveal aria-label="系统六阶段动态架构图">
+        <!-- Animated SVG data-flow connectors (6-node serpentine pipeline, 1:1 aligned to 960x340 grid) -->
+        <svg class="arch-pipes" viewBox="0 0 960 340" preserveAspectRatio="none" aria-hidden="true">
+          <!-- Row 1 horizontal pipes: 1 -> 2 -> 3 (cy = 73) -->
+          <path class="arch-pipe__track" d="M 274 73 L 339 73" />
+          <path class="arch-pipe__flow" d="M 274 73 L 339 73" data-pipe="0" />
+          <path class="arch-pipe__arrow" d="M 333 67 L 340 73 L 333 79" data-pipe-arrow="0" />
+
+          <path class="arch-pipe__track" d="M 619 73 L 685 73" />
+          <path class="arch-pipe__flow" d="M 619 73 L 685 73" data-pipe="1" />
+          <path class="arch-pipe__arrow" d="M 679 67 L 686 73 L 679 79" data-pipe-arrow="1" />
+
+          <!-- Turn pipe: 3 (top-right) -> 4 (bottom-right) (cx = 825) -->
+          <path class="arch-pipe__track" d="M 825 150 L 825 188" />
+          <path class="arch-pipe__flow arch-pipe__flow--mint" d="M 825 150 L 825 188" data-pipe="2" />
+          <path class="arch-pipe__arrow arch-pipe__arrow--mint" d="M 819 182 L 825 189 L 831 182" data-pipe-arrow="2" />
+
+          <!-- Row 2 right-to-left pipes: 4 -> 5 -> 6 (cy = 267) -->
+          <path class="arch-pipe__track" d="M 686 267 L 620 267" />
+          <path class="arch-pipe__flow arch-pipe__flow--mint" d="M 686 267 L 620 267" data-pipe="3" />
+          <path class="arch-pipe__arrow arch-pipe__arrow--mint" d="M 626 261 L 619 267 L 626 273" data-pipe-arrow="3" />
+
+          <path class="arch-pipe__track" d="M 340 267 L 275 267" />
+          <path class="arch-pipe__flow" d="M 340 267 L 275 267" data-pipe="4" />
+          <path class="arch-pipe__arrow" d="M 281 261 L 274 267 L 281 273" data-pipe-arrow="4" />
+        </svg>
+
+        <div class="arch-grid">
+          <!-- Node 1: 输入 -->
+          <button type="button" class="arch-node is-active" data-arch-node="0" data-arch-desc="自由指定上海公司或地标、行业、预算、档期与客户类型，支持自然语言 Brief 输入。">
+            <div class="arch-node__top">
+              <span class="arch-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M3.5 5.5H16.5M3.5 10H12.5M3.5 14.5H9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="15" cy="14" r="2.2" stroke="currentColor" stroke-width="1.5"/></svg>
+              </span>
+              <span class="arch-node__pulse"></span>
+            </div>
+            <strong class="arch-node__title">输入</strong>
+            <span class="arch-node__sub">公司定位 · 预算 · 档期</span>
+          </button>
+
+          <!-- Node 2: Agent 规划 -->
+          <button type="button" class="arch-node" data-arch-node="1" data-arch-desc="多轮对话澄清投放目标与缺失约束，拆解行业权重、合规口径与双技能取数计划。">
+            <div class="arch-node__top">
+              <span class="arch-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 6.5V10L12.5 11.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <span class="arch-node__pulse"></span>
+            </div>
+            <strong class="arch-node__title">Agent 规划</strong>
+            <span class="arch-node__sub">需求澄清 · 策略编排</span>
+          </button>
+
+          <!-- Node 3: Agent 调用数据 -->
+          <button type="button" class="arch-node" data-arch-node="2" data-arch-desc="自动调度红豆库存 Skill 与新云大数据 Skill，实时拉取可售车数、周边覆盖、线路轨迹与受众画像。">
+            <div class="arch-node__top">
+              <span class="arch-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="5.5" rx="6" ry="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 5.5V14.5C4 15.88 6.69 17 10 17C13.31 17 16 15.88 16 14.5V5.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 10C4 11.38 6.69 12.5 10 12.5C13.31 12.5 16 11.38 16 10" stroke="currentColor" stroke-width="1.5"/></svg>
+              </span>
+              <span class="arch-node__pulse arch-node__pulse--mint"></span>
+            </div>
+            <strong class="arch-node__title">Agent 调用数据</strong>
+            <span class="arch-node__sub">双技能实时取数融合</span>
+          </button>
+
+          <!-- Node 6 (visually bottom-left for clean U-flow): 结果输出 -->
+          <button type="button" class="arch-node arch-node--pos6" data-arch-node="5" data-arch-desc="自动将选定方案的真实点位、折扣报价与排期填入官方模板，一键导出 16:9 销售提案与标准签约合同 PDF。">
+            <div class="arch-node__top">
+              <span class="arch-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M5 2.8H12L15.5 6.3V17.2H5V2.8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 10.5H12.5M8 13.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <span class="arch-node__pulse"></span>
+            </div>
+            <strong class="arch-node__title">结果输出</strong>
+            <span class="arch-node__sub">提案与合同直出签单</span>
+          </button>
+
+          <!-- Node 5 (bottom-center): 可视化输出 -->
+          <button type="button" class="arch-node arch-node--pos5" data-arch-node="4" data-arch-desc="在四页工作台联动呈现浅色交互地图、方案人流密度热力图、2023-05 受众画像、预算弹性与报价排期。">
+            <div class="arch-node__top">
+              <span class="arch-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M3.5 15.5L8 10.5L11.5 13L16.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16.5" cy="6.5" r="1.6" fill="currentColor"/></svg>
+              </span>
+              <span class="arch-node__pulse arch-node__pulse--mint"></span>
+            </div>
+            <strong class="arch-node__title">可视化输出</strong>
+            <span class="arch-node__sub">地图热力 · 受众画像</span>
+          </button>
+
+          <!-- Node 4 (bottom-right): Agent 调用求解模型 -->
+          <button type="button" class="arch-node arch-node--pos4" data-arch-node="3" data-arch-desc="调用 CP-SAT 凹边际递减优化引擎，在预算、库存与施工产能硬约束内同步求解三套差异化方案。">
+            <div class="arch-node__top">
+              <span class="arch-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><rect x="4" y="4" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 8H12V12H8V8Z" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="1.3"/></svg>
+              </span>
+              <span class="arch-node__pulse arch-node__pulse--mint"></span>
+            </div>
+            <strong class="arch-node__title">Agent 调用求解模型</strong>
+            <span class="arch-node__sub">CP-SAT 凹模型三方案</span>
+          </button>
         </div>
-        <a class="btn btn--primary btn--lg" href="/input.html">
+
+        <!-- Recessed live narrative strip synced to active architecture node -->
+        <div class="arch-status" aria-live="polite">
+          <span class="arch-status__dot" aria-hidden="true"></span>
+          <b class="arch-status__name" data-arch-active-name>输入</b>
+          <span class="arch-status__desc" data-arch-active-desc>自由指定上海公司或地标、行业、预算、档期与客户类型，支持自然语言 Brief 输入。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA Seated Atop Full-Bleed Digital Data Waterfall -->
+  <section class="closing-band waterfall-band" id="waterfall-band" aria-labelledby="close-h">
+    <canvas class="waterfall-canvas" id="digital-waterfall" aria-hidden="true"></canvas>
+    <div class="waterfall-veil" aria-hidden="true"></div>
+
+    <div class="wrap waterfall-top">
+      <div class="closing-card closing-card--integrated" data-reveal>
+        <h2 id="close-h">现在就生成一份完整投放方案</h2>
+        <p>调动实时库存、确定性求解与新云官方 PDF 模板，全链路本地闭环运行。</p>
+        <a class="btn btn--primary btn--lg waterfall-cta" href="/input.html">
           开始生成方案
           <svg class="ico-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M4.5 10H15.5M15.5 10L11 5.5M15.5 10L11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -217,7 +305,7 @@ import Base from '../layouts/Base.astro';
 </main>
 
 <script>
-  // Load live manifest version/timestamp for footer & scope strip
+  // Load live manifest version/timestamp for footer
   fetch('/api/meta')
     .then((r) => r.json())
     .then((meta) => {
@@ -229,26 +317,113 @@ import Base from '../layouts/Base.astro';
     })
     .catch(() => {});
 
-  // Smooth count-up roll for hero numeric counters
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduced) {
-    document.querySelectorAll<HTMLElement>('[data-count-to]').forEach((el) => {
-      const target = Number(el.dataset.countTo || 0);
-      if (!target) return;
-      const start = performance.now();
-      const dur = 820;
-      const step = (now: number) => {
-        const t = Math.min(1, (now - start) / dur);
-        const eased = 1 - Math.pow(1 - t, 3);
-        el.textContent = String(Math.max(1, Math.round(target * eased)));
-        if (t < 1) requestAnimationFrame(step);
-        else el.textContent = String(target);
-      };
-      requestAnimationFrame(step);
+  // Dynamic Hero Outdoor Ad Carousel: always auto-plays continuously in an infinite loop (0 -> 1 -> ... -> N-1 -> 0)
+  const reel = document.getElementById('hero-reel');
+  if (reel) {
+    const slides = [...reel.querySelectorAll<HTMLElement>('[data-reel-slide]')];
+    const dots = [...reel.querySelectorAll<HTMLButtonElement>('[data-reel-dot]')];
+    const tagEl = reel.querySelector<HTMLElement>('[data-reel-tag]');
+    const titleEl = reel.querySelector<HTMLElement>('[data-reel-title]');
+    const INTERVAL_MS = 3800;
+    let idx = 0;
+    let timer: number | null = null;
+
+    const show = (next: number) => {
+      idx = ((next % slides.length) + slides.length) % slides.length;
+      slides.forEach((el, i) => {
+        const active = i === idx;
+        el.classList.toggle('is-active', active);
+        // Restart Ken Burns slow-zoom cleanly when this slide becomes active
+        if (active) {
+          const img = el.querySelector('img');
+          if (img) {
+            img.style.animation = 'none';
+            void img.offsetWidth;
+            img.style.animation = '';
+          }
+        }
+      });
+      dots.forEach((d, i) => {
+        d.classList.toggle('is-active', i === idx);
+        d.setAttribute('aria-selected', String(i === idx));
+      });
+      const activeDot = dots[idx];
+      if (activeDot && tagEl) tagEl.textContent = activeDot.dataset.slideTag || '';
+      if (activeDot && titleEl) titleEl.textContent = activeDot.dataset.slideTitle || '';
+    };
+
+    const start = () => {
+      if (timer) window.clearInterval(timer);
+      timer = window.setInterval(() => show(idx + 1), INTERVAL_MS);
+    };
+
+    dots.forEach((d, i) => d.addEventListener('click', () => {
+      show(i);
+      start();
+    }));
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (timer) { window.clearInterval(timer); timer = null; }
+      } else {
+        start();
+      }
     });
+
+    show(0);
+    start();
   }
 
-  // Mandatory Tagline Reveal (B11): phrase-by-phrase scroll illumination via rAF-throttled scroll
+  // Interactive Dynamic Architecture Visualizer: auto-flows through all 6 stages + clickable nodes
+  const archStage = document.getElementById('arch-stage');
+  if (archStage) {
+    const nodes = [...archStage.querySelectorAll<HTMLButtonElement>('[data-arch-node]')];
+    const pipes = [...archStage.querySelectorAll<SVGPathElement>('[data-pipe]')];
+    const arrows = [...archStage.querySelectorAll<SVGPathElement>('[data-pipe-arrow]')];
+    const nameEl = archStage.querySelector<HTMLElement>('[data-arch-active-name]');
+    const descEl = archStage.querySelector<HTMLElement>('[data-arch-active-desc]');
+    let step = 0;
+    let archTimer: number | null = null;
+
+    const activate = (next: number) => {
+      step = ((next % 6) + 6) % 6;
+      nodes.forEach((n) => {
+        const idx = Number(n.dataset.archNode);
+        n.classList.toggle('is-active', idx === step);
+        n.classList.toggle('is-passed', idx < step);
+      });
+      pipes.forEach((p) => {
+        const pidx = Number(p.dataset.pipe);
+        p.classList.toggle('is-lit', pidx < step);
+        p.classList.toggle('is-current', pidx === step - 1);
+      });
+      arrows.forEach((a) => {
+        const aidx = Number(a.dataset.pipeArrow);
+        a.classList.toggle('is-lit', aidx < step);
+        a.classList.toggle('is-current', aidx === step - 1);
+      });
+      const cur = nodes.find((n) => Number(n.dataset.archNode) === step);
+      if (cur && nameEl) nameEl.textContent = cur.querySelector('.arch-node__title')?.textContent || '';
+      if (cur && descEl) descEl.textContent = cur.dataset.archDesc || '';
+    };
+
+    const startArch = () => {
+      if (archTimer) window.clearInterval(archTimer);
+      archTimer = window.setInterval(() => activate(step + 1), 2400);
+    };
+
+    nodes.forEach((n) => {
+      const idx = Number(n.dataset.archNode);
+      n.addEventListener('click', () => { activate(idx); startArch(); });
+      n.addEventListener('mouseenter', () => { activate(idx); startArch(); });
+    });
+
+    activate(0);
+    startArch();
+  }
+
+  // Scroll Tagline Reveal: phrase-by-phrase scroll illumination
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const tagEl = document.querySelector<HTMLElement>('[data-tagline-reveal]');
   if (tagEl) {
     const segs = [...tagEl.querySelectorAll<HTMLElement>('.tr-seg')];
@@ -275,6 +450,273 @@ import Base from '../layouts/Base.astro';
         { passive: true },
       );
       update();
+    }
+  }
+
+  // Luminous Digital Waterfall Canvas at bottom of page
+  const wfBand = document.getElementById('waterfall-band');
+  const wfCanvas = document.getElementById('digital-waterfall') as HTMLCanvasElement | null;
+  if (wfBand && wfCanvas) {
+    const ctx = wfCanvas.getContext('2d');
+    if (ctx) {
+      const DIGITS = '01234567890123456789.%+-8247639501';
+      const TOKENS = ['7463', '82.0%', '63.05', '499.9', '2027', '44/44', '36.4', '0101'];
+      type Stream = {
+        x: number;
+        y: number;
+        baseSpeed: number;
+        len: number;
+        fontSize: number;
+        layer: 0 | 1 | 2;
+        hue: 'blurple' | 'mint' | 'slate';
+        chars: string[];
+        tick: number;
+        mutateEvery: number;
+      };
+      type Droplet = {
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        life: number;
+        maxLife: number;
+        hue: 'blurple' | 'mint';
+        r: number;
+      };
+
+      let W = 0;
+      let H = 0;
+      let dpr = 1;
+      let streams: Stream[] = [];
+      let droplets: Droplet[] = [];
+      let pointer = { x: -9999, y: -9999, active: false };
+      let rafId: number | null = null;
+      let inView = true;
+
+      const pickChar = () => DIGITS[Math.floor(Math.random() * DIGITS.length)];
+      const makeChars = (len: number) => {
+        const arr: string[] = [];
+        const inject = Math.random() < 0.28 ? TOKENS[Math.floor(Math.random() * TOKENS.length)] : '';
+        const start = inject ? Math.floor(Math.random() * Math.max(1, len - inject.length)) : -1;
+        for (let i = 0; i < len; i++) {
+          if (inject && i >= start && i < start + inject.length) {
+            arr.push(inject[i - start]);
+          } else {
+            arr.push(pickChar());
+          }
+        }
+        return arr;
+      };
+
+      const spawnStream = (x: number, initial: boolean): Stream => {
+        const r = Math.random();
+        const layer: 0 | 1 | 2 = r < 0.34 ? 0 : r < 0.72 ? 1 : 2;
+        const fontSize = layer === 0 ? 11 : layer === 1 ? 13 : 15;
+        const len = layer === 0 ? 10 + Math.floor(Math.random() * 8) : layer === 1 ? 13 + Math.floor(Math.random() * 10) : 15 + Math.floor(Math.random() * 11);
+        const baseSpeed = layer === 0 ? 1.15 + Math.random() * 0.75 : layer === 1 ? 1.9 + Math.random() * 1.1 : 2.75 + Math.random() * 1.4;
+        const hr = Math.random();
+        const hue: 'blurple' | 'mint' | 'slate' =
+          layer === 0 ? (hr < 0.55 ? 'slate' : 'mint') : hr < 0.48 ? 'blurple' : hr < 0.86 ? 'mint' : 'slate';
+        return {
+          x,
+          y: initial ? Math.random() * (H + 220) - 120 : -Math.random() * 180 - 20,
+          baseSpeed,
+          len,
+          fontSize,
+          layer,
+          hue,
+          chars: makeChars(len),
+          tick: Math.floor(Math.random() * 30),
+          mutateEvery: 4 + Math.floor(Math.random() * 8),
+        };
+      };
+
+      const resize = () => {
+        const rect = wfBand.getBoundingClientRect();
+        W = Math.max(320, Math.round(rect.width));
+        H = Math.max(540, Math.round(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        wfCanvas.width = Math.round(W * dpr);
+        wfCanvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const colGap = 18;
+        const count = Math.max(30, Math.floor(W / colGap));
+        const offsetX = (W - (count - 1) * colGap) / 2;
+        streams = [];
+        for (let i = 0; i < count; i++) {
+          const x = offsetX + i * colGap + (Math.random() - 0.5) * 3;
+          streams.push(spawnStream(x, true));
+          if (i % 2 === 0) streams.push(spawnStream(x + 7, true));
+        }
+      };
+
+      const drawFrame = (animate: boolean) => {
+        ctx.clearRect(0, 0, W, H);
+
+        // Soft vertical waterfall curtain ribbons (gives continuous liquid cascade depth)
+        const centerFade = (x: number) => {
+          const nx = Math.abs((x / W) * 2 - 1);
+          return Math.max(0.18, 1 - Math.pow(nx, 2.2) * 0.88);
+        };
+
+        for (let i = 0; i < streams.length; i++) {
+          const s = streams[i];
+          const edgeMask = centerFade(s.x);
+          const stepY = s.fontSize * 1.28;
+
+          // Subtle vertical mist streak behind foreground/mid streams
+          if (s.layer >= 1) {
+            const ribbonH = s.len * stepY * 0.92;
+            const g = ctx.createLinearGradient(0, s.y - ribbonH, 0, s.y + 8);
+            const col = s.hue === 'blurple' ? '109, 93, 252' : s.hue === 'mint' ? '52, 198, 188' : '125, 138, 158';
+            const peak = (s.layer === 2 ? 0.11 : 0.06) * edgeMask;
+            g.addColorStop(0, `rgba(${col}, 0)`);
+            g.addColorStop(0.75, `rgba(${col}, ${peak.toFixed(3)})`);
+            g.addColorStop(1, `rgba(${col}, 0)`);
+            ctx.fillStyle = g;
+            ctx.fillRect(s.x - s.fontSize * 0.45, s.y - ribbonH, s.fontSize * 0.9, ribbonH + 8);
+          }
+
+          // Pointer proximity glow & gentle water parting
+          let pxBoost = 0;
+          let xOffset = 0;
+          if (pointer.active) {
+            const dx = s.x - pointer.x;
+            const dy = s.y - pointer.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 140) {
+              const force = 1 - dist / 140;
+              pxBoost = force;
+              xOffset = (dx >= 0 ? 1 : -1) * force * 8;
+            }
+          }
+
+          ctx.font = `${s.layer === 2 ? 600 : 500} ${s.fontSize}px ui-monospace, "Cascadia Mono", Consolas, monospace`;
+          ctx.textAlign = 'center';
+
+          for (let j = 0; j < s.len; j++) {
+            const cy = s.y - j * stepY;
+            if (cy < -24 || cy > H + 18) continue;
+
+            // Fade smoothly from upper crest and softly into bottom floor
+            const topFade = Math.max(0, Math.min(1, (cy - 10) / 115));
+            const botFade = Math.max(0, Math.min(1, (H - cy) / 52));
+            const tailRatio = 1 - j / s.len;
+            const baseAlpha = s.layer === 0 ? 0.34 : s.layer === 1 ? 0.62 : 0.9;
+            const alpha = Math.min(1, tailRatio * tailRatio * baseAlpha * edgeMask * topFade * botFade + pxBoost * 0.25 * tailRatio);
+            if (alpha < 0.025) continue;
+
+            const isHead = j === 0;
+            if (isHead) {
+              const headColor =
+                s.hue === 'blurple'
+                  ? `rgba(109, 93, 252, ${Math.min(1, alpha * 1.15).toFixed(3)})`
+                  : s.hue === 'mint'
+                    ? `rgba(26, 174, 165, ${Math.min(1, alpha * 1.15).toFixed(3)})`
+                    : `rgba(82, 96, 118, ${alpha.toFixed(3)})`;
+              ctx.fillStyle = headColor;
+              if (s.layer === 2) {
+                ctx.shadowColor = s.hue === 'mint' ? 'rgba(78, 205, 196, 0.55)' : 'rgba(109, 93, 252, 0.45)';
+                ctx.shadowBlur = 8;
+              }
+            } else {
+              ctx.shadowBlur = 0;
+              ctx.fillStyle =
+                s.hue === 'blurple'
+                  ? `rgba(109, 93, 252, ${alpha.toFixed(3)})`
+                  : s.hue === 'mint'
+                    ? `rgba(38, 178, 169, ${alpha.toFixed(3)})`
+                    : `rgba(104, 118, 138, ${(alpha * 0.85).toFixed(3)})`;
+            }
+            ctx.fillText(s.chars[j], s.x + xOffset, cy);
+          }
+          ctx.shadowBlur = 0;
+
+          if (animate) {
+            // Subtle gravitational waterfall acceleration as y descends
+            const gravityBoost = 1 + Math.max(0, s.y / H) * 0.45;
+            s.y += s.baseSpeed * gravityBoost;
+            s.tick++;
+            if (s.tick % s.mutateEvery === 0) {
+              const idx = Math.floor(Math.random() * s.chars.length);
+              s.chars[idx] = pickChar();
+            }
+
+            // Emit subtle bottom waterfall splash droplets when lead nears floor
+            if (s.layer >= 1 && s.y > H - 24 && s.y < H - 14 && droplets.length < 48 && Math.random() < 0.55) {
+              droplets.push({
+                x: s.x,
+                y: H - 10,
+                vx: (Math.random() - 0.5) * 1.6,
+                vy: -(1.2 + Math.random() * 2.1),
+                life: 0,
+                maxLife: 24 + Math.random() * 20,
+                hue: s.hue === 'mint' ? 'mint' : 'blurple',
+                r: 1.5 + Math.random() * 1.8,
+              });
+            }
+
+            if (s.y - s.len * stepY > H + 30) {
+              const fresh = spawnStream(s.x, false);
+              streams[i] = fresh;
+            }
+          }
+        }
+
+        // Draw & update bottom waterfall mist droplets
+        for (let k = droplets.length - 1; k >= 0; k--) {
+          const d = droplets[k];
+          const p = 1 - d.life / d.maxLife;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.r * (0.6 + p * 0.5), 0, Math.PI * 2);
+          ctx.fillStyle =
+            d.hue === 'mint'
+              ? `rgba(54, 198, 188, ${(p * 0.55).toFixed(3)})`
+              : `rgba(109, 93, 252, ${(p * 0.48).toFixed(3)})`;
+          ctx.fill();
+          if (animate) {
+            d.x += d.vx;
+            d.y += d.vy;
+            d.vy += 0.085;
+            d.life++;
+            if (d.life >= d.maxLife) droplets.splice(k, 1);
+          }
+        }
+      };
+
+      const loop = () => {
+        if (!inView) {
+          rafId = null;
+          return;
+        }
+        drawFrame(true);
+        rafId = requestAnimationFrame(loop);
+      };
+
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+      wfBand.addEventListener('mousemove', (e) => {
+        const rect = wfBand.getBoundingClientRect();
+        pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top, active: true };
+      });
+      wfBand.addEventListener('mouseleave', () => { pointer.active = false; });
+
+      if (reduced) {
+        drawFrame(false);
+      } else if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            inView = entries.some((en) => en.isIntersecting);
+            if (inView && rafId === null) rafId = requestAnimationFrame(loop);
+          },
+          { rootMargin: '120px 0px' },
+        );
+        io.observe(wfBand);
+        rafId = requestAnimationFrame(loop);
+      } else {
+        rafId = requestAnimationFrame(loop);
+      }
     }
   }
 </script>

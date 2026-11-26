@@ -51,7 +51,6 @@ import ResultHeader from '../../components/ResultHeader.astro';
       <section aria-labelledby="ov-var-h" data-variant-section hidden>
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);margin-bottom:var(--s-4);flex-wrap:wrap">
           <h2 id="ov-var-h" class="heading-5">三套 CP-SAT 差异化方案对比</h2>
-          <span class="faint t-xs mono">基于凹边际递减模型同库求解 · 点击任意方案卡片实时切换全站数据与导出 PDF</span>
         </div>
         <div class="variant-grid" data-k="variant-cards"></div>
       </section>
@@ -182,7 +181,7 @@ import ResultHeader from '../../components/ResultHeader.astro';
           <div class="card-head"><span>按折后媒体费占比</span></div>
           <div class="card-body" style="display:grid;gap:var(--s-4)">
             <svg class="chart" viewBox="0 0 360 48" role="img" aria-label="媒体配比条形图：公交与地铁按折后媒体费的占比">
-              <rect x="0" y="0" width="360" height="14" rx="7" fill="rgba(255,255,255,0.08)"></rect>
+              <rect x="0" y="0" width="360" height="14" rx="7" fill="#d0d6e0"></rect>
               <rect class="bar" data-k="bus-bar" x="0" y="0" width="0" height="14" rx="7"></rect>
               <rect class="bar bar--alt" data-k="metro-bar" x="0" y="0" width="0" height="14" rx="7"></rect>
               <text x="0" y="36" font-size="11" data-k="bus-label">公交 0%</text>
@@ -190,19 +189,9 @@ import ResultHeader from '../../components/ResultHeader.astro';
             </svg>
             <div class="kv">
               <div><span>公交线路 / 车辆</span><b data-k="bus-units">—</b></div>
-              <div><span>地铁站点 / 出入口</span><b data-k="metro-units">—</b></div>
+              <div class="kv__raised"><span>地铁站点 / 出入口</span><b data-k="metro-units">—</b></div>
               <div class="total"><span>总付费单元</span><b data-k="paid-units">—</b></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 口径与局限摘要 -->
-      <section aria-labelledby="ov-limits-h">
-        <h2 id="ov-limits-h" class="heading-5" style="margin-bottom:var(--s-4)">口径与局限摘要</h2>
-        <div class="card">
-          <div class="card-body" style="padding:12px 20px">
-            <div class="kv" data-k="limits"></div>
           </div>
         </div>
       </section>
@@ -220,7 +209,6 @@ import ResultHeader from '../../components/ResultHeader.astro';
     const hyp = plan.hypothesis || {};
     const strategy = plan.strategy || {};
     const summary = plan.plan?.summary || {};
-    const limits = plan.validation?.limitations || [];
 
     const h1 = `${inputs.venue_name || plan.venue?.name || '方案'} · ${inputs.budget_wan ?? '—'} 万`;
     const title = document.querySelector('[data-result-title]');
@@ -240,10 +228,15 @@ import ResultHeader from '../../components/ResultHeader.astro';
         const card = document.createElement('button');
         card.type = 'button';
         card.className = 'variant-card' + (isAct ? ' is-active' : '');
+        card.setAttribute('aria-pressed', String(isAct));
         card.innerHTML = `
           <div class="variant-card__head">
             <span class="variant-card__title">${v.title || v.short}</span>
-            <span class="chip ${isAct ? 'chip--accent' : 'chip--quiet'}">${isAct ? '当前查看' : '切换'}</span>
+            <span class="variant-radio" aria-hidden="true">
+              ${isAct
+                ? `<svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.2L6.6 11.3L12.5 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                : ''}
+            </span>
           </div>
           <p class="variant-card__tag">${v.tagline || ''}</p>
           <div class="variant-card__kpis">
@@ -253,7 +246,11 @@ import ResultHeader from '../../components/ResultHeader.astro';
           </div>
           <div class="variant-card__meta">
             <span>公交 ${v.bus_lines}线/${v.bus_units}辆 · 地铁 ${v.metro_stations}站</span>
-            <span>实付 ¥${fmtWan(v.total_paid_wan, 1)}万</span>
+            <span class="variant-card__paid">实付 ¥${fmtWan(v.total_paid_wan, 1)}万</span>
+          </div>
+          <div class="variant-card__foot">
+            <span class="variant-card__state">${isAct ? '当前生效方案' : '点击切换此方案'}</span>
+            <span class="variant-card__arrow" aria-hidden="true">${isAct ? '●' : '→'}</span>
           </div>
         `;
         card.addEventListener('click', () => {
@@ -356,20 +353,6 @@ import ResultHeader from '../../components/ResultHeader.astro';
     set('[data-k="bus-units"]', `${summary.bus_lines ?? '—'} 条 / ${summary.bus_units ?? '—'} 辆`);
     set('[data-k="metro-units"]', `${summary.metro_stations ?? '—'} 站 / ${summary.metro_units ?? '—'} 口`);
     set('[data-k="paid-units"]', String((summary.bus_units ?? 0) + (summary.metro_units ?? 0)));
-
-    // limits
-    const lim = document.querySelector('[data-k="limits"]')!;
-    lim.replaceChildren();
-    const extra = [
-      '曝光 / Reach / Frequency / CPM 为模型估算，目标人群为策划假设',
-      '折扣档位门槛待赞助方确认',
-      '公交几何缺失时按区县示意，POI/站点坐标为公开近似',
-    ];
-    [...limits, ...extra].forEach((t, i) => {
-      const d = document.createElement('div');
-      d.innerHTML = `<span>局限 ${String(i + 1).padStart(2, '0')}</span><b>${t}</b>`;
-      lim.append(d);
-    });
 
     function set(sel: string, v: string) {
       const el = document.querySelector(sel);

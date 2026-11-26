@@ -107,7 +107,7 @@ import ResultHeader from '../../components/ResultHeader.astro';
         <h2 id="fx-elast-h" class="heading-5" style="margin-bottom:var(--s-4)">预算弹性曲线（100–500 万）</h2>
         <div class="card">
           <div class="card-head">
-            <span>累计曝光（金线 · 左轴）· 边际每万元曝光（绿虚线 · 右轴）</span>
+            <span>累计曝光（紫罗兰线 · 左轴）· 边际每万元曝光（薄荷虚线 · 右轴）</span>
             <span class="chip chip--accent mono" data-k="knee">拐点 —</span>
           </div>
           <div class="card-body">
@@ -152,15 +152,6 @@ import ResultHeader from '../../components/ResultHeader.astro';
           </div>
         </div>
       </section>
-
-      <!-- agent + data timeline -->
-      <section aria-labelledby="fx-timeline-h">
-        <h2 id="fx-timeline-h" class="heading-5" style="margin-bottom:var(--s-4)">Agent 与数据阶段时间线</h2>
-        <div class="card">
-          <div class="card-head"><span>workflow.stages</span><span class="chip chip--quiet mono" data-k="workflow-mode">—</span></div>
-          <div class="card-body" style="padding:12px 20px;display:grid;gap:8px" data-k="timeline"></div>
-        </div>
-      </section>
     </div>
   </div>
 </main>
@@ -173,7 +164,6 @@ import ResultHeader from '../../components/ResultHeader.astro';
     const e = plan.effects || {};
     const params = e.parameters || {};
     const validation = plan.validation || {};
-    const workflow = plan.workflow || {};
     // The orchestrator keeps the nine-budget sweep on the run (`/api/proposals/{id}`),
     // while a direct /api/plan response may carry it inside the plan. Prefer the run.
     const runElast = (run as any)?.elasticity;
@@ -366,20 +356,6 @@ import ResultHeader from '../../components/ResultHeader.astro';
      ['效果公式', e.formula || '—'],
      ['声明', e.disclaimer || '曝光估算，非到园人数/销量/财务 ROI。'],
     ].forEach(([k, v]) => { const d = document.createElement('div'); d.innerHTML = `<span>${k}</span><b>${v}</b>`; src.append(d); });
-
-    // timeline
-    set('[data-k="workflow-mode"]', workflow.mode === 'offline-rules' ? 'offline-rules' : (workflow.mode || '—'));
-    const tl = document.querySelector('[data-k="timeline"]')!;
-    tl.replaceChildren();
-    (workflow.stages || []).forEach((s: any) => {
-      const r = document.createElement('div'); r.className = 'row'; r.style.gridTemplateColumns = '120px minmax(0,1fr) auto';
-      const name = document.createElement('span'); name.textContent = s.name;
-      const main = document.createElement('div'); const b = document.createElement('b'); b.textContent = s.status || s.state || ''; const small = document.createElement('small'); small.textContent = `${s.model || ''}${s.latency_ms != null ? ' · ' + s.latency_ms + 'ms' : ''}${s.summary ? ' · ' + s.summary : ''}`; main.append(b, small);
-      const chip = document.createElement('span'); chip.className = 'chip chip--quiet'; chip.textContent = s.id;
-      r.append(name, main, chip);
-      tl.append(r);
-    });
-    if (!(workflow.stages || []).length) tl.innerHTML = '<span class="muted">无阶段记录</span>';
 
     function set(sel: string, v: string) { const el = document.querySelector(sel); if (el) el.textContent = v; }
   });

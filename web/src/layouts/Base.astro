@@ -21,7 +21,7 @@ const {
   dataVersion = '—',
   inventoryTs = '—',
   chrome = true,
-  hideFooter = false,
+  hideFooter = true,
 } = Astro.props;
 ---
 <!doctype html>
@@ -36,7 +36,7 @@ const {
   <meta property="og:description" content={description} />
   <meta property="og:locale" content="zh_CN" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="theme-color" content="#08090c" />
+  <meta name="theme-color" content="#e0e5ec" />
 </head>
 <body>
   <AmbientBg />
@@ -80,20 +80,7 @@ const {
         reveals.forEach((el) => el.classList.add('is-visible'));
       }
 
-      // 3) Linear/Raycast pointer-tracking spotlight shimmer on .card elements
-      document.addEventListener(
-        'pointermove',
-        (ev) => {
-          const target = (ev.target as HTMLElement | null)?.closest<HTMLElement>('.card');
-          if (!target) return;
-          const rect = target.getBoundingClientRect();
-          target.style.setProperty('--mx', `${ev.clientX - rect.left}px`);
-          target.style.setProperty('--my', `${ev.clientY - rect.top}px`);
-        },
-        { passive: true },
-      );
-
-      // 4) Close open <details class="export-menu"> on outside click or Escape
+      // 3) Close open <details class="export-menu"> on outside click or Escape
       document.addEventListener('click', (ev) => {
         document.querySelectorAll<HTMLDetailsElement>('details.export-menu[open]').forEach((d) => {
           if (!d.contains(ev.target as Node)) d.removeAttribute('open');

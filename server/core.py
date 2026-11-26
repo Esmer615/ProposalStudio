@@ -662,14 +662,24 @@ def geocode(query: str) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
 
 
 def agent_consult(body: Optional[Dict[str, Any]]) -> Tuple[int, Dict[str, Any], Dict[str, str]]:
-    """POST /api/agent/consult：多轮交互需求顾问（解析公司/地点、行业、预算、目标与追问）。"""
+    """POST /api/agent/consult：多轮交互需求顾问（全国客户公司调研、地址定位、行业与广告策略确认）。"""
     payload = dict(body or {})
     message = str(payload.get("message") or payload.get("text") or "").strip()
     draft = payload.get("draft") if isinstance(payload.get("draft"), dict) else {}
     history = payload.get("history") if isinstance(payload.get("history"), list) else []
+    place_candidates = payload.get("place_candidates") if isinstance(payload.get("place_candidates"), list) else None
+    lookup_done = bool(payload.get("lookup_done", False))
+    enterprise_hint = str(payload.get("enterprise_hint") or "").strip() or None
     try:
         from agent.consult import consult_turn  # type: ignore
-        res = consult_turn(message, draft=draft, history=history)
+        res = consult_turn(
+            message,
+            draft=draft,
+            history=history,
+            place_candidates=place_candidates,
+            lookup_done=lookup_done,
+            enterprise_hint=enterprise_hint,
+        )
         return 200, res, {}
     except Exception as exc:
         return 500, {"ok": False, "error": {"code": "CONSULT_ERROR", "message": f"{type(exc).__name__}: {exc}"}}, {}

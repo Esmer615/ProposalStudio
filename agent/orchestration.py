@@ -71,6 +71,230 @@ def _norm_line(value: Any) -> str:
     return re.sub(r"路$", "", str(value or "").strip()).replace(" ", "")
 
 
+def _format_month_ym(val: Any) -> str:
+    """将 '202305' 或 '2023-05-01' 统一格式化为 'YYYY-MM'。"""
+    s = str(val or "").strip()
+    m = re.match(r"^(\d{4})-?(\d{2})", s)
+    return f"{m.group(1)}-{m.group(2)}" if m else s
+
+
+def _format_month_range(months: Optional[List[str]]) -> str:
+    """将月份列表格式化为诚实的档期范围（如 ['2027-01', '2027-02'] -> '2027-01 至 2027-02'）。"""
+    clean = sorted({_format_month_ym(x) for x in (months or []) if _format_month_ym(x)})
+    if not clean:
+        return "—"
+    if len(clean) == 1:
+        return clean[0]
+    return f"{clean[0]} 至 {clean[-1]}"
+
+
+def _translate_data_reason(reason: Any, data_month: str = "2023-05") -> str:
+    """将内部英文错误码转译为清晰诚实的中文原因。"""
+    code = str(reason or "").strip()
+    mapping = {
+        "NOT_FOUND": f"新云 {data_month} 平台库查无此线",
+        "MANUAL_LOGIN_REQUIRED": "新云会话未登录或已过期",
+        "SESSION_EXPIRED": "新云会话已过期",
+        "BIGDATA_UNAVAILABLE": "新云接口拉取失败",
+        "BATCH_UNAVAILABLE": "新云批量轨迹接口超时或失败",
+        "PORTRAIT_UNAVAILABLE": "新云人群画像接口拉取失败",
+        "PARTIAL_ROUTES": f"部分线路在新云 {data_month} 平台查无轨迹",
+        "NO_LINES": "当前方案无可查线路",
+        "EMPTY_PATH": "平台返回轨迹坐标为空",
+    }
+    return mapping.get(code, code or "外部数据源返回异常")
+
+
+def _route_retry_candidates(line: str) -> List[str]:
+    """针对缺失的分支/高峰/区间线路，生成用于 Agent 自动重试的主线候选名。"""
+    raw = str(line or "").strip()
+    if not raw:
+        return []
+    candidates: List[str] = []
+
+    def add(v: str) -> None:
+        v = v.strip()
+        if v and v != raw and v not in candidates:
+            candidates.append(v)
+
+    # 1. 剥离分支/高峰/区间后缀（如 866-高峰线 -> 866 / 866路；71路区间 -> 71路 / 71）
+    stripped = re.sub(
+        r"[-—_/\s]*(?:高峰线|高峰|早高峰|晚高峰|区间线?|短驳线?|定班线?|快线|慢线|B线|A线|支线|专线)$",
+        "",
+        raw,
+    ).strip()
+    if stripped and stripped != raw:
+        base = re.sub(r"路$", "", stripped).strip()
+        if base:
+            if base.isdigit():
+                add(f"{base}路")
+                add(base)
+            else:
+                add(stripped)
+                add(base)
+                if not stripped.endswith("路") and not stripped.endswith("线"):
+                    add(f"{base}路")
+
+    # 2. 如果含连字符且上面未命中，取连字符前的主干名
+    if "-" in raw:
+        head = raw.split("-", 1)[0].strip()
+        if head and head != raw:
+            add(f"{head}路" if head.isdigit() else head)
+            add(head)
+
+    # 3. 纯数字或普通公交切换“路”后缀
+    if not raw.startswith("地铁"):
+        if raw.endswith("路"):
+            add(raw[:-1])
+        elif raw.isdigit():
+            add(f"{raw}路")
+
+    return candidates
+
+
+def _retry_missing_routes(
+    routes_payload: Dict[str, Any],
+    fetch_fn: Callable[..., Dict[str, Any]],
+    *,
+    max_rounds: int = 2,
+) -> Tuple[Dict[str, Any], Optional[Dict[str, Any]]]:
+    """Agent 自动重试缺失线路：先直接重拉瞬态失败线路，并尝试主线别名兜底（如 866-高峰线 -> 866路）。"""
+    if not isinstance(routes_payload, dict):
+        return routes_payload, None
+    initial_missing = [m for m in (routes_payload.get("missing") or []) if isinstance(m, dict)]
+    if not initial_missing:
+        return routes_payload, None
+    top_reason = str(routes_payload.get("reason") or "")
+    if top_reason in ("MANUAL_LOGIN_REQUIRED", "NO_LINES"):
+        return routes_payload, None
+
+    lines = list(routes_payload.get("lines") or [])
+    pending = list(initial_missing)
+    recovered: List[Dict[str, str]] = []
+    attempts = 0
+
+    def _index_resolved(resp: Optional[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+        idx: Dict[str, Dict[str, Any]] = {}
+        for item in ((resp or {}).get("lines") or []):
+            if not isinstance(item, dict) or not item.get("path"):
+                continue
+            for k in (item.get("requested"), item.get("line"), item.get("lineName")):
+                nk = _norm_line(k)
+                if nk:
+                    idx[nk] = item
+                raw_k = str(k or "").strip()
+                if raw_k:
+                    idx[raw_k] = item
+        return idx
+
+    # Round 1: 对瞬态失败原名重拉 + 对 NOT_FOUND 尝试主线别名
+    query_terms: List[str] = []
+    cand_map: Dict[str, List[str]] = {}
+    for m in pending:
+        orig = str(m.get("requested") or m.get("line") or "").strip()
+        if not orig:
+            continue
+        m_reason = str(m.get("reason") or top_reason)
+        cands: List[str] = []
+        if m_reason != "NOT_FOUND":
+            cands.append(orig)
+        for alias in _route_retry_candidates(orig):
+            if alias not in cands:
+                cands.append(alias)
+        if not cands:
+            cands.append(orig)
+        cand_map[orig] = cands
+        for q in cands:
+            if q not in query_terms:
+                query_terms.append(q)
+
+    if query_terms:
+        attempts += 1
+        retry_resp = fetch_fn(query_terms, force=True, max_lines=max(len(query_terms), 20))
+        idx = _index_resolved(retry_resp)
+        still_pending: List[Dict[str, Any]] = []
+        for m in pending:
+            orig = str(m.get("requested") or m.get("line") or "").strip()
+            matched_item: Optional[Dict[str, Any]] = None
+            matched_via = orig
+            for q in cand_map.get(orig, [orig]):
+                hit = idx.get(q) or idx.get(_norm_line(q))
+                if hit:
+                    matched_item = hit
+                    matched_via = q
+                    break
+            if matched_item is not None:
+                cloned = copy.deepcopy(matched_item)
+                cloned["requested"] = orig
+                cloned["line"] = orig
+                if _norm_line(matched_via) != _norm_line(orig):
+                    base_name = matched_item.get("lineName") or matched_via
+                    cloned["alias_matched"] = matched_via
+                    cloned["lineName"] = f"{orig}（复用主线 {base_name}）"
+                lines.append(cloned)
+                recovered.append({"line": orig, "via": matched_via})
+            else:
+                still_pending.append(m)
+        pending = still_pending
+
+    # Round 2: 若仍有非 NOT_FOUND 的瞬态失败线路，再补拉 1 次
+    if pending and attempts < max_rounds:
+        transient = [
+            m for m in pending
+            if str(m.get("reason") or top_reason) not in ("NOT_FOUND", "MANUAL_LOGIN_REQUIRED")
+        ]
+        transient_terms = [
+            str(m.get("requested") or m.get("line") or "").strip()
+            for m in transient
+            if str(m.get("requested") or m.get("line") or "").strip()
+        ]
+        if transient_terms:
+            attempts += 1
+            retry_resp2 = fetch_fn(transient_terms, force=True, max_lines=max(len(transient_terms), 20))
+            idx2 = _index_resolved(retry_resp2)
+            still_pending2: List[Dict[str, Any]] = []
+            for m in pending:
+                orig = str(m.get("requested") or m.get("line") or "").strip()
+                hit = idx2.get(orig) or idx2.get(_norm_line(orig))
+                if hit:
+                    cloned = copy.deepcopy(hit)
+                    cloned["requested"] = orig
+                    cloned["line"] = orig
+                    lines.append(cloned)
+                    recovered.append({"line": orig, "via": orig})
+                else:
+                    still_pending2.append(m)
+            pending = still_pending2
+
+    updated = dict(routes_payload)
+    updated["lines"] = lines
+    updated["missing"] = pending
+    prev_summary = dict(routes_payload.get("summary") or {})
+    requested_cnt = int(prev_summary.get("requested") or (len(lines) + len(pending)))
+    updated["summary"] = {
+        "requested": requested_cnt,
+        "resolved": len(lines),
+        "cached": int(prev_summary.get("cached") or 0),
+        "fetched": int(prev_summary.get("fetched") or 0) + len(recovered),
+        "missing": len(pending),
+    }
+    if not pending:
+        updated["status"] = "ready"
+        updated["reason"] = None
+    elif len(lines) > 0:
+        updated["status"] = "partial"
+
+    retry_info = {
+        "module": "新云线路轨迹",
+        "attempts": attempts,
+        "initial_missing": len(initial_missing),
+        "recovered_count": len(recovered),
+        "recovered": recovered,
+        "remaining_missing": [str(m.get("requested") or m.get("line") or "").strip() for m in pending],
+    }
+    return updated, retry_info
+
+
 def _lines_from_plan(plan_resp: Optional[Dict[str, Any]]) -> Tuple[List[str], Dict[str, List[str]]]:
     """从 PlanResponse 提取公交线路（按行分摊金额降序）与本线路的点位 id。"""
     plan = (plan_resp or {}).get("plan") or {}
@@ -416,22 +640,51 @@ class ProposalRunner:
         # ---- 2. data_inventory ------------------------------------------
         # 强制实时拉取：忽略 data_mode=cached，始终调用 hongdou-inventory
         # snapshot.py --overwrite，用红豆接口的新数据覆盖 data/snapshots。
+        # 若首次拉取失败，Agent 自动补拉重试 1 次。
+        acquired_items: List[str] = []
+        failure_items: List[Dict[str, Any]] = []
+        retry_log: List[Dict[str, Any]] = []
+
         data_inventory: Optional[Dict[str, Any]] = None
         mark("data_inventory")
         t0 = time.perf_counter()
         months = _read_snapshot_months(request)
+        period_label = _format_month_range(months)
+        inv_attempts = 1
         snap = self.data.inventory_snapshot(months, overwrite=True, media="all")
-        status = "done" if snap.get("ok") else "degraded"
         if not snap.get("ok"):
-            warnings.append("红豆实时拉取未完全成功（forced live pull）")
-        stage("data_inventory", status,
-              summary=f"红豆实时拉取 {','.join(months)}（--overwrite）" if snap.get("ok") else "红豆实时拉取失败",
-              extra={"ms": int((time.perf_counter() - t0) * 1000)})
+            inv_attempts = 2
+            stage("data_inventory", "running",
+                  summary=f"红豆 {period_label} 首次拉取异常，Agent 正在第 2 次重试...")
+            snap = self.data.inventory_snapshot(months, overwrite=True, media="all")
+            retry_log.append({
+                "module": "红豆实时库存",
+                "attempts": inv_attempts,
+                "recovered": bool(snap.get("ok")),
+                "months": months,
+            })
+
+        inv_ok = bool(snap.get("ok"))
+        inv_status = "done" if inv_ok else "partial"
+        if inv_ok:
+            acquired_items.append(f"红豆实时库存（{period_label} 档期，公交+地铁）")
+        else:
+            inv_err = str(snap.get("summary") or snap.get("error") or "接口返回失败").strip()
+            detail = f"红豆实时库存（{period_label}）重试 {inv_attempts} 次后仍拉取失败：{inv_err}，已回退本地快照"
+            failure_items.append({"module": "红豆实时库存", "lines": [], "reason": inv_err, "detail": detail})
+            warnings.append(detail)
+
+        stage("data_inventory", inv_status,
+              summary=(f"红豆实时库存已获取 {period_label}" + (f"（第 {inv_attempts} 次重试成功）" if inv_attempts > 1 else ""))
+              if inv_ok else f"红豆 {period_label} 重试 {inv_attempts} 次失败，已回退本地快照",
+              extra={"ms": int((time.perf_counter() - t0) * 1000), "attempts": inv_attempts})
         data_inventory = {
-            "status": status,
-            "mode": "live",
+            "status": inv_status,
+            "mode": "live" if inv_ok else "snapshot_fallback",
             "forced": True,
             "months": months,
+            "period_label": period_label,
+            "attempts": inv_attempts,
             "snapshot": snap,
             "data_version": None,  # 下面重载后回填
         }
@@ -462,8 +715,15 @@ class ProposalRunner:
         if custom_venue and custom_venue.get("name"):
             venue_name = str(custom_venue["name"])
             c_coords = custom_venue.get("coords") or {}
-            t_lng = float(c_coords["lng"]) if c_coords.get("lng") is not None else None
-            t_lat = float(c_coords["lat"]) if c_coords.get("lat") is not None else None
+            raw_lng = float(c_coords["lng"]) if c_coords.get("lng") is not None else None
+            raw_lat = float(c_coords["lat"]) if c_coords.get("lat") is not None else None
+            # 新云大数据平台覆盖上海区域；外省客户公司自动改用上海全域锚点查询周边覆盖与 POI
+            if raw_lng is not None and raw_lat is not None and (120.8 <= raw_lng <= 122.2 and 30.65 <= raw_lat <= 31.9):
+                t_lng, t_lat = raw_lng, raw_lat
+                bigdata_query_addr = venue_name
+            else:
+                t_lng, t_lat = 121.4737, 31.2304
+                bigdata_query_addr = "上海人民广场"
         else:
             v_prof = (catalog.get("venue_profiles") or {}).get(request.get("venue"), {}) or {}
             venue_name = v_prof.get("name") \
@@ -471,6 +731,7 @@ class ProposalRunner:
             v_coords = v_prof.get("coords") or {}
             t_lng = float(v_coords["lng"]) if v_coords.get("lng") is not None else None
             t_lat = float(v_coords["lat"]) if v_coords.get("lat") is not None else None
+            bigdata_query_addr = venue_name
 
         try:
             from engine.skill_loader import get_industry_profile
@@ -478,19 +739,63 @@ class ProposalRunner:
         except Exception:
             poi_types = "商场,写字楼,小区"
 
-        cov = self.data.bigdata_coverage(venue_name, radius=1500, lng=t_lng, lat=t_lat)
-        poi = self.data.bigdata_poi(venue_name, radius=1500, types=poi_types, mode="detail", lng=t_lng, lat=t_lat)
-        cov_status = cov.get("status") or ("ready" if cov.get("ok") else "degraded")
-        poi_status = poi.get("status") or ("ready" if poi.get("ok") else "degraded")
+        bd_month_raw = "202305"
+        bd_month_label = _format_month_ym(bd_month_raw)
+
+        cov_attempts = 1
+        cov = self.data.bigdata_coverage(bigdata_query_addr, radius=1500, lng=t_lng, lat=t_lat)
+        cov_status = cov.get("status") or ("ready" if cov.get("ok") else "failed")
+        if cov_status != "ready" and cov.get("reason") != "MANUAL_LOGIN_REQUIRED":
+            cov_attempts = 2
+            stage("data_bigdata", "running", summary=f"新云 {bd_month_label} 周边覆盖首次获取失败，Agent 正在重试...")
+            cov = self.data.bigdata_coverage(bigdata_query_addr, radius=1500, lng=t_lng, lat=t_lat)
+            cov_status = cov.get("status") or ("ready" if cov.get("ok") else "failed")
+            retry_log.append({"module": "新云周边覆盖", "attempts": cov_attempts, "recovered": cov_status == "ready"})
+
+        poi_attempts = 1
+        poi = self.data.bigdata_poi(bigdata_query_addr, radius=1500, types=poi_types, mode="detail", lng=t_lng, lat=t_lat)
+        poi_status = poi.get("status") or ("ready" if poi.get("ok") else "failed")
+        if poi_status != "ready" and poi.get("reason") != "MANUAL_LOGIN_REQUIRED":
+            poi_attempts = 2
+            stage("data_bigdata", "running", summary=f"新云 {bd_month_label} 周边 POI 首次获取失败，Agent 正在重试...")
+            poi = self.data.bigdata_poi(bigdata_query_addr, radius=1500, types=poi_types, mode="detail", lng=t_lng, lat=t_lat)
+            poi_status = poi.get("status") or ("ready" if poi.get("ok") else "failed")
+            retry_log.append({"module": "新云周边 POI", "attempts": poi_attempts, "recovered": poi_status == "ready"})
+
         overall_bi = "ready" if cov_status == "ready" and poi_status == "ready" else (
-            "skipped" if cov_status == "skipped" and poi_status == "skipped" else "degraded"
+            "skipped" if cov_status == "skipped" and poi_status == "skipped" else "partial"
         )
-        if cov_status == "skipped" or poi_status == "skipped":
-            warnings.append("新云数据跳过：MANUAL_LOGIN_REQUIRED（需人工验证码登录一次），不阻塞引擎")
-        elif overall_bi == "degraded":
-            warnings.append("新云 2023-05 补充数据部分不可用（degraded）")
+        cov_bus = int((cov.get("summary") or {}).get("bus") or 0)
+        cov_metro = int((cov.get("summary") or {}).get("metro") or 0)
+        poi_total = int(poi.get("total") or 0)
+
+        if cov_status == "ready" and poi_status == "ready":
+            acquired_items.append(
+                f"新云 {bd_month_label} 周边覆盖（公交 {cov_bus} 条/地铁 {cov_metro} 条）与 POI（{poi_total} 个）"
+            )
+        else:
+            if cov_status == "ready":
+                acquired_items.append(f"新云 {bd_month_label} 周边覆盖（公交 {cov_bus} 条/地铁 {cov_metro} 条）")
+            if poi_status == "ready":
+                acquired_items.append(f"新云 {bd_month_label} 周边 POI（{poi_total} 个）")
+            if cov_status == "skipped" and poi_status == "skipped":
+                detail = f"新云 {bd_month_label} 周边覆盖与 POI 未获取：新云会话未登录或已过期"
+                failure_items.append({"module": "新云周边覆盖与POI", "lines": [], "reason": "MANUAL_LOGIN_REQUIRED", "detail": detail})
+                warnings.append(detail)
+            else:
+                if cov_status != "ready":
+                    r_zh = _translate_data_reason(cov.get("reason"), bd_month_label)
+                    detail = f"新云 {bd_month_label} 周边覆盖重试 {cov_attempts} 次仍失败：{r_zh}"
+                    failure_items.append({"module": "新云周边覆盖", "lines": [], "reason": cov.get("reason"), "detail": detail})
+                    warnings.append(detail)
+                if poi_status != "ready":
+                    r_zh = _translate_data_reason(poi.get("reason"), bd_month_label)
+                    detail = f"新云 {bd_month_label} 周边 POI 重试 {poi_attempts} 次仍失败：{r_zh}"
+                    failure_items.append({"module": "新云周边POI", "lines": [], "reason": poi.get("reason"), "detail": detail})
+                    warnings.append(detail)
+
         stage("data_bigdata", overall_bi,
-              summary=f"周边覆盖 公交 {cov.get('summary', {}).get('bus', 0)} 条 / 地铁 {cov.get('summary', {}).get('metro', 0)} 条 · POI {poi.get('total', 0)} 个",
+              summary=f"新云 {bd_month_label} 周边覆盖 公交 {cov_bus} 条 / 地铁 {cov_metro} 条 · POI {poi_total} 个",
               extra={"ms": int((time.perf_counter() - t0) * 1000)})
         data_bigdata = {
             "status": overall_bi,
@@ -499,7 +804,7 @@ class ProposalRunner:
             "radius": 1500,
             "coverage": cov,
             "poi": poi,
-            "data_month": "202305",
+            "data_month": bd_month_raw,
         }
 
         # ---- 4. engine（一次求解 3 套差异化确定性方案） -------------------
@@ -560,6 +865,15 @@ class ProposalRunner:
                 force=bool(options.get("routes_force")),
                 max_lines=int(options.get("routes_max_lines") or 50),
             )
+            # 若存在缺失线路（且非未登录），Agent 自动补拉重试（含高峰线/区间线主线别名补查）
+            if isinstance(routes_payload, dict) and (routes_payload.get("missing") or []) and routes_payload.get("reason") not in ("MANUAL_LOGIN_REQUIRED", "NO_LINES"):
+                miss_cnt_0 = len(routes_payload.get("missing") or [])
+                stage("data_routes", "running",
+                      summary=f"检测到 {miss_cnt_0} 条线路轨迹缺失，Agent 正在自动补拉重试...")
+                routes_payload, r_retry = _retry_missing_routes(routes_payload, self.data.bigdata_routes, max_rounds=2)
+                if r_retry:
+                    retry_log.append(r_retry)
+
             # 同步把真实线路几何 + 新云实测 POI 注入所有 3 套策略方案
             bigdata_poi_items = (poi.get("items") or []) if isinstance(poi, dict) else []
             if variants_bundle and isinstance(variants_bundle.get("plans"), dict):
@@ -577,13 +891,21 @@ class ProposalRunner:
                 if bigdata_poi_items:
                     ((plan_resp.setdefault("coverage", {})).setdefault("map_layers", {}))["bigdata_poi"] = bigdata_poi_items
 
-            # 拉取方案核心公交线路的 2023-05 真实人群画像与时段人流密度（单次会话 + 本地缓存）
+            # 拉取方案核心公交线路的 2023-05 真实人群画像与时段人流密度（失败自动重试 1 次）
             top_portrait_lines = [
                 (ln if ln.endswith("路") else f"{ln}路")
                 for ln in union_bus[:10]
             ]
             if top_portrait_lines:
                 portrait_data = self.data.bigdata_portrait(top_portrait_lines, media="公交", max_per_line=6)
+                if not (portrait_data or {}).get("ok") and (portrait_data or {}).get("reason") not in ("MANUAL_LOGIN_REQUIRED", "NO_LINES"):
+                    stage("data_routes", "running", summary="新云人群画像首次获取失败，Agent 正在自动重试...")
+                    portrait_data = self.data.bigdata_portrait(top_portrait_lines, media="公交", max_per_line=6, force=True)
+                    retry_log.append({
+                        "module": "新云人群画像",
+                        "attempts": 2,
+                        "recovered": bool((portrait_data or {}).get("ok")),
+                    })
                 per_line_map = (portrait_data or {}).get("per_line") or {}
                 # 注入到每套方案对应公交条目上，供点击地图/表格抽屉查看详细实测数据
                 if per_line_map:
@@ -602,16 +924,43 @@ class ProposalRunner:
             summary = routes_payload.get("summary") or {}
             resolved = int(summary.get("resolved") or 0)
             requested = int(summary.get("requested") or len(route_lines))
-            route_status = str(routes_payload.get("status") or "degraded")
+            route_month = _format_month_ym(routes_payload.get("data_month") or "202305")
+            still_missing = [m for m in (routes_payload.get("missing") or []) if isinstance(m, dict)]
             p_matched = len((portrait_data or {}).get("matched") or [])
-            stage("data_routes", route_status,
+
+            if resolved > 0:
+                acquired_items.append(f"新云 {route_month} 线路真实轨迹（{resolved}/{requested} 条）")
+            if still_missing:
+                miss_names = [str(m.get("requested") or m.get("line") or "").strip() for m in still_missing]
+                miss_names = [x for x in miss_names if x]
+                first_reason = still_missing[0].get("reason") or routes_payload.get("reason")
+                r_zh = _translate_data_reason(first_reason, route_month)
+                shown = "、".join(miss_names[:6]) + (f" 等 {len(miss_names)} 条" if len(miss_names) > 6 else "")
+                detail = f"未获取到轨迹（{len(miss_names)} 条）：{shown}（{r_zh}，重试后仍无数据，已按区县示意）"
+                failure_items.append({
+                    "module": "新云线路轨迹",
+                    "lines": miss_names,
+                    "reason": str(first_reason or ""),
+                    "detail": detail,
+                })
+                warnings.append(detail)
+
+            if top_portrait_lines:
+                if p_matched > 0:
+                    p_month = _format_month_ym((portrait_data or {}).get("data_month") or "202305")
+                    acquired_items.append(f"新云 {p_month} 人群画像（{p_matched}/{len(top_portrait_lines)} 条核心线路）")
+                else:
+                    p_reason = (portrait_data or {}).get("reason") or "PORTRAIT_UNAVAILABLE"
+                    p_month = _format_month_ym((portrait_data or {}).get("data_month") or "202305")
+                    detail = f"新云 {p_month} 人群画像未获取：{_translate_data_reason(p_reason, p_month)}"
+                    failure_items.append({"module": "新云人群画像", "lines": [], "reason": str(p_reason), "detail": detail})
+                    warnings.append(detail)
+
+            effective_route_status = "ready" if not still_missing else ("partial" if resolved > 0 else "skipped")
+            stage("data_routes", effective_route_status,
                   summary=(f"三套方案合并线路 {len(union_bus)} 条公交 + {len(union_metro)} 条地铁，"
-                           f"真实几何 {resolved}/{requested} 条；新云画像 {p_matched} 条"),
+                           f"真实轨迹 {resolved}/{requested} 条；新云画像 {p_matched} 条"),
                   extra={"ms": int((time.perf_counter() - t0) * 1000)})
-            if route_status != "ready" and requested:
-                warnings.append(
-                    f"线路真实几何 {resolved}/{requested} 条（{routes_payload.get('reason') or route_status}），缺失线路按区县示意"
-                )
         else:
             stage("data_routes", "skipped", summary="include_routes=false 或引擎未生成方案")
 
@@ -628,14 +977,21 @@ class ProposalRunner:
         stage("narrative", "done" if plan_resp else "skipped",
               summary="话术与三套策略对比口径由确定性 narrative 组装")
 
-        status = "done" if plan_resp else "degraded"
-        if engine_status == "failed":
+        # 方案成功生成后状态一律为 done（不再标为“降级”），具体已获取/未获取明细通过 data.report 透明呈现
+        if engine_status == "failed" or not plan_resp:
             status = "failed"
-        elif warnings:
-            status = "degraded"
+        else:
+            status = "done"
+
+        data_report = {
+            "acquired": acquired_items,
+            "failures": failure_items,
+            "retries": retry_log,
+            "all_ok": len(failure_items) == 0,
+        }
 
         mark("done")
-        stage("done", status, summary=f"最终状态 {status}")
+        stage("done", status, summary=f"已完成 · 已获取 {len(acquired_items)} 项数据" + (f"，{len(failure_items)} 项缺失已明细说明" if failure_items else ""))
 
         result = self._assemble(
             run_id=run_id, started_at=started_at, status=status,
@@ -647,6 +1003,7 @@ class ProposalRunner:
                 "bigdata": data_bigdata,
                 "routes": routes_data,
                 "portrait": portrait_data,
+                "report": data_report,
             },
             elasticity=elasticity, error=(None if plan_resp else self._engine_error(None) if engine_status == "failed" else None),
         )

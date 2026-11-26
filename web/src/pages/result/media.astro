@@ -27,9 +27,8 @@ import StaticMap from '../../components/StaticMap.astro';
         <div class="map-frame" id="media-map" data-mode="fallback" style="min-height:640px">
           <div id="amap"></div>
           <div class="map-fallback"><StaticMap showPois labels /></div>
-          <div class="map-note" data-map-note>暗色矢量图层预览</div>
+          <div class="map-note" data-map-note>矢量图层预览</div>
           <div class="map-legend">
-            <span><i class="ring"></i>目标辐射圈</span>
             <span><i class="accent"></i>入选站点 / 热力中心</span>
             <span data-k="routes-legend-bus"><i class="route"></i>公交线路 · 2023-05</span>
             <span data-k="routes-legend-metro"><i class="route route--metro"></i>地铁线路 · 2023-05</span>
@@ -539,11 +538,6 @@ import StaticMap from '../../components/StaticMap.astro';
   function buildHeatmapPoints(): { lng: number; lat: number; count: number; media?: string; levels?: string[] }[] {
     const pts: { lng: number; lat: number; count: number; media?: string; levels?: string[] }[] = [];
     const ml = PLAN.coverage?.map_layers || {};
-    const vCoords = PLAN.venue?.coords;
-    if (vCoords?.lng && vCoords?.lat) {
-      const [gLng, gLat] = wgsToGcj(Number(vCoords.lng), Number(vCoords.lat));
-      pts.push({ lng: gLng, lat: gLat, count: 100 });
-    }
     // Weight bus routes by real xinyun PV (when available) or estimated exposure
     for (const r of (ml.bus_routes || [])) {
       const path = r.geometry?.path || [];
@@ -625,7 +619,7 @@ import StaticMap from '../../components/StaticMap.astro';
       const el = document.createElementNS(NS, 'path');
       el.setAttribute('d', d);
       el.setAttribute('fill', 'none');
-      el.setAttribute('stroke', mType === 'metro' ? '#d4a36a' : '#34d399');
+      el.setAttribute('stroke', mType === 'metro' ? '#6d5dfc' : '#249c94');
       el.setAttribute('stroke-width', '3.2');
       el.setAttribute('stroke-opacity', '0.88');
       if (mType === 'metro') el.setAttribute('stroke-dasharray', '6 4');
@@ -645,9 +639,9 @@ import StaticMap from '../../components/StaticMap.astro';
       c.setAttribute('cx', x.toFixed(1));
       c.setAttribute('cy', y.toFixed(1));
       c.setAttribute('r', '3.6');
-      c.setAttribute('fill', '#34d399');
-      c.setAttribute('stroke', '#0a0c12');
-      c.setAttribute('stroke-width', '1.2');
+      c.setAttribute('fill', '#249c94');
+      c.setAttribute('stroke', '#ffffff');
+      c.setAttribute('stroke-width', '1.4');
       c.style.cursor = 'pointer';
       c.addEventListener('click', () => openPoiDrawer(p));
       poiG.append(c);
@@ -664,38 +658,11 @@ import StaticMap from '../../components/StaticMap.astro';
       g.setAttribute('data-svg-levels', String(m.level || ''));
       const c = document.createElementNS(NS, 'circle');
       c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', '5.5');
-      c.setAttribute('fill', '#d4a36a'); c.setAttribute('stroke', '#0a0c12'); c.setAttribute('stroke-width', '2');
+      c.setAttribute('fill', '#6d5dfc'); c.setAttribute('stroke', '#ffffff'); c.setAttribute('stroke-width', '2');
       g.append(c);
       g.addEventListener('click', () => openDrawer(m));
       ptsG.append(g);
     });
-
-    // 5) Target venue / company marker & rings
-    const vc = PLAN.venue?.coords;
-    if (tgtG && vc?.lng && vc?.lat) {
-      const [gLng, gLat] = wgsToGcj(Number(vc.lng), Number(vc.lat));
-      const [x, y] = projectSvg(gLng, gLat);
-      (PLAN.venue?.rings_km || [6, 20]).slice(0, 2).forEach((km: number, idx: number) => {
-        const ring = document.createElementNS(NS, 'circle');
-        ring.setAttribute('cx', x.toFixed(1)); ring.setAttribute('cy', y.toFixed(1));
-        ring.setAttribute('r', Math.max(18, km * SVG_SCALE).toFixed(1));
-        ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#d4a36a');
-        ring.setAttribute('stroke-opacity', idx === 0 ? '0.62' : '0.3');
-        ring.setAttribute('stroke-dasharray', '6 6'); ring.setAttribute('stroke-width', '1.8');
-        tgtG.append(ring);
-      });
-      const pin = document.createElementNS(NS, 'circle');
-      pin.setAttribute('cx', x.toFixed(1)); pin.setAttribute('cy', y.toFixed(1)); pin.setAttribute('r', '7');
-      pin.setAttribute('fill', '#e7c08e'); pin.setAttribute('stroke', '#0a0c12'); pin.setAttribute('stroke-width', '2.2');
-      tgtG.append(pin);
-      const lbl = document.createElementNS(NS, 'text');
-      lbl.setAttribute('x', (x > 740 ? x - 12 : x + 12).toFixed(1));
-      lbl.setAttribute('y', (y + 5).toFixed(1));
-      lbl.setAttribute('text-anchor', x > 740 ? 'end' : 'start');
-      lbl.setAttribute('class', 'ps-map-venue-label');
-      lbl.textContent = String(PLAN.venue?.name || PLAN.inputs?.venue_name || '目标地点').slice(0, 14);
-      tgtG.append(lbl);
-    }
   }
 
   async function drawMap(data: any) {
@@ -706,32 +673,17 @@ import StaticMap from '../../components/StaticMap.astro';
     const kit = await loadAmap('amap');
     if (!kit) {
       frame.setAttribute('data-mode', 'fallback');
-      $$('[data-map-note]')!.textContent = `暗色矢量地图 · ${PLAN.venue?.name || '方案覆盖'} · 支持点击点位与热力图层`;
+      $$('[data-map-note]')!.textContent = '矢量覆盖地图 · 上海投放点位与线路 · 点击线路/点位查新云明细';
       syncMapFilters();
       return;
     }
     amapKit = kit;
     frame.setAttribute('data-mode', 'live');
-    $$('[data-map-note]')!.textContent = `高德在线 · ${PLAN.venue?.name || '方案覆盖'} · 点击线路/点位查新云明细`;
+    $$('[data-map-note]')!.textContent = '高德在线 · 上海投放点位与线路 · 点击线路/点位查新云明细';
     const { AMap, map } = kit;
     TRACKED = [];
 
-    // Venue / custom company target & rings
-    const venueCoords = PLAN.venue?.coords;
     const fitPts: [number, number][] = [];
-    if (venueCoords?.lng && venueCoords?.lat) {
-      const c = wgsToGcj(Number(venueCoords.lng), Number(venueCoords.lat));
-      fitPts.push(c);
-      (PLAN.venue?.rings_km || [6, 20]).slice(0, 2).forEach((km: number) => {
-        map.add(new AMap.Circle({ center: c, radius: km * 1000, strokeColor: '#d4a36a', strokeOpacity: 0.55, strokeWeight: 1.4, strokeStyle: 'dashed', fillOpacity: 0 }));
-      });
-      map.add(new AMap.Marker({
-        position: c,
-        content: `<div class="amap-venue-marker is-selected"><i class="amap-pin amap-pin--venue"></i><span class="amap-venue">${String(PLAN.venue?.name || '目标')}</span></div>`,
-        offset: new AMap.Pixel(-9, -9),
-        zIndex: 260,
-      }));
-    }
 
     // 1) Selected metro exits (tracked by layer='metro' + level)
     (PLAN.plan?.metro || []).forEach((m: any) => {
@@ -761,7 +713,7 @@ import StaticMap from '../../components/StaticMap.astro';
       fitPts.push(path[0], path[Math.floor(path.length / 2)], path[path.length - 1]);
       const line = new AMap.Polyline({
         path,
-        strokeColor: isMetro ? '#d4a36a' : '#34d399',
+        strokeColor: isMetro ? '#6d5dfc' : '#249c94',
         strokeWeight: 3.8,
         strokeOpacity: 0.88,
         strokeStyle: isMetro ? 'dashed' : 'solid',
@@ -807,8 +759,8 @@ import StaticMap from '../../components/StaticMap.astro';
     try {
       AMAP_HEAT = new AMap.HeatMap(map, {
         radius: 34,
-        opacity: [0, 0.72],
-        gradient: { 0.2: 'rgba(46,91,68,0.1)', 0.5: 'rgba(52,211,153,0.48)', 0.78: 'rgba(212,163,106,0.75)', 1.0: 'rgba(244,210,152,0.95)' },
+        opacity: [0, 0.68],
+        gradient: { 0.2: 'rgba(78,205,196,0.12)', 0.5: 'rgba(78,205,196,0.52)', 0.78: 'rgba(109,93,252,0.72)', 1.0: 'rgba(255,107,107,0.88)' },
       });
       AMAP_HEAT.setDataSet({ data: HEAT_POINTS, max: 100 });
     } catch { AMAP_HEAT = null; }
@@ -819,7 +771,7 @@ import StaticMap from '../../components/StaticMap.astro';
       const dist = new AMap.GeoJSON({
         geoJSON: geo,
         getPolygon: (_g: any, lnglats: number[][]) => new P({
-          path: lnglats, strokeColor: '#d4a36a', strokeWeight: 1, strokeOpacity: 0.28, fillColor: '#161b26', fillOpacity: 0.22,
+          path: lnglats, strokeColor: '#8d96a6', strokeWeight: 1.1, strokeOpacity: 0.55, fillColor: '#e0e5ec', fillOpacity: 0.14,
         }),
       });
       map.add(dist);

@@ -127,32 +127,41 @@ def infer_shanghai_district(lng: float, lat: float, text: str = "") -> str:
     return best_d
 
 
-def fallback_geocode_shanghai(query: str) -> Dict[str, Any]:
-    """离线/兜底地理编码：匹配内置上海地标与区县中心。"""
+def fallback_geocode_shanghai(query: str, *, allow_default_center: bool = False) -> Dict[str, Any]:
+    """离线/本地上海地标匹配：仅在命中真实地标/别名时返回成功；不强行伪造人民广场坐标。"""
     q = (query or "").strip()
     ql = q.lower()
     for lm in _SHANGHAI_LANDMARKS:
-        if lm["name"].lower() in ql or ql in lm["name"].lower():
+        if lm["name"].lower() in ql or (len(ql) >= 2 and ql in lm["name"].lower()):
             return {
-                "ok": True, "name": q or lm["name"], "matched_name": lm["name"],
+                "ok": True, "verified": True, "name": q or lm["name"], "matched_name": lm["name"],
                 "address": f"上海市{lm['district']}{lm['name']}",
+                "city": "上海市",
                 "district": lm["district"], "lng": lm["lng"], "lat": lm["lat"],
-                "source": "本地上海地标库（离线兜底）", "cached": True,
+                "source": "本地上海地标库", "cached": True, "approx": False,
             }
         for alias in lm["aliases"]:
             if alias.lower() in ql:
                 return {
-                    "ok": True, "name": q or lm["name"], "matched_name": lm["name"],
+                    "ok": True, "verified": True, "name": q or lm["name"], "matched_name": lm["name"],
                     "address": f"上海市{lm['district']}{q}",
+                    "city": "上海市",
                     "district": lm["district"], "lng": lm["lng"], "lat": lm["lat"],
-                    "source": "本地上海地标库（离线兜底）", "cached": True,
+                    "source": "本地上海地标库", "cached": True, "approx": False,
                 }
-    # 默认落上海市中心人民广场（保证任何自定义公司名都有合理上海坐标）
+    if allow_default_center:
+        return {
+            "ok": True, "verified": False, "name": q or "上海市中心", "matched_name": "人民广场",
+            "address": f"上海市{q}", "city": "上海市", "district": "黄浦区",
+            "lng": 121.4737, "lat": 31.2304,
+            "source": "上海市中心默认定位（离线兜底）", "cached": True, "approx": True,
+        }
     return {
-        "ok": True, "name": q or "上海市中心", "matched_name": "人民广场",
-        "address": f"上海市{q}", "district": "黄浦区",
-        "lng": 121.4737, "lat": 31.2304,
-        "source": "上海市中心默认定位（离线兜底）", "cached": True, "approx": True,
+        "ok": False,
+        "verified": False,
+        "not_found": True,
+        "name": q,
+        "message": f"本地地标库未命中「{q}」，需通过高德地图或 Agent 进一步检索核实",
     }
 
 
